@@ -1,6 +1,4 @@
 use actix_web::{get, HttpResponse, Responder, web};
-use actix_files::NamedFile;
-use std::path::PathBuf;
 use crate::HTML;
 
 pub fn config(cfg: &mut web::ServiceConfig) {

@@ -1,5 +1,5 @@
 /target
-*.swc
+*.swp
 *.swo
 build.html
 node_modules/
