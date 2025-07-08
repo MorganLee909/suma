@@ -2,3 +2,4 @@
 *.swc
 *.swo
 build.html
+node_modules/

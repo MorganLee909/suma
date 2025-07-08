@@ -1,0 +1,15 @@
+:root{
+    --primary:     #6E4B3A;
+    --secondary:   #3A5A85;
+    --accent:      #D4AF37;
+    --background:  #F9F6F0;
+    --surface:     #DCD6CF;
+    --text-main:   #2A2A2A;
+    --text-muted:  #6D6D6D;
+    --error:       #B7410E;
+    --success:     #708238;
+}
+
+body{
+    background: var(--primary);
+}

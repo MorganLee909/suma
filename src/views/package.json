@@ -1,0 +1,17 @@
+{
+  "name": "views",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+      "dev": "nodemon createHtml.js --ignore build.html --ext js,css,html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "esbuild": "^0.25.6",
+    "html-minifier-terser": "^7.2.0"
+  }
+}
