@@ -69,6 +69,6 @@ fn response_user(user: User) -> dto::user::ResponseUser {
     dto::user::ResponseUser {
         id: user._id.unwrap().to_string(),
         email: user.email,
-        created_at: user.created_at.to_string()
+        created_at: user.created_at.timestamp_millis()
     }
 }

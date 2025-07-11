@@ -11,5 +11,5 @@ pub struct Login {
 pub struct ResponseUser {
     pub id: String,
     pub email: String,
-    pub created_at: String
+    pub created_at: i64
 }
