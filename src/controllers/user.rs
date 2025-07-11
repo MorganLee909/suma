@@ -5,6 +5,7 @@ use regex::Regex;
 use crate::http_error::http_error;
 use crate::dto;
 use crate::app_error::AppError;
+use serde_json::json;
 
 #[post("/api/user")]
 pub async fn create(
@@ -15,14 +16,8 @@ pub async fn create(
     let email = payload.email.to_lowercase();
     valid_email(&email)?;
     user_exists(&user_collection, &email).await?;
-
-    match User::insert(&user_collection, payload.into_inner()).await {
-        Ok(_) => Ok(HttpResponse::Ok().body("{'success': 'true'}")),
-        Err(e) => {
-            eprintln!("{}", e);
-            Ok(http_error(StatusCode::INTERNAL_SERVER_ERROR, "Failed to create user"))
-        }
-    }
+    User::insert(&user_collection, payload.into_inner()).await?;
+    Ok(HttpResponse::Ok().json(json!({"success": true})))
 }
 
 #[post("/api/user/login")]

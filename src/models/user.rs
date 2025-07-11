@@ -20,7 +20,7 @@ pub struct NewUserInput {
 }
 
 impl User {
-    pub async fn insert(collection: &Collection<User>, input: NewUserInput) -> Result<ObjectId, Error> {
+    pub async fn insert(collection: &Collection<User>, input: NewUserInput) -> Result<(), Error> {
         let user = User {
             _id: None,
             email: input.email,
@@ -29,7 +29,7 @@ impl User {
             created_at: DateTime::now()
         };
 
-        let result = collection.insert_one(user, None).await?;
-        Ok(result.inserted_id.as_object_id().unwrap())
+        collection.insert_one(user, None).await?;
+        Ok(())
     }
 }
