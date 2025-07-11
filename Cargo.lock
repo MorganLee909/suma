@@ -1840,6 +1840,7 @@ dependencies = [
  "actix-web",
  "bson",
  "mongodb",
+ "regex",
  "serde",
  "tokio",
  "uuid",
