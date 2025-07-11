@@ -5,6 +5,7 @@ use mongodb::{Client, Database};
 mod routes;
 mod models;
 mod controllers;
+mod http_error;
 
 pub static HTML: OnceLock<String> = OnceLock::new();
 
