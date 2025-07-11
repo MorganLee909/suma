@@ -12,9 +12,7 @@ pub async fn create(
 ) -> impl Responder {
     let user_collection = db.collection::<User>("users");
     let email = payload.email.to_lowercase();
-    let email_regex: Regex = Regex::new(r#"^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}(\.[0-9]{1,3}){3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"#).unwrap();
-
-    if !email_regex.is_match(&email) {
+    if !valid_email(&email) {
         return http_error(StatusCode::BAD_REQUEST, "Invalid email");
     }
 
@@ -63,6 +61,16 @@ pub async fn login(
     HttpResponse::Ok()
         .cookie(cookie)
         .json(response_user(user))
+}
+
+fn valid_email(email: &str) -> bool {
+    let email_regex: Regex = Regex::new(r#"^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}(\.[0-9]{1,3}){3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"#).unwrap();
+
+    if email_regex.is_match(email) {
+        return true;
+    }
+
+    false
 }
 
 fn response_user(user: User) -> dto::user::ResponseUser {
