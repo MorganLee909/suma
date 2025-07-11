@@ -1842,6 +1842,7 @@ dependencies = [
  "mongodb",
  "regex",
  "serde",
+ "thiserror",
  "tokio",
  "uuid",
 ]
