@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use bson::{oid::ObjectId, DateTime, doc};
 use mongodb::{Collection, error::Error};
+use crate::app_error::AppError;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -31,5 +32,13 @@ impl User {
 
         collection.insert_one(user, None).await?;
         Ok(())
+    }
+
+    pub async fn find_by_email(collection: &Collection<User>, email: &str) -> Result<User, AppError> {
+        match collection.find_one(doc!{"email": email}, None).await {
+            Ok(Some(u)) => Ok(u),
+            Ok(None) => Err(AppError::invalid_input("No user with this email address")),
+            Err(e) => Err(AppError::Database(e.into()))
+        }
     }
 }

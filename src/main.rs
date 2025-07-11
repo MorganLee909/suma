@@ -5,7 +5,6 @@ use mongodb::{Client, Database};
 mod routes;
 mod models;
 mod controllers;
-mod http_error;
 mod dto;
 mod app_error;
 

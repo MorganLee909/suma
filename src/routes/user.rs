@@ -1,10 +1,10 @@
 use actix_web::web;
 use crate::controllers::user::{
-    create,
-    login
+    create_route,
+    login_route
 };
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(create);
-    cfg.service(login);
+    cfg.service(create_route);
+    cfg.service(login_route);
 }

@@ -1,14 +1,13 @@
-use actix_web::{post, web, HttpResponse, Responder, http::StatusCode, cookie::Cookie};
+use actix_web::{post, web, HttpResponse, cookie::Cookie};
 use mongodb::{bson::doc, Database, Collection};
 use crate::models::user::{User, NewUserInput};
 use regex::Regex;
-use crate::http_error::http_error;
 use crate::dto;
 use crate::app_error::AppError;
 use serde_json::json;
 
 #[post("/api/user")]
-pub async fn create(
+pub async fn create_route(
     db: web::Data<Database>,
     payload: web::Json<NewUserInput>
 ) -> Result<HttpResponse, AppError> {
@@ -21,35 +20,16 @@ pub async fn create(
 }
 
 #[post("/api/user/login")]
-pub async fn login(
+pub async fn login_route(
     db: web::Data<Database>,
     payload: web::Json<dto::user::Login>
-) -> impl Responder {
+) -> Result<HttpResponse, AppError> {
     let user_collection = db.collection::<User>("users");
     let email = payload.email.to_lowercase();
-
-    let user: User = match user_collection.find_one(doc!{"email": email}, None).await {
-        Ok(Some(u)) => u,
-        Ok(None) => return http_error(StatusCode::BAD_REQUEST, "User with this email doesn't exist"),
-        Err(_) => return http_error(StatusCode::INTERNAL_SERVER_ERROR, "Unable to retrieve user data")
-    };
-
-    if user.password_hash != payload.password_hash {
-        return http_error(StatusCode::BAD_REQUEST, "Invalid credentials");
-    }
-    if user.password_salt != payload.password_salt {
-        return http_error(StatusCode::BAD_REQUEST, "Invalid credentials");
-    }
-
-    let id = user._id.unwrap().to_string();
-    let cookie = Cookie::build("user", id)
-        .path("/")
-        .http_only(true)
-        .finish();
-
-    HttpResponse::Ok()
-        .cookie(cookie)
-        .json(response_user(user))
+    let user = User::find_by_email(&user_collection, &email).await?;
+    validate_password(&user, &payload.password_hash, &payload.password_salt)?;
+    let cookie = create_user_cookie(user._id.unwrap().to_string());
+    Ok(HttpResponse::Ok().cookie(cookie).json(response_user(user)))
 }
 
 fn valid_email(email: &str) -> Result<(), AppError> {
@@ -68,6 +48,20 @@ async fn user_exists(collection: &Collection<User>, email: &str) -> Result<(), A
         Ok(Some(_)) => Err(AppError::invalid_input("User with this email already exists")),
         Err(_) => Err(AppError::internal_error("Unable to save user data"))
     }
+}
+
+fn validate_password(user: &User, hash: &str, salt: &str) -> Result<(), AppError> {
+    if user.password_hash != hash || user.password_salt != salt{
+        return Err(AppError::invalid_input("Invalid credentials"));
+    }
+    Ok(())
+}
+
+fn create_user_cookie(id: String) -> Cookie<'static> {
+    Cookie::build("user", id)
+        .path("/")
+        .http_only(true)
+        .finish()
 }
 
 fn response_user(user: User) -> dto::user::ResponseUser {
