@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(db.clone()))
             .configure(routes::other::config)
             .configure(routes::user::config)
+            .configure(routes::account::config)
     })
         .bind(("127.0.0.1", 8000))?
         .run()
