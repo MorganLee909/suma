@@ -7,6 +7,7 @@ mod models;
 mod controllers;
 mod dto;
 mod app_error;
+mod auth;
 
 pub static HTML: OnceLock<String> = OnceLock::new();
 

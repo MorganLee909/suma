@@ -7,5 +7,5 @@ pub struct Account {
     pub _id: Option<ObjectId>,
     pub user: ObjectId,
     pub data: String,
-    pub created_date: bson::DateTime
+    pub created_date: DateTime
 }

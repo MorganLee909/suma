@@ -41,4 +41,13 @@ impl User {
             Err(e) => Err(AppError::Database(e.into()))
         }
     }
+
+    pub async fn find_by_id(collection: &Collection<User>, user_id: String) -> Result<User, AppError> {
+        let object_id = ObjectId::parse_str(id_str)?;
+        match collection.find_one(doc!{"_id", object_id}) {
+            Ok(Some(u)) => Ok(u),
+            Ok(None) => Err(AppError::auth),
+            Err(e) => Err(AppError::Database(e.into()))
+        }
+    }
 }

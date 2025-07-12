@@ -22,7 +22,10 @@ pub enum AppError {
     InvalidInput(String),
 
     #[error("{0}")]
-    InternalError(String)
+    InternalError(String),
+
+    #[error("Unauthorized")]
+    Auth
 }
 
 impl ResponseError for AppError {
@@ -30,7 +33,8 @@ impl ResponseError for AppError {
         match self {
             AppError::Database(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::InvalidInput(_) => StatusCode::BAD_REQUEST,
-            AppError::InternalError(_) => StatusCode::INTERNAL_SERVER_ERROR
+            AppError::InternalError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::Auth => StatusCode::UNAUTHORIZED
         }
     }
 
