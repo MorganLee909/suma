@@ -1,4 +1,4 @@
-use actix_web::{post, web, HttpResponse, cookie::Cookie};
+use actix_web::{get, post, web, HttpResponse, cookie::Cookie};
 use mongodb::{bson::doc, Database, Collection};
 use crate::models::user::{User, NewUserInput};
 use regex::Regex;
@@ -28,8 +28,14 @@ pub async fn login_route(
     let email = payload.email.to_lowercase();
     let user = User::find_by_email(&user_collection, &email).await?;
     validate_password(&user, &payload.password_hash, &payload.password_salt)?;
-    let cookie = create_user_cookie(user._id.unwrap().to_string());
+    let cookie = create_user_cookie(Some(user._id.unwrap().to_string()));
     Ok(HttpResponse::Ok().cookie(cookie).json(response_user(user)))
+}
+
+#[get("/api/user/logout")]
+pub async fn logout_route() -> Result<HttpResponse, AppError> {
+    let cookie = create_user_cookie(None);
+    Ok(HttpResponse::Ok().cookie(cookie).json(json!({"success": true})))
 }
 
 fn valid_email(email: &str) -> Result<(), AppError> {
@@ -57,8 +63,13 @@ fn validate_password(user: &User, hash: &str, salt: &str) -> Result<(), AppError
     Ok(())
 }
 
-fn create_user_cookie(id: String) -> Cookie<'static> {
-    Cookie::build("user", id)
+fn create_user_cookie(id: Option<String>) -> Cookie<'static> {
+    let id_string = match id {
+        Some(i) => i,
+        None => "".to_string()
+    };
+
+    Cookie::build("user", id_string)
         .path("/")
         .http_only(true)
         .finish()
