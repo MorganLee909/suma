@@ -1,0 +1,17 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/api/account
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "data": "Something here"
+  }
+}
