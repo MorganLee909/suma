@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use bson::{oid::ObjectId, DateTime, Bson, doc};
 use mongodb::Collection;
+use futures::stream::TryStreamExt;
 
 use crate::app_error::AppError;
 use crate::dto::account::CreateInput;
@@ -37,6 +38,14 @@ impl Account {
             Bson::ObjectId(oid) => Ok(oid),
             _ => Err(AppError::InternalError("Invalid Data".to_string()))
         }
+    }
+
+    pub async fn find_by_user(collection: &Collection<Account>, user_id: ObjectId) -> Result<Vec<Account>, AppError> {
+        Ok(collection
+            .find(doc!{"_id": user_id}, None)
+            .await?
+            .try_collect::<Vec<_>>()
+            .await?)
     }
 
     pub async fn find_by_id(collection: &Collection<Account>, account_id: ObjectId) -> Result<Account, AppError> {
