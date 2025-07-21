@@ -7,7 +7,7 @@ use crate::app_error::AppError;
 use crate::dto::account::CreateInput;
 use crate::models::user::User;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Account {
     #[serde(rename = "_id")]
     pub id: ObjectId,
@@ -44,7 +44,7 @@ impl Account {
 
     pub async fn find_by_user(collection: &Collection<Account>, user_id: ObjectId) -> Result<Vec<Account>, AppError> {
         Ok(collection
-            .find(doc!{"_id": user_id}, None)
+            .find(doc!{"user": user_id}, None)
             .await?
             .try_collect::<Vec<_>>()
             .await?)
