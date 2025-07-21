@@ -9,8 +9,8 @@ use crate::models::user::User;
 
 #[derive(Serialize, Deserialize)]
 pub struct Account {
-    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
-    pub _id: Option<ObjectId>,
+    #[serde(rename = "_id")]
+    pub id: ObjectId,
     pub user: ObjectId,
     pub data: String,
     pub created_at: DateTime
@@ -26,7 +26,7 @@ pub struct ResponseAccount {
 impl Account {
     pub async fn insert(collection: &Collection<Account>, input: CreateInput, user: User) -> Result<ObjectId, AppError> {
         let account = Account {
-            _id: None,
+            id: ObjectId::new(),
             user: user.id,
             data: input.data,
             created_at: DateTime::now()
@@ -60,7 +60,7 @@ impl Account {
 
     pub fn response(self) -> ResponseAccount {
         ResponseAccount {
-            id: self._id.unwrap().to_string(),
+            id: self.id.to_string(),
             data: self.data.clone(),
             created_at: self.created_at.timestamp_millis()
         }
