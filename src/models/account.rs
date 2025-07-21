@@ -16,6 +16,13 @@ pub struct Account {
     pub created_at: DateTime
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct ResponseAccount {
+    pub id: String,
+    pub data: String,
+    pub created_at: i64
+}
+
 impl Account {
     pub async fn insert(collection: &Collection<Account>, input: CreateInput, user: User) -> Result<ObjectId, AppError> {
         let object_id = match user._id {
@@ -53,6 +60,14 @@ impl Account {
             Ok(Some(a)) => Ok(a),
             Ok(None) => Err(AppError::invalid_input("No account with that ID")),
             Err(e) => Err(AppError::Database(e.into()))
+        }
+    }
+
+    pub fn response(self) -> ResponseAccount {
+        ResponseAccount {
+            id: self._id.unwrap().to_string(),
+            data: self.data.clone(),
+            created_at: self.created_at.timestamp_millis()
         }
     }
 }

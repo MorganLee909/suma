@@ -1,7 +1,9 @@
 use serde::{Serialize, Deserialize};
 use bson::{oid::ObjectId, DateTime, doc};
 use mongodb::{Collection, error::Error};
+
 use crate::app_error::AppError;
+use crate::models::account::ResponseAccount;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
@@ -18,6 +20,14 @@ pub struct NewUserInput {
     pub email: String,
     pub password_hash: String,
     pub password_salt: String
+}
+
+#[derive(Serialize)]
+pub struct ResponseUser {
+    id: String,
+    email: String,
+    created_at: i64,
+    accounts: Option<Vec<ResponseAccount>>
 }
 
 impl User {
@@ -49,6 +59,15 @@ impl User {
             Ok(Some(u)) => Ok(u),
             Ok(None) => Err(AppError::Auth),
             Err(e) => Err(AppError::Database(e.into()))
+        }
+    }
+
+    pub fn response(self, accounts: Option<Vec<ResponseAccount>>) -> ResponseUser {
+        ResponseUser {
+            id: self._id.unwrap().to_string(),
+            email: self.email.clone(),
+            created_at: self.created_at.timestamp_millis(),
+            accounts: accounts
         }
     }
 }

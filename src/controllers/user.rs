@@ -1,10 +1,13 @@
-use actix_web::{get, post, web, HttpResponse, cookie::Cookie};
+use actix_web::{get, post, web, HttpResponse, HttpRequest, cookie::Cookie};
 use mongodb::{bson::doc, Database, Collection};
-use crate::models::user::{User, NewUserInput};
 use regex::Regex;
+use serde_json::json;
+
+use crate::models::user::{User, NewUserInput};
+use crate::models::account::{Account};
 use crate::dto;
 use crate::app_error::AppError;
-use serde_json::json;
+use crate::auth::user_auth;
 
 #[post("/api/user")]
 pub async fn create_route(
@@ -29,13 +32,22 @@ pub async fn login_route(
     let user = User::find_by_email(&user_collection, &email).await?;
     validate_password(&user, &payload.password_hash, &payload.password_salt)?;
     let cookie = create_user_cookie(Some(user._id.unwrap().to_string()));
-    Ok(HttpResponse::Ok().cookie(cookie).json(response_user(user)))
+    Ok(HttpResponse::Ok().cookie(cookie).json(user.response(None)))
 }
 
 #[get("/api/user/logout")]
 pub async fn logout_route() -> Result<HttpResponse, AppError> {
     let cookie = create_user_cookie(None);
     Ok(HttpResponse::Ok().cookie(cookie).json(json!({"success": true})))
+}
+
+#[get("/api/user")]
+pub async fn get_route(db: web::Data<Database>, req: HttpRequest) -> Result<HttpResponse, AppError> {
+    let user = user_auth(&db, &req).await?;
+    let account_collection = db.collection::<Account>("accounts");
+    let accounts = Account::find_by_user(&account_collection, user._id.unwrap()).await?;
+    let response_accounts = accounts.into_iter().map(Account::response).collect();
+    Ok(HttpResponse::Ok().json(user.response(Some(response_accounts))))
 }
 
 fn valid_email(email: &str) -> Result<(), AppError> {
@@ -73,12 +85,4 @@ fn create_user_cookie(id: Option<String>) -> Cookie<'static> {
         .path("/")
         .http_only(true)
         .finish()
-}
-
-fn response_user(user: User) -> dto::user::ResponseUser {
-    dto::user::ResponseUser {
-        id: user._id.unwrap().to_string(),
-        email: user.email,
-        created_at: user.created_at.timestamp_millis()
-    }
 }

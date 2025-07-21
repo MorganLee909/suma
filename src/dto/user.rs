@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 
+use crate::models::account::ResponseAccount;
+
 #[derive(Deserialize)]
 pub struct Login {
     pub email: String,
@@ -11,5 +13,6 @@ pub struct Login {
 pub struct ResponseUser {
     pub id: String,
     pub email: String,
-    pub created_at: i64
+    pub accounts: Option<Vec<ResponseAccount>>,
+    pub created_at: i64,
 }
