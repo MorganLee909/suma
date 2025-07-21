@@ -1,18 +1,15 @@
-use serde::{Serialize, Deserialize};
-
-use crate::models::account::ResponseAccount;
+use serde::Deserialize;
 
 #[derive(Deserialize)]
-pub struct Login {
+pub struct LoginInput {
     pub email: String,
     pub password_hash: String,
     pub password_salt: String
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct ResponseUser {
-    pub id: String,
+#[derive(Deserialize)]
+pub struct CreateInput {
     pub email: String,
-    pub accounts: Option<Vec<ResponseAccount>>,
-    pub created_at: i64,
+    pub password_hash: String,
+    pub password_salt: String
 }

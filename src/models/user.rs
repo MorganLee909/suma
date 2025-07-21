@@ -4,22 +4,16 @@ use mongodb::{Collection, error::Error};
 
 use crate::app_error::AppError;
 use crate::models::account::ResponseAccount;
+use crate::dto::user::CreateInput;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct User {
-    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
-    pub _id: Option<ObjectId>,
+    #[serde(rename = "_id")]
+    pub id: ObjectId,
     pub email: String,
     pub password_hash: String,
     pub password_salt: String,
     pub created_at: bson::DateTime
-}
-
-#[derive(Debug, Deserialize)]
-pub struct NewUserInput {
-    pub email: String,
-    pub password_hash: String,
-    pub password_salt: String
 }
 
 #[derive(Serialize)]
@@ -31,9 +25,9 @@ pub struct ResponseUser {
 }
 
 impl User {
-    pub async fn insert(collection: &Collection<User>, input: NewUserInput) -> Result<(), Error> {
+    pub async fn insert(collection: &Collection<User>, input: CreateInput) -> Result<(), Error> {
         let user = User {
-            _id: None,
+            id: ObjectId::new(),
             email: input.email,
             password_hash: input.password_hash,
             password_salt: input.password_salt,
@@ -64,7 +58,7 @@ impl User {
 
     pub fn response(self, accounts: Option<Vec<ResponseAccount>>) -> ResponseUser {
         ResponseUser {
-            id: self._id.unwrap().to_string(),
+            id: self.id.to_string(),
             email: self.email.clone(),
             created_at: self.created_at.timestamp_millis(),
             accounts: accounts

@@ -3,16 +3,16 @@ use mongodb::{bson::doc, Database, Collection};
 use regex::Regex;
 use serde_json::json;
 
-use crate::models::user::{User, NewUserInput};
+use crate::models::user::User;
 use crate::models::account::{Account};
-use crate::dto;
+use crate::dto::user::{CreateInput, LoginInput};
 use crate::app_error::AppError;
 use crate::auth::user_auth;
 
 #[post("/api/user")]
 pub async fn create_route(
     db: web::Data<Database>,
-    payload: web::Json<NewUserInput>
+    payload: web::Json<CreateInput>
 ) -> Result<HttpResponse, AppError> {
     let user_collection = db.collection::<User>("users");
     let email = payload.email.to_lowercase();
@@ -25,13 +25,13 @@ pub async fn create_route(
 #[post("/api/user/login")]
 pub async fn login_route(
     db: web::Data<Database>,
-    payload: web::Json<dto::user::Login>
+    payload: web::Json<LoginInput>
 ) -> Result<HttpResponse, AppError> {
     let user_collection = db.collection::<User>("users");
     let email = payload.email.to_lowercase();
     let user = User::find_by_email(&user_collection, &email).await?;
     validate_password(&user, &payload.password_hash, &payload.password_salt)?;
-    let cookie = create_user_cookie(Some(user._id.unwrap().to_string()));
+    let cookie = create_user_cookie(Some(user.id.to_string()));
     Ok(HttpResponse::Ok().cookie(cookie).json(user.response(None)))
 }
 
@@ -45,7 +45,7 @@ pub async fn logout_route() -> Result<HttpResponse, AppError> {
 pub async fn get_route(db: web::Data<Database>, req: HttpRequest) -> Result<HttpResponse, AppError> {
     let user = user_auth(&db, &req).await?;
     let account_collection = db.collection::<Account>("accounts");
-    let accounts = Account::find_by_user(&account_collection, user._id.unwrap()).await?;
+    let accounts = Account::find_by_user(&account_collection, user.id).await?;
     let response_accounts = accounts.into_iter().map(Account::response).collect();
     Ok(HttpResponse::Ok().json(user.response(Some(response_accounts))))
 }

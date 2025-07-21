@@ -25,14 +25,9 @@ pub struct ResponseAccount {
 
 impl Account {
     pub async fn insert(collection: &Collection<Account>, input: CreateInput, user: User) -> Result<ObjectId, AppError> {
-        let object_id = match user._id {
-            Some(oid) => Ok(oid),
-            None => Err(AppError::Auth)
-        };
-
         let account = Account {
             _id: None,
-            user: object_id?,
+            user: user.id,
             data: input.data,
             created_at: DateTime::now()
         };
