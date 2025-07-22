@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .configure(routes::other::config)
             .configure(routes::user::config)
             .configure(routes::account::config)
+            .configure(routes::transaction::config)
     })
         .bind(("127.0.0.1", 8000))?
         .run()

@@ -18,6 +18,9 @@ pub enum AppError {
     #[error("Database error")]
     Database(#[from] mongodb::error::Error),
 
+    #[error("Invalid ID")]
+    InvalidID(#[from] bson::oid::Error),
+
     #[error("{0}")]
     InvalidInput(String),
 
@@ -32,6 +35,7 @@ impl ResponseError for AppError {
     fn status_code(&self) -> StatusCode {
         match self {
             AppError::Database(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::InvalidID(_) => StatusCode::BAD_REQUEST,
             AppError::InvalidInput(_) => StatusCode::BAD_REQUEST,
             AppError::InternalError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::Auth => StatusCode::UNAUTHORIZED
