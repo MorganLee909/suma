@@ -1,5 +1,5 @@
 use actix_web::{post, web, HttpResponse, HttpRequest};
-use mongodb::{Database, Collection};
+use mongodb::Database;
 
 use crate::models::transaction::Transaction;
 use crate::app_error::AppError;
@@ -14,5 +14,7 @@ pub async fn create_route(
 ) -> Result<HttpResponse, AppError> {
     let user = user_auth(&db, &request).await?;
     let transaction_collection = db.collection::<Transaction>("transactions");
-    Ok(HttpResponse::Ok().json(user.response(None)))
+    let id = Transaction::insert(&transaction_collection, body.into_inner()).await?;
+    let transaction = Transaction::find_one(&transaction_collection, id).await?;
+    Ok(HttpResponse::Ok().json(transaction.response()))
 }
