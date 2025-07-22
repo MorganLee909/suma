@@ -58,6 +58,19 @@ impl Account {
         }
     }
 
+    pub async fn user_owns(
+        coll: &Collection<Account>,
+        user: &User,
+        account: &String
+    ) -> Result<(), AppError> {
+        let id = ObjectId::parse_str(account)?;
+        let account = Account::find_by_id(coll, id).await?;
+        if user.id != account.user {
+            return Err(AppError::Auth);
+        }
+        Ok(())
+    }
+
     pub fn response(self) -> ResponseAccount {
         ResponseAccount {
             id: self.id.to_string(),
