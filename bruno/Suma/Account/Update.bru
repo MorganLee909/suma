@@ -1,0 +1,18 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:8000/api/account
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": "687e9a90bcba589fa1a138b5",
+    "data": "Something new here"
+  }
+}

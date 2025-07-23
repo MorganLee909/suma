@@ -35,12 +35,12 @@ impl Transaction {
             date: input.date
         };
 
-        let insert_one_result = collection.insert_one(transaction, None).await?;
+        let insert_one_result = collection.insert_one(transaction).await?;
         Ok(insert_one_result.inserted_id.as_object_id().unwrap())
     }
 
     pub async fn find_one(collection: &Collection<Transaction>, transaction_id: ObjectId) -> Result<Transaction, AppError> {
-        match collection.find_one(doc!{"_id": transaction_id}, None).await {
+        match collection.find_one(doc!{"_id": transaction_id}).await {
             Ok(Some(a)) => Ok(a),
             Ok(None) => Err(AppError::invalid_input("No transaction with that ID")),
             Err(e) => Err(AppError::Database(e.into()))
@@ -61,7 +61,7 @@ impl Transaction {
         if !date_filter.is_empty() {filter.insert("date", date_filter);}
 
         Ok(collection
-            .find(filter, None)
+            .find(filter)
             .await?
             .try_collect::<Vec<_>>()
             .await?)

@@ -1,12 +1,12 @@
-use serde::{Serialize, Deserialize};
+use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct CreateInput {
     pub data: String
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct ResponseAccount {
-    pub data: String,
-    pub created_at: i64
+#[derive(Deserialize)]
+pub struct UpdateInput {
+    pub id: String,
+    pub data: String
 }

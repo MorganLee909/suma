@@ -34,12 +34,12 @@ impl User {
             created_at: DateTime::now()
         };
 
-        collection.insert_one(user, None).await?;
+        collection.insert_one(user).await?;
         Ok(())
     }
 
     pub async fn find_by_email(collection: &Collection<User>, email: &str) -> Result<User, AppError> {
-        match collection.find_one(doc!{"email": email}, None).await {
+        match collection.find_one(doc!{"email": email}).await {
             Ok(Some(u)) => Ok(u),
             Ok(None) => Err(AppError::invalid_input("No user with this email address")),
             Err(e) => Err(AppError::Database(e.into()))
@@ -49,7 +49,7 @@ impl User {
     pub async fn find_by_id(collection: &Collection<User>, user_id: String) -> Result<User, AppError> {
         let object_id = ObjectId::parse_str(user_id)
             .map_err(|_| AppError::invalid_input("Invalid user ID"))?;
-        match collection.find_one(doc!{"_id": object_id}, None).await {
+        match collection.find_one(doc!{"_id": object_id}).await {
             Ok(Some(u)) => Ok(u),
             Ok(None) => Err(AppError::Auth),
             Err(e) => Err(AppError::Database(e.into()))

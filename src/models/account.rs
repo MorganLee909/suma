@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 use bson::{oid::ObjectId, DateTime, Bson, doc};
-use mongodb::Collection;
+use mongodb::{Collection, options::ReturnDocument};
 use futures::stream::TryStreamExt;
 
 use crate::app_error::AppError;
@@ -32,9 +32,7 @@ impl Account {
             created_at: DateTime::now()
         };
 
-        let result = collection
-            .insert_one(account, None)
-            .await?;
+        let result = collection.insert_one(account).await?;
 
         match result.inserted_id {
             Bson::ObjectId(oid) => Ok(oid),
@@ -44,17 +42,36 @@ impl Account {
 
     pub async fn find_by_user(collection: &Collection<Account>, user_id: ObjectId) -> Result<Vec<Account>, AppError> {
         Ok(collection
-            .find(doc!{"user": user_id}, None)
+            .find(doc!{"user": user_id})
             .await?
             .try_collect::<Vec<_>>()
             .await?)
     }
 
     pub async fn find_by_id(collection: &Collection<Account>, account_id: ObjectId) -> Result<Account, AppError> {
-        match collection.find_one(doc!{"_id": account_id}, None).await {
+        match collection.find_one(doc!{"_id": account_id}).await {
             Ok(Some(a)) => Ok(a),
             Ok(None) => Err(AppError::invalid_input("No account with that ID")),
             Err(e) => Err(AppError::Database(e.into()))
+        }
+    }
+
+    pub async fn update(
+        collection: &Collection<Account>,
+        id: ObjectId,
+        data: &String
+    ) -> Result<Account, AppError> {
+        let filter = doc! {"_id": id};
+        let update = doc! {"$set": {"data": data}};
+
+        let result = collection
+            .find_one_and_update(filter, update)
+            .return_document(ReturnDocument::After)
+            .await?;
+
+        match result {
+            Some(a) => Ok(a),
+            None => Err(AppError::InvalidInput("No account with this ID".to_string()))
         }
     }
 

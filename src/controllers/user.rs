@@ -61,7 +61,7 @@ fn valid_email(email: &str) -> Result<(), AppError> {
 }
 
 async fn user_exists(collection: &Collection<User>, email: &str) -> Result<(), AppError> {
-    match collection.find_one(doc!{"email": email}, None).await {
+    match collection.find_one(doc!{"email": email}).await {
         Ok(None) => Ok(()),
         Ok(Some(_)) => Err(AppError::invalid_input("User with this email already exists")),
         Err(_) => Err(AppError::internal_error("Unable to save user data"))
