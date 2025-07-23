@@ -8,8 +8,46 @@ export default class Elem {
         return this;
     }
 
-    .appendTo(v){
-        v.appendChild(this.elem);
+    addClass(v){
+        this.elem.classList.add(v);
+        return this;
+    }
+
+    text(v){
+        this.elem.textContent = v;
+        return this;
+    }
+
+    type(v){
+        this.elem.type = v;
+        return this;
+    }
+
+    placeholder(v){
+        this.elem.placeholder = v;
+        return this;
+    }
+
+    onsubmit(v){
+        this.elem.onsubmit = v;
+        return this;
+    }
+
+    append(v){
+        if(v instanceof this.constructor){
+            this.elem.appendChild(v.elem);
+        }else{
+            this.elem.appendChild(v);
+        }
+        return this;
+    }
+
+    appendTo(v){
+        if(v instanceof this.constructor){
+            v.elem.appendChild(this.elem);
+        }else{
+            v.appendChild(this.elem);
+        }
         return this;
     }
 
