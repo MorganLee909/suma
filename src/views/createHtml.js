@@ -5,7 +5,7 @@ import fsSync from "fs";
 const fs = fsSync.promises;
 
 const esbuildProm = esbuild.build({
-    entryPoints: [`${import.meta.dirname}/index.js`, `${import.meta.dirname}/index.css`],
+    entryPoints: [`${import.meta.dirname}/js/index.js`, `${import.meta.dirname}/css/index.css`],
     bundle: true,
     minify: true,
     sourcemap: process.env.NODE_ENV === "production",
