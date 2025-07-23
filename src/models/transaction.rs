@@ -1,10 +1,12 @@
 use serde::{Serialize, Deserialize};
-use mongodb::Collection;
+use mongodb::{Collection, options::ReturnDocument};
 use bson::{doc, Document, oid::ObjectId};
 use futures::stream::TryStreamExt;
 
 use crate::app_error::AppError;
 use crate::dto::transaction::CreateInput;
+use crate::models::account::Account;
+use crate::models::user::User;
 
 #[derive(Serialize, Deserialize)]
 pub struct Transaction {
@@ -66,6 +68,57 @@ impl Transaction {
             .try_collect::<Vec<_>>()
             .await?)
     }
+
+    pub async fn user_owns(
+        transaction_collection: &Collection<Transaction>,
+        account_collection: &Collection<Account>,
+        id: ObjectId,
+        user: User
+    ) -> Result<(), AppError> {
+        let transaction = match transaction_collection.find_one(doc!{"_id": id}).await {
+            Ok(Some(t)) => t,
+            Ok(None) => return Err(AppError::InvalidInput("Transaction with this ID doesn't exist".to_string())),
+            Err(e) => return Err(AppError::Database(e.into()))
+        };
+
+        let account = match account_collection.find_one(doc!{"_id": transaction.account}).await {
+            Ok(Some(a)) => a,
+            Ok(None) => return Err(AppError::InternalError("Internal server error".to_string())),
+            Err(e) => return Err(AppError::Database(e.into()))
+        };
+
+        if user.id != account.user {return Err(AppError::Auth);}
+
+        Ok(())
+    }
+
+    pub async fn update(
+        collection: &Collection<Transaction>,
+        id: ObjectId,
+        data: Option<String>,
+        date: Option<String>
+    ) -> Result<Transaction, AppError> {
+        let filter = doc!{"_id": id};
+        let mut set = Document::new();
+
+        if let Some(d) = data {set.insert("data", d);}
+        if let Some(d) = date {set.insert("date", d);}
+
+        if !set.is_empty() {
+            let result = collection
+                .find_one_and_update(filter, doc!{"$set": set})
+                .return_document(ReturnDocument::After)
+                .await?;
+
+            match result {
+                Some(a) => Ok(a),
+                None => Err(AppError::InvalidInput("No account with this ID".to_string()))
+            }
+        } else {
+            Err(AppError::InvalidInput("Nothing to update".to_string()))
+        }
+    }
+
 
     pub fn response(self) -> ResponseTransaction {
         ResponseTransaction {

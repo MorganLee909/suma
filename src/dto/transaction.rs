@@ -13,3 +13,10 @@ pub struct SearchInput {
     pub from: Option<String>,
     pub to: Option<String>
 }
+
+#[derive(Deserialize)]
+pub struct UpdateInput {
+    pub id: String,
+    pub data: Option<String>,
+    pub date: Option<String>
+}
