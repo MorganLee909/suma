@@ -1,0 +1,18 @@
+meta {
+  name: Search
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/api/transaction/search
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "account": "687e9a90bcba589fa1a138b5",
+    "from": "2025-05-10"
+  }
+}

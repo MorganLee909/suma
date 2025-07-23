@@ -1,0 +1,19 @@
+meta {
+  name: Create
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/transaction
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "account": "687e9a90bcba589fa1a138b5",
+    "date": "2025-06-20",
+    "data": "Something"
+  }
+}

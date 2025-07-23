@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use mongodb::Collection;
-use bson::{doc, oid::ObjectId};
+use bson::{doc, Document, oid::ObjectId};
+use futures::stream::TryStreamExt;
 
 use crate::app_error::AppError;
 use crate::dto::transaction::CreateInput;
@@ -44,6 +45,26 @@ impl Transaction {
             Ok(None) => Err(AppError::invalid_input("No transaction with that ID")),
             Err(e) => Err(AppError::Database(e.into()))
         }
+    }
+
+    pub async fn find(
+        collection: &Collection<Transaction>,
+        account: ObjectId,
+        from: Option<String>,
+        to: Option<String>
+    ) -> Result<Vec<Transaction>, AppError> {
+        let mut filter = doc! {"account": account};
+        let mut date_filter = Document::new();
+
+        if let Some(f) = from {date_filter.insert("$gte", f);}
+        if let Some(t) = to {date_filter.insert("$lte", t);}
+        if !date_filter.is_empty() {filter.insert("date", date_filter);}
+
+        Ok(collection
+            .find(filter, None)
+            .await?
+            .try_collect::<Vec<_>>()
+            .await?)
     }
 
     pub fn response(self) -> ResponseTransaction {
