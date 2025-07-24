@@ -10,9 +10,65 @@
     --success:     #708238;
 }
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body{
     height: 100vh;
     width: 100vw;
     background: var(--background);
     color: var(--textMain);
+}
+
+.logo{
+    position: absolute;
+    top: 35px;
+    left: 35px;
+}
+
+.page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.standardForm{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    background: var(--surface);
+    padding: 35px;
+}
+
+.standardForm h1{
+    text-align: center;
+}
+
+.standardForm label{
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+    margin: 15px 0;
+}
+
+.standardForm input{
+    font-size: 22px;
+    padding-left: 10px;
+}
+
+.standardForm button{
+    font-size: 22px;
+    margin: 15px 0;
+    background: var(--primary);
+    border: 3px solid var(--secondary);
+    color: var(--accent);
+    padding: 10px;
+    font-weight: bold;
 }
