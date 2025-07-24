@@ -71,4 +71,15 @@ body{
     color: var(--accent);
     padding: 10px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.link, .standardForm .link{
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--textMuted);
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0;
 }

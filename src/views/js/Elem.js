@@ -33,6 +33,11 @@ export default class Elem {
         return this;
     }
 
+    onclick(v){
+        this.elem.onclick = v;
+        return this;
+    }
+
     append(v){
         if(v instanceof this.constructor){
             this.elem.appendChild(v.elem);

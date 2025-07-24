@@ -39,6 +39,11 @@ export default class Login extends Page{
             .append(new Elem("button")
                 .text("Login")
             )
+            .append(new Elem("button")
+                .text("Create Account")
+                .addClass("link")
+                .onclick(()=>{changePage("register")})
+            )
             .appendTo(this.container);
     }
 }
