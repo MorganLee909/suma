@@ -1,5 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import encryptPassword from "../encryptPassword.js";
 
 export default class Register extends Page{
     constructor(){
@@ -8,15 +9,21 @@ export default class Register extends Page{
         this.render();
     }
 
-    submit(){
+    async submit(){
         event.preventDefault();
-        console.log("submitting");
+
+        let name = this.container.querySelector(".name").value;
+        let email = this.container.querySelector(".email").value;
+        let password = this.container.querySelector(".password").value;
+        let confirmPassword = this.container.querySelector(".confirmPassword").value;
+
+        console.log(await saltAndHash(password));
     }
 
     render(){
         new Elem("form")
             .addClass("standardForm")
-            .onsubmit(this.submit)
+            .onsubmit(()=>{this.submit()})
             .append(new Elem("h1")
                 .text("Register")
             )
