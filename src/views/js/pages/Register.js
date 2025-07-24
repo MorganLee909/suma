@@ -1,9 +1,9 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 
-export default class Login extends Page{
+export default class Register extends Page{
     constructor(){
-        super("Login");
+        super("Register");
 
         this.render();
     }
@@ -18,13 +18,21 @@ export default class Login extends Page{
             .addClass("standardForm")
             .onsubmit(this.submit)
             .append(new Elem("h1")
-                .text("Login")
+                .text("Register")
+            )
+            .append(new Elem("label")
+                .text("Name")
+                .append(new Elem("input")
+                    .addClass("name")
+                    .type("text")
+                    .placeholder("Name")
+                )
             )
             .append(new Elem("label")
                 .text("Email")
                 .append(new Elem("input")
                     .addClass("email")
-                    .type("text")
+                    .type("email")
                     .placeholder("Email")
                 )
             )
@@ -36,14 +44,22 @@ export default class Login extends Page{
                     .placeholder("Password")
                 )
             )
-            .append(new Elem("button")
-                .text("Login")
+            .append(new Elem("label")
+                .text("Confirm Password")
+                .append(new Elem("input")
+                    .addClass("confirmPassword")
+                    .type("password")
+                    .placeholder("Confirm Password")
+                )
             )
             .append(new Elem("button")
                 .text("Create Account")
+            )
+            .append(new Elem("button")
+                .text("Log In")
                 .addClass("link")
                 .type("button")
-                .onclick(()=>{changePage("register")})
+                .onclick(()=>{changePage("login")})
             )
             .appendTo(this.container);
     }

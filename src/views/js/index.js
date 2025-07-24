@@ -1,14 +1,18 @@
 import Login from "./pages/Login.js";
+import Register from "./pages/Register.js";
 
 const pages = document.querySelector(".page");
-let page;
+let currentPage;
 
-const changePage = (page, data)=>{
-    page.close();
+window.changePage = (page, data)=>{
+    console.time("change page");
+    currentPage.close();
 
     switch(page){
-        case "login": page = new Login(); break;
+        case "login": currentPage = new Login(); break;
+        case "register": currentPage = new Register(); break;
     }
+    console.timeEnd("change page");
 }
 
-page = new Login();
+currentPage = new Login();
