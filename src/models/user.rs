@@ -13,6 +13,7 @@ pub struct User {
     pub email: String,
     pub password_hash: String,
     pub password_salt: String,
+    pub encryption_salt: String,
     pub created_at: bson::DateTime
 }
 
@@ -20,6 +21,7 @@ pub struct User {
 pub struct ResponseUser {
     id: String,
     email: String,
+    encryption_salt: String,
     created_at: i64,
     accounts: Option<Vec<ResponseAccount>>
 }
@@ -31,6 +33,7 @@ impl User {
             email: input.email,
             password_hash: input.password_hash,
             password_salt: input.password_salt,
+            encryption_salt: input.encryption_salt,
             created_at: DateTime::now()
         };
 
@@ -60,6 +63,7 @@ impl User {
         ResponseUser {
             id: self.id.to_string(),
             email: self.email.clone(),
+            encryption_salt: self.encryption_salt.clone(),
             created_at: self.created_at.timestamp_millis(),
             accounts: accounts
         }
