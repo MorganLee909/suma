@@ -12,12 +12,38 @@ export default class Register extends Page{
     async submit(){
         event.preventDefault();
 
-        let name = this.container.querySelector(".name").value;
-        let email = this.container.querySelector(".email").value;
-        let password = this.container.querySelector(".password").value;
-        let confirmPassword = this.container.querySelector(".confirmPassword").value;
+        const name = this.container.querySelector(".name").value;
+        const email = this.container.querySelector(".email").value;
+        const password = this.container.querySelector(".password").value;
+        const confirmPassword = this.container.querySelector(".confirmPassword").value;
+        const passwordEncryption = await encryptPassword(password);
 
-        console.log(await saltAndHash(password));
+        console.log(await encryptPassword(password));
+
+        fetch("/api/user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password_hash: passwordEncryption.hash,
+                password_salt: passwordEncryption.salt,
+                encryption_salt: "temp"
+            })
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error){
+                    console.log(response.error);
+                }else{
+                    changePage("login");
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
     }
 
     render(){
