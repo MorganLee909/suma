@@ -1,6 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
-import EncryptionHandler from "../EncryptionHandler.js";
+import User from "../data/User.js";
 
 export default class Register extends Page{
     constructor(){
@@ -17,26 +17,22 @@ export default class Register extends Page{
         const password = this.container.querySelector(".password").value;
         const confirmPassword = this.container.querySelector(".confirmPassword").value;
 
-        return;
+        const user = User.create(name, email, password);
+        console.log(user);
+
         fetch("/api/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                password_hash: passwordHash,
-                password_salt: passwordSalt,
-                encryption_salt: encryption.salt,
-            })
+            body: JSON.stringify(user)
         })
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
                     console.log(response.error);
                 }else{
-                    changePage("login");
+                    console.log(response);
                 }
             })
             .catch((err)=>{
