@@ -15,3 +15,8 @@ pub struct CreateInput {
     pub password_salt: String,
     pub encryption_salt: String
 }
+
+#[derive(Deserialize)]
+pub struct GetPasswordSaltInput{
+    pub email: String
+}

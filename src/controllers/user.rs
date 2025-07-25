@@ -5,9 +5,19 @@ use serde_json::json;
 
 use crate::models::user::User;
 use crate::models::account::{Account};
-use crate::dto::user::{CreateInput, LoginInput};
+use crate::dto::user::{CreateInput, LoginInput, GetPasswordSaltInput};
 use crate::app_error::AppError;
 use crate::auth::user_auth;
+
+#[post("/api/user/salt")]
+pub async fn get_password_salt_route(
+    db: web::Data<Database>,
+    body: web::Json<GetPasswordSaltInput>
+) -> Result<HttpResponse, AppError> {
+    let user_collection = db.collection::<User>("users");
+    let user = User::find_by_email(&user_collection, &body.email.to_lowercase()).await?;
+    Ok(HttpResponse::Ok().json(json!({"password_salt": user.password_salt})))
+}
 
 #[post("/api/user")]
 pub async fn create_route(

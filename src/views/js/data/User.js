@@ -15,7 +15,7 @@ export default class User{
         return {
             name: name,
             email: email,
-            password_hash: await EncryptionHandler.hashPassword(password, salt),
+            password_hash: await EncryptionHandler.hashPassword(password, passwordSalt),
             password_salt: passwordSalt,
             encryption_salt: EncryptionHandler.generateSalt()
         };

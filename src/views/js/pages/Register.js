@@ -17,15 +17,12 @@ export default class Register extends Page{
         const password = this.container.querySelector(".password").value;
         const confirmPassword = this.container.querySelector(".confirmPassword").value;
 
-        const user = User.create(name, email, password);
-        console.log(user);
-
         fetch("/api/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(User.create(name, email, password))
         })
             .then(r=>r.json())
             .then((response)=>{

@@ -1,5 +1,6 @@
 use actix_web::web;
 use crate::controllers::user::{
+    get_password_salt_route,
     create_route,
     login_route,
     logout_route,
@@ -7,6 +8,7 @@ use crate::controllers::user::{
 };
 
 pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(get_password_salt_route);
     cfg.service(create_route);
     cfg.service(login_route);
     cfg.service(logout_route);
