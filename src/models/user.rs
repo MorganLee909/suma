@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 use bson::{oid::ObjectId, DateTime, doc};
-use mongodb::{Collection, error::Error};
+use mongodb::Collection;
 
 use crate::app_error::AppError;
 use crate::models::account::ResponseAccount;
@@ -29,7 +29,7 @@ pub struct ResponseUser {
 }
 
 impl User {
-    pub async fn insert(collection: &Collection<User>, input: CreateInput) -> Result<(), Error> {
+    pub async fn insert(collection: &Collection<User>, input: CreateInput) -> Result<ObjectId, AppError> {
         let user = User {
             id: ObjectId::new(),
             name: input.name,
@@ -40,8 +40,11 @@ impl User {
             created_at: DateTime::now()
         };
 
-        collection.insert_one(user).await?;
-        Ok(())
+        let result = collection.insert_one(user).await?;
+        match result.inserted_id.as_object_id() {
+            Some(oid) => Ok(oid),
+            None => Err(AppError::InternalError("Internal server error".to_string()))
+        }
     }
 
     pub async fn find_by_email(collection: &Collection<User>, email: &str) -> Result<User, AppError> {
@@ -52,10 +55,8 @@ impl User {
         }
     }
 
-    pub async fn find_by_id(collection: &Collection<User>, user_id: String) -> Result<User, AppError> {
-        let object_id = ObjectId::parse_str(user_id)
-            .map_err(|_| AppError::invalid_input("Invalid user ID"))?;
-        match collection.find_one(doc!{"_id": object_id}).await {
+    pub async fn find_by_id(collection: &Collection<User>, user_id: ObjectId) -> Result<User, AppError> {
+        match collection.find_one(doc!{"_id": user_id}).await {
             Ok(Some(u)) => Ok(u),
             Ok(None) => Err(AppError::Auth),
             Err(e) => Err(AppError::Database(e.into()))

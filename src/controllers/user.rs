@@ -22,14 +22,15 @@ pub async fn get_password_salt_route(
 #[post("/api/user")]
 pub async fn create_route(
     db: web::Data<Database>,
-    payload: web::Json<CreateInput>
+    body: web::Json<CreateInput>
 ) -> Result<HttpResponse, AppError> {
     let user_collection = db.collection::<User>("users");
-    let email = payload.email.to_lowercase();
+    let email = body.email.to_lowercase();
     valid_email(&email)?;
     user_exists(&user_collection, &email).await?;
-    User::insert(&user_collection, payload.into_inner()).await?;
-    Ok(HttpResponse::Ok().json(json!({"success": true})))
+    let user_id = User::insert(&user_collection, body.into_inner()).await?;
+    let user = User::find_by_id(&user_collection, user_id.clone()).await?;
+    Ok(HttpResponse::Ok().json(user.response(None)))
 }
 
 #[post("/api/user/login")]
