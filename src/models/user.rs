@@ -10,6 +10,7 @@ use crate::dto::user::CreateInput;
 pub struct User {
     #[serde(rename = "_id")]
     pub id: ObjectId,
+    pub name: String,
     pub email: String,
     pub password_hash: String,
     pub password_salt: String,
@@ -20,6 +21,7 @@ pub struct User {
 #[derive(Serialize)]
 pub struct ResponseUser {
     id: String,
+    name: String,
     email: String,
     encryption_salt: String,
     created_at: i64,
@@ -30,6 +32,7 @@ impl User {
     pub async fn insert(collection: &Collection<User>, input: CreateInput) -> Result<(), Error> {
         let user = User {
             id: ObjectId::new(),
+            name: input.name,
             email: input.email,
             password_hash: input.password_hash,
             password_salt: input.password_salt,
@@ -62,6 +65,7 @@ impl User {
     pub fn response(self, accounts: Option<Vec<ResponseAccount>>) -> ResponseUser {
         ResponseUser {
             id: self.id.to_string(),
+            name: self.name.to_string(),
             email: self.email.clone(),
             encryption_salt: self.encryption_salt.clone(),
             created_at: self.created_at.timestamp_millis(),

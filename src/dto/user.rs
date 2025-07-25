@@ -9,6 +9,7 @@ pub struct LoginInput {
 
 #[derive(Deserialize)]
 pub struct CreateInput {
+    pub name: String,
     pub email: String,
     pub password_hash: String,
     pub password_salt: String,
