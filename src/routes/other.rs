@@ -5,6 +5,7 @@ use std::path::PathBuf;
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(landing_page);
+    cfg.service(landing_page_dev);
     cfg.service(svg_logo);
     cfg.service(png_logo);
 }
@@ -15,6 +16,12 @@ async fn landing_page() -> impl Responder {
     HttpResponse::Ok()
         .content_type("text/html; charset=utf-8")
         .body(html.clone())
+}
+
+#[get("/dev")]
+async fn landing_page_dev() -> Result<NamedFile, Error> {
+    let path: PathBuf = PathBuf::from("src/views/build.html");
+    Ok(NamedFile::open(path)?)
 }
 
 #[get("/logo.svg")]
