@@ -3,8 +3,7 @@ import Elem from "./Elem.js";
 export default class Notifier{
     constructor(type, message){
         this.elem = new Elem("p")
-            .addClass("notifier")
-            .addClass(type)
+            .addClass("notifier", type)
             .text(message)
             .appendTo(document.body)
             .get();

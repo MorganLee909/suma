@@ -1,6 +1,7 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 import User from "../data/User.js";
+import Notifier from "../Notifier.js";
 
 export default class Register extends Page{
     constructor(){
@@ -17,18 +18,34 @@ export default class Register extends Page{
         const password = this.container.querySelector(".password").value;
         const confirmPassword = this.container.querySelector(".confirmPassword").value;
 
+        if(!isValidEmail(email)){
+            new Notifier("error", "Invalid email address");
+            return;
+        }
+
+        if(password.length < 10){
+            new Notifier("error", "Password must contain at least 10 characters");
+            return;
+        }
+
+        if(password !== confirmPassword){
+            new Notifier("error", "Passwords do not match");
+            return;
+        }
+
         fetch("/api/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(User.create(name, email, password))
+            body: JSON.stringify(await User.create(name, email, password))
         })
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
                     console.log(response.error);
                 }else{
+                    let user = new User(...response);
                     console.log(response);
                 }
             })

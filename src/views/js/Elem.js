@@ -8,8 +8,8 @@ export default class Elem {
         return this;
     }
 
-    addClass(v){
-        this.elem.classList.add(v);
+    addClass(...v){
+        this.elem.classList.add(...v);
         return this;
     }
 
