@@ -5,7 +5,8 @@ export default class EncryptionHandler {
 
     static async create(password, salt){
         const key = await EncryptionHandler.generateEncryptionKey(password, salt);
-        localStorage.setItem("key", key);
+        const raw = await crypto.subtle.exportKey("raw", key);
+        localStorage.setItem("key", btoa(String.fromCharCode(...new Uint8Array(raw))));
         return new EncryptionHandler(key);
     }
 
@@ -50,6 +51,13 @@ export default class EncryptionHandler {
         return btoa(String.fromCharCode(...iv));
     }
 
+    generateIv(){
+        const length = 12;
+        const iv = new Uint8Array(length);
+        crypto.getRandomValues(iv);
+        return btoa(String.fromCharCode(...iv));
+    }
+
     stringToBuffer(str){
         return Uint8Array.from(atob(str), c => c.charCodeAt(0));
     }
@@ -80,17 +88,32 @@ export default class EncryptionHandler {
         );
     }
 
+    static async getKeyFromStorage(){
+        let key = localStorage.getItem("key");
+        if(!key) throw null;
+
+        const raw = Uint8Array.from(atob(key), c => c.charCodeAt(0));
+        return crypto.subtle.importKey(
+            "raw",
+            raw,
+            {name: "AES-GCM"},
+            true,
+            ["encrypt", "decrypt"]
+        );
+    }
+
     async encrypt(data, iv){
         const json = JSON.stringify(data);
-        const buff = new TextEncoder().encode(str);
+        const buff = new TextEncoder().encode(data);
+        const buffIv = new TextEncoder().encode(iv);
 
         const encrypted = await crypto.subtle.encrypt(
             {
                 name: "AES-GCM",
-                iv
+                iv: buffIv
             },
             this._key,
-            data
+            buff
         );
 
         return btoa(String.fromCharCode(...new Uint8Array(encrypted)));

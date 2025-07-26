@@ -31,8 +31,6 @@ fetch("/api/user", {
     .then(r=>r.json())
     .then((response)=>{
         if(response.error) throw response;
-        let key = localStorage.getItem("key");
-        if(!key) throw null;
 
         window.user = new User(
             response.id,
@@ -41,6 +39,10 @@ fetch("/api/user", {
             response.accounts
         );
 
+
+        return EncryptionHandler.getKeyFromStorage();
+    })
+    .then((key)=>{
         window.encryptionHandler = new EncryptionHandler(key);
         currentPage = new Home();
     })

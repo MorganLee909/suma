@@ -8,15 +8,21 @@ export default class CreateAccount extends Page{
         this.render();
     }
 
-    submit(event){
+    async submit(){
         event.preventDefault();
-        console.log("submit");
+
+        const data = {
+            name: this.container.querySelector(".name").value,
+            balance: this.container.querySelector(".balance").value
+        };
+        const iv = encryptionHandler.generateIv();
+        const encryptedData = await encryptionHandler.encrypt(data, iv);
     }
 
     render(){
         new Elem("form")
             .addClass("standardForm")
-            .onsubmit(this.submit.bind())
+            .onsubmit(this.submit.bind(this))
             .append(new Elem("h1")
                 .text("Create Account")
             )
@@ -24,6 +30,7 @@ export default class CreateAccount extends Page{
                 .text("Account Name")
                 .append(new Elem("input")
                     .type("text")
+                    .addClass("name")
                     .placeholder("Account Name")
                     .required()
                     .focus()
@@ -33,6 +40,7 @@ export default class CreateAccount extends Page{
                 .text("Current Balance")
                 .append(new Elem("input")
                     .type("number")
+                    .addClass("balance")
                     .placeholder("Current Balance")
                     .min("0")
                     .step("0.01")
