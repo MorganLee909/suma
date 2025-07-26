@@ -4,6 +4,7 @@ import User from "./data/User.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import Home from "./pages/Home.js";
+import AddMenu from "./pages/AddMenu.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -16,6 +17,7 @@ window.changePage = (page, data)=>{
         case "login": currentPage = new Login(); break;
         case "register": currentPage = new Register(); break;
         case "home": currentPage = new Home(); break;
+        case "addMenu": currentPage = new AddMenu(); break;
     }
     console.timeEnd("change page");
 }
@@ -42,4 +44,4 @@ fetch("/api/user", {
     })
     .catch((err)=>{
         currentPage = new Login();
-    })
+    });

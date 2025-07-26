@@ -14,6 +14,7 @@ export default class Home extends Page{
             .append(new Elem("button")
                 .text("+")
                 .addClass("button", "circle")
+                .onclick(()=>{changePage("addMenu")})
             )
             .appendTo(this.container);
     }

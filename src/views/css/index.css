@@ -1,3 +1,5 @@
+@import "./home.css";
+
 :root {
     --primary:     #6E4B3A;
     --secondary:   #3A5A85;
@@ -36,6 +38,7 @@ body{
     align-items: center;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
 .standardForm{
@@ -75,7 +78,13 @@ body{
 }
 
 .button.circle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    font-size: 35px;
 }
 
 .link, .standardForm .link{
