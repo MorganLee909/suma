@@ -42,20 +42,25 @@ export default class Register extends Page{
         })
             .then(r=>r.json())
             .then((response)=>{
-                if(response.error){
-                    new Notifier("error", response.error.message);
-                }else{
-                    window.user = new User(
-                        response.id,
-                        response.name,
-                        response.email,
-                        response.encryption_salt
-                    );
-                    changePage("home");
-                }
+                if(response.error) throw response;
+
+                window.user = new User(
+                    response.id,
+                    response.name,
+                    response.email
+                );
+                return EncryptionHandler.create(password, response.encryption_salt);
+            })
+            .then((encryptionHandler)=>{
+                window.encryptionHandler = encryptionHandler;
+                changePage("home");
             })
             .catch((err)=>{
-                new Notifier("error", "Something went wrong, try refreshing the page");
+                if(err.error){
+                    new Notifier("error", err.error.message);
+                }else{
+                    new Notifier("error", "Something went wrong, try refreshing the page");
+                }
             });
     }
 

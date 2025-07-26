@@ -1,11 +1,11 @@
 export default class EncryptionHandler {
-    constructor(key, salt){
+    constructor(key){
         this._key = key;
     }
 
     static async create(password, salt){
-        const key = await this.generateEncryptionKey(password, salt);
-        return new EncryptionHandler(key, salt);
+        const key = await EncryptionHandler.generateEncryptionKey(password, salt);
+        return new EncryptionHandler(key);
     }
 
     static async hashPassword(password, salt){
@@ -53,7 +53,7 @@ export default class EncryptionHandler {
         return Uint8Array.from(atob(str), c => c.charCodeAt(0));
     }
 
-    async generateEncryptionKey(password, salt){
+    static async generateEncryptionKey(password, salt){
         const passwordKey = await crypto.subtle.importKey(
             "raw",
             new TextEncoder().encode(password),
@@ -65,7 +65,7 @@ export default class EncryptionHandler {
         return crypto.subtle.deriveKey(
             {
                 name: "PBKDF2",
-                salt: salt,
+                salt: Uint8Array.from(atob(salt), c => c.charCodeAt(0)),
                 iterations: 100000,
                 hash: "SHA-256"
             },
@@ -96,8 +96,8 @@ export default class EncryptionHandler {
     }
 
     async decrypt(data, key, ivString){
-        const encrypted = stringToBuffer(data);
-        const iv = stringToBuffer(ivString);
+        const encrypted = this.stringToBuffer(data);
+        const iv = this.stringToBuffer(ivString);
 
         const decrypted = await crypto.subtle.decrypt(
             {

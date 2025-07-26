@@ -1,11 +1,10 @@
 import EncryptionHandler from "../EncryptionHandler.js";
 
 export default class User{
-    constructor(id, name, email, salt, accounts = []){
+    constructor(id, name, email, accounts = []){
         this._id = id;
         this._name = name;
         this._email = email;
-        this._salt = salt;
         this._accounts = accounts;
     }
 
@@ -19,13 +18,5 @@ export default class User{
             password_salt: passwordSalt,
             encryption_salt: EncryptionHandler.generateSalt()
         };
-    }
-
-    get id(){
-        return this._id;
-    }
-
-    get salt(){
-        return this._salt;
     }
 }
