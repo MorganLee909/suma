@@ -2,7 +2,8 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct CreateInput {
-    pub data: String
+    pub data: String,
+    pub iv: String
 }
 
 #[derive(Deserialize)]

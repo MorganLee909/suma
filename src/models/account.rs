@@ -13,6 +13,7 @@ pub struct Account {
     pub id: ObjectId,
     pub user: ObjectId,
     pub data: String,
+    pub iv: String,
     pub created_at: DateTime
 }
 
@@ -20,6 +21,7 @@ pub struct Account {
 pub struct ResponseAccount {
     pub id: String,
     pub data: String,
+    pub iv: String,
     pub created_at: i64
 }
 
@@ -29,6 +31,7 @@ impl Account {
             id: ObjectId::new(),
             user: user.id,
             data: input.data,
+            iv: input.iv,
             created_at: DateTime::now()
         };
 
@@ -92,6 +95,7 @@ impl Account {
         ResponseAccount {
             id: self.id.to_string(),
             data: self.data.clone(),
+            iv: self.data.clone(),
             created_at: self.created_at.timestamp_millis()
         }
     }
