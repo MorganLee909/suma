@@ -1,5 +1,7 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Notifier from "../Notifier.js";
+import Account from "../data/Account.js";
 
 export default class CreateAccount extends Page{
     constructor(){
@@ -13,10 +15,37 @@ export default class CreateAccount extends Page{
 
         const data = {
             name: this.container.querySelector(".name").value,
-            balance: this.container.querySelector(".balance").value
+            balance: this.container.querySelector(".balance").value,
+            income: [],
+            bills: [],
+            allowances: []
         };
         const iv = encryptionHandler.generateIv();
         const encryptedData = await encryptionHandler.encrypt(data, iv);
+
+        fetch("/api/account", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                data: encryptedData,
+                iv: iv
+            })
+        })
+            .then(r=>r.json())
+            .then((response)=>{
+                if(response.error) throw response;
+
+                let account = new Account(response.id, data);
+                user.addAccount(account);
+                changePage("home");
+            })
+            .catch((err)=>{
+                if(err.error){
+                    new Notifier("error", err.error.message);
+                }else{
+                    new Notifier("error", "Something went wrong, try refreshing the page");
+                }
+            });
     }
 
     render(){

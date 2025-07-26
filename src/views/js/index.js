@@ -36,14 +36,21 @@ fetch("/api/user", {
             response.id,
             response.name,
             response.email,
-            response.accounts
         );
 
-
-        return EncryptionHandler.getKeyFromStorage();
+        return Promise.all([EncryptionHandler.getKeyFromStorage(), response.accounts]);
     })
-    .then((key)=>{
+    .then(([key, accounts])=>{
         window.encryptionHandler = new EncryptionHandler(key);
+
+        let promises = [];
+        for(let i = 0; i < accounts.length; i++){
+            promises.push(user.decryptAndAddAccount(accounts[i]));
+        }
+
+        return Promise.all(promises);
+    })
+    .then((response)=>{
         currentPage = new Home();
     })
     .catch((err)=>{

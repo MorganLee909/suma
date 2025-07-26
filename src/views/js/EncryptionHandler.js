@@ -104,8 +104,8 @@ export default class EncryptionHandler {
 
     async encrypt(data, iv){
         const json = JSON.stringify(data);
-        const buff = new TextEncoder().encode(data);
-        const buffIv = new TextEncoder().encode(iv);
+        const buff = new TextEncoder().encode(json);
+        const buffIv = this.stringToBuffer(iv);
 
         const encrypted = await crypto.subtle.encrypt(
             {
@@ -116,10 +116,11 @@ export default class EncryptionHandler {
             buff
         );
 
-        return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+        let response = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+        return response;
     }
 
-    async decrypt(data, key, ivString){
+    async decrypt(data, ivString){
         const encrypted = this.stringToBuffer(data);
         const iv = this.stringToBuffer(ivString);
 
@@ -128,11 +129,12 @@ export default class EncryptionHandler {
                 name: "AES-GCM",
                 iv,
             },
-            key,
+            this._key,
             encrypted
         );
 
         const json = new TextDecoder().decode(decrypted);
-        return JSON.parse(json);
+        let response = JSON.parse(json);
+        return response;
     }
 }

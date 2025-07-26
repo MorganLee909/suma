@@ -95,7 +95,7 @@ impl Account {
         ResponseAccount {
             id: self.id.to_string(),
             data: self.data.clone(),
-            iv: self.data.clone(),
+            iv: self.iv.clone(),
             created_at: self.created_at.timestamp_millis()
         }
     }

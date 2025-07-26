@@ -1,4 +1,5 @@
 import EncryptionHandler from "../EncryptionHandler.js";
+import Account from "./Account.js";
 
 export default class User{
     constructor(id, name, email, accounts = []){
@@ -19,5 +20,15 @@ export default class User{
             password_salt: passwordSalt,
             encryption_salt: EncryptionHandler.generateSalt()
         };
+    }
+
+    addAccount(account){
+        this._accounts.push(account);
+    }
+
+    async decryptAndAddAccount(account){
+        const data = await encryptionHandler.decrypt(account.data, account.iv);
+
+        this._accounts.push(new Account(account.id, data));
     }
 }
