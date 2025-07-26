@@ -38,6 +38,21 @@ export default class Elem {
         return this;
     }
 
+    required(){
+        this.elem.required = true;
+        return this;
+    }
+
+    focus(){
+        this.onConnect(()=>this.elem.focus());
+        return this;
+    }
+
+    toVar(v){
+        v(this.elem);
+        return this;
+    }
+
     append(v){
         if(v instanceof this.constructor){
             this.elem.appendChild(v.elem);
@@ -58,5 +73,19 @@ export default class Elem {
 
     get(){
         return this.elem;
+    }
+
+    onConnect(cb){
+        if(this.elem.isConnected){
+            cb();
+        }else {
+            const observer = new MutationObserver(()=>{
+                if(this.elem.isConnected) {
+                    observer.disconnect();
+                    cb();
+                }
+            });
+            observer.observe(document, {childList: true, subtree: true});
+        }
     }
 }

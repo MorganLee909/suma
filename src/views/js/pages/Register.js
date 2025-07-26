@@ -18,7 +18,7 @@ export default class Register extends Page{
         const password = this.container.querySelector(".password").value;
         const confirmPassword = this.container.querySelector(".confirmPassword").value;
 
-        if(!isValidEmail(email)){
+        if(!this.isValidEmail(email)){
             new Notifier("error", "Invalid email address");
             return;
         }
@@ -43,15 +43,25 @@ export default class Register extends Page{
             .then(r=>r.json())
             .then((response)=>{
                 if(response.error){
-                    console.log(response.error);
+                    new Notifier("error", response.error.message);
                 }else{
-                    let user = new User(...response);
-                    console.log(response);
+                    window.user = new User(
+                        response.id,
+                        response.name,
+                        response.email,
+                        response.encryption_salt
+                    );
+                    changePage("home");
                 }
             })
             .catch((err)=>{
-                console.log(err);
+                new Notifier("error", "Something went wrong, try refreshing the page");
             });
+    }
+
+    isValidEmail(email){
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
     }
 
     render(){
@@ -67,6 +77,8 @@ export default class Register extends Page{
                     .addClass("name")
                     .type("text")
                     .placeholder("Name")
+                    .required()
+                    .focus()
                 )
             )
             .append(new Elem("label")
@@ -75,6 +87,7 @@ export default class Register extends Page{
                     .addClass("email")
                     .type("email")
                     .placeholder("Email")
+                    .required()
                 )
             )
             .append(new Elem("label")
@@ -83,6 +96,7 @@ export default class Register extends Page{
                     .addClass("password")
                     .type("password")
                     .placeholder("Password")
+                    .required()
                 )
             )
             .append(new Elem("label")
@@ -91,6 +105,7 @@ export default class Register extends Page{
                     .addClass("confirmPassword")
                     .type("password")
                     .placeholder("Confirm Password")
+                    .required()
                 )
             )
             .append(new Elem("button")

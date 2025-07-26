@@ -1,5 +1,6 @@
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
+import Home from "./pages/Home.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -11,6 +12,7 @@ window.changePage = (page, data)=>{
     switch(page){
         case "login": currentPage = new Login(); break;
         case "register": currentPage = new Register(); break;
+        case "home": currentPage = new Home(); break;
     }
     console.timeEnd("change page");
 }
