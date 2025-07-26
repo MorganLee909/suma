@@ -74,6 +74,10 @@ body{
     cursor: pointer;
 }
 
+.button.circle{
+    border-radius: 50%;
+}
+
 .link, .standardForm .link{
     background: none;
     border: none;

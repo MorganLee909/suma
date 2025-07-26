@@ -1,3 +1,6 @@
+import EncryptionHandler from "./EncryptionHandler.js";
+import User from "./data/User.js";
+
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import Home from "./pages/Home.js";
@@ -17,4 +20,26 @@ window.changePage = (page, data)=>{
     console.timeEnd("change page");
 }
 
-currentPage = new Login();
+fetch("/api/user", {
+    method: "GET",
+    headers: {"Content-Type": "application/json"},
+})
+    .then(r=>r.json())
+    .then((response)=>{
+        if(response.error) throw response;
+        let key = localStorage.getItem("key");
+        if(!key) throw null;
+
+        window.user = new User(
+            response.id,
+            response.name,
+            response.email,
+            response.accounts
+        );
+
+        window.encryptionHandler = new EncryptionHandler(key);
+        currentPage = new Home();
+    })
+    .catch((err)=>{
+        currentPage = new Login();
+    })

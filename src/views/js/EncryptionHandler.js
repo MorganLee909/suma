@@ -5,6 +5,7 @@ export default class EncryptionHandler {
 
     static async create(password, salt){
         const key = await EncryptionHandler.generateEncryptionKey(password, salt);
+        localStorage.setItem("key", key);
         return new EncryptionHandler(key);
     }
 

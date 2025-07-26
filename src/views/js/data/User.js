@@ -6,6 +6,7 @@ export default class User{
         this._name = name;
         this._email = email;
         this._accounts = accounts;
+        this._currentAccount = 0;
     }
 
     static async create(name, email, password){

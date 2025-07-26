@@ -9,8 +9,12 @@ export default class Home extends Page{
     }
 
     render(){
-        new Elem("h1")
-            .text("Home page")
+        new Elem("div")
+            .addClass("buttonBox")
+            .append(new Elem("button")
+                .text("+")
+                .addClass("button", "circle")
+            )
             .appendTo(this.container);
     }
 }
