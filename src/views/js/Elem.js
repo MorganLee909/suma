@@ -38,6 +38,16 @@ export default class Elem {
         return this;
     }
 
+    min(v){
+        this.elem.min = v;
+        return this;
+    }
+
+    step(v){
+        this.elem.step = v;
+        return this;
+    }
+
     required(){
         this.elem.required = true;
         return this;

@@ -5,6 +5,7 @@ import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import Home from "./pages/Home.js";
 import AddMenu from "./pages/AddMenu.js";
+import CreateAccount from "./pages/CreateAccount.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -18,6 +19,7 @@ window.changePage = (page, data)=>{
         case "register": currentPage = new Register(); break;
         case "home": currentPage = new Home(); break;
         case "addMenu": currentPage = new AddMenu(); break;
+        case "createAccount": currentPage = new CreateAccount(); break;
     }
     console.timeEnd("change page");
 }

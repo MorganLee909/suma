@@ -11,6 +11,7 @@ export default class AddMenu extends Page{
     render(){
         new Elem("button")
             .text("New Account")
+            .addClass("button")
             .onclick(()=>{changePage("createAccount")})
             .appendTo(this.container);
     }

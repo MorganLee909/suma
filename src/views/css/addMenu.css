@@ -1,6 +1,10 @@
-.AddMenu{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#AddMenu{
+    background: var(--surface);
+    border: 5px solid var(--secondary);
+}
+
+#AddMenu .button{
+    width: 100%;
+    max-width: 750px;
+    padding: 15px;
 }
