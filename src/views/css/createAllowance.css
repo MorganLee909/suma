@@ -23,7 +23,7 @@
   width: 100%;
   height: 100%;
   background-color: var(--textMuted, #ccc);
-  transition: 0.4s;
+  transition: 0.15s;
   border-radius: 34px;
 }
 
@@ -35,7 +35,7 @@
   left: 4px;
   top: 4px;
   background-color: white;
-  transition: 0.4s;
+  transition: 0.15s;
   border-radius: 50%;
 }
 
