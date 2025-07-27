@@ -52,7 +52,6 @@ export default class User{
 
     async decryptAndAddAccount(account){
         const data = await encryptionHandler.decrypt(account.data, account.iv);
-        console.log(data);
 
         const newAccount = new Account(account.id, account.iv, data);
         this._accounts.push(newAccount);

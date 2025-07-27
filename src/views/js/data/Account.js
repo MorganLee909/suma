@@ -60,6 +60,22 @@ export default class Account{
         await this.save();
     }
 
+    async addAllowance(name, amount, isPercent){
+        if(isPercent){
+            amount = Number(amount);
+        }else{
+            amount = this.toCents(amount);
+        }
+
+        this._allowances.push({
+            id: crypto.randomUUID(),
+            name: name,
+            amount: amount
+        });
+
+        await this.save();
+    }
+
     toCents(num){
         if(typeof num === "string") num = Number(num);
 
