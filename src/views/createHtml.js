@@ -3,14 +3,15 @@ import htmlMinifier from "html-minifier-terser";
 import fsSync from "fs";
 
 const fs = fsSync.promises;
+const isProduction = process.env.NODE_ENV === "production";
 
 const esbuildProm = esbuild.build({
     entryPoints: [`${import.meta.dirname}/js/index.js`, `${import.meta.dirname}/css/index.css`],
     bundle: true,
     minify: true,
-    sourcemap: process.env.NODE_ENV === "production",
+    sourcemap: isProduction ? false : "inline",
     write: false,
-    outdir: `${import.meta.dirname}/build/`
+    outdir: `${import.meta.dirname}`
 });
 const htmlProm = fs.readFile(`${import.meta.dirname}/index.html`, "utf-8");
 const [build, html] = await Promise.all([esbuildProm, htmlProm]);

@@ -10,6 +10,10 @@ export default class User{
         this._currentAccount = 0;
     }
 
+    get account(){
+        return this._accounts[this._currentAccount];
+    }
+
     static async create(name, email, password){
         const passwordSalt = EncryptionHandler.generateSalt();
 
@@ -49,7 +53,7 @@ export default class User{
     async decryptAndAddAccount(account){
         const data = await encryptionHandler.decrypt(account.data, account.iv);
 
-        const newAccount = new Account(account.id, data);
+        const newAccount = new Account(account.id, account.iv, data);
         this._accounts.push(newAccount);
     }
 }

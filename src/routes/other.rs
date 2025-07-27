@@ -18,12 +18,6 @@ async fn landing_page() -> impl Responder {
         .body(html.clone())
 }
 
-#[get("/dev")]
-async fn landing_page_dev() -> Result<NamedFile, Error> {
-    let path: PathBuf = PathBuf::from("src/views/build.html");
-    Ok(NamedFile::open(path)?)
-}
-
 #[get("/logo.svg")]
 async fn svg_logo() -> Result<NamedFile, Error> {
     let path: PathBuf = PathBuf::from("src/views/logo.svg");
@@ -33,5 +27,11 @@ async fn svg_logo() -> Result<NamedFile, Error> {
 #[get("/logo.png")]
 async fn png_logo() -> Result<NamedFile, Error> {
     let path: PathBuf = PathBuf::from("src/views/logo.png");
+    Ok(NamedFile::open(path)?)
+}
+
+#[get("/dev")]
+async fn landing_page_dev() -> Result<NamedFile, Error> {
+    let path: PathBuf = PathBuf::from("src/views/build.html");
     Ok(NamedFile::open(path)?)
 }

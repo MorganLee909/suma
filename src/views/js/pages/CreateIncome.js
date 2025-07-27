@@ -8,15 +8,20 @@ export default class CreateIncome extends Page{
         this.render();
     }
 
-    submit(event){
+    async submit(event){
         event.preventDefault();
-        console.log("submitting");
+
+        await user.account.addIncome(
+            this.container.querySelector(".name").value,
+            this.container.querySelector(".amount").value
+        );
+        changePage("home");
     }
 
     render(){
         new Elem("form")
             .addClass("standardForm")
-            .onsubmit(this.submit.bind())
+            .onsubmit(this.submit.bind(this))
             .append(new Elem("h1")
                 .text("Create Income")
             )

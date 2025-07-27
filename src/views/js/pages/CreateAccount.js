@@ -35,12 +35,13 @@ export default class CreateAccount extends Page{
             .then((response)=>{
                 if(response.error) throw response;
 
-                const account = new Account(response.id, data);
+                const account = new Account(response.id, iv, data);
                 user.addAccount(account);
                 user.changeAccount(account);
                 changePage("home");
             })
             .catch((err)=>{
+                console.log(err);
                 if(err.error){
                     new Notifier("error", err.error.message);
                 }else{
