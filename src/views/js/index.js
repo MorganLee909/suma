@@ -7,6 +7,7 @@ import Home from "./pages/Home.js";
 import AddMenu from "./pages/AddMenu.js";
 import CreateAccount from "./pages/CreateAccount.js";
 import CreateIncome from "./pages/CreateIncome.js";
+import CreateBill from "./pages/CreateBill.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -22,6 +23,7 @@ window.changePage = (page, data)=>{
         case "addMenu": currentPage = new AddMenu(); break;
         case "createAccount": currentPage = new CreateAccount(); break;
         case "createIncome": currentPage = new CreateIncome(); break;
+        case "createBill": currentPage = new CreateBill(); break;
     }
     console.timeEnd("change page");
 }

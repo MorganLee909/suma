@@ -50,6 +50,16 @@ export default class Account{
         await this.save();
     }
 
+    async addBill(name, amount){
+        this._bills.push({
+            id: crypto.randomUUID(),
+            name: name,
+            amount: this.toCents(amount)
+        });
+
+        await this.save();
+    }
+
     toCents(num){
         if(typeof num === "string") num = Number(num);
 
