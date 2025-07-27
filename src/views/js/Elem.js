@@ -1,6 +1,10 @@
 export default class Elem {
     constructor(elem){
-        this.elem = document.createElement(elem);
+        if(typeof elem === "string"){
+            this.elem = document.createElement(elem);
+        }else{
+            this.elem = elem;
+        }
     }
 
     id(v){
@@ -38,6 +42,11 @@ export default class Elem {
         return this;
     }
 
+    onchange(v){
+        this.elem.onchange = v;
+        return this;
+    }
+
     min(v){
         this.elem.min = v;
         return this;
@@ -46,6 +55,19 @@ export default class Elem {
     step(v){
         this.elem.step = v;
         return this;
+    }
+
+    removeChildAt(v){
+        this.elem.removeChild(this.elem.children[v]);
+        return this;
+    }
+
+    getChildAt(v){
+        console.log(v);
+        console.log(this.elem);
+        console.log(this.elem.children);
+        console.log(this.elem.children[v]);
+        return new Elem(this.elem.children[v]);
     }
 
     required(){

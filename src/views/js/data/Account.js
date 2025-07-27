@@ -70,7 +70,8 @@ export default class Account{
         this._allowances.push({
             id: crypto.randomUUID(),
             name: name,
-            amount: amount
+            amount: amount,
+            isPercent: isPercent
         });
 
         await this.save();
