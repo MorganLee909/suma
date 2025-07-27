@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "dev": "nodemon createHtml.js --ignore build.html --ext js,css,html"
+      "dev": "nodemon createHtml.js --ignore build.html  --ext js,css,html"
   },
   "keywords": [],
   "author": "",
