@@ -13,41 +13,14 @@ export default class CreateAccount extends Page{
     async submit(){
         event.preventDefault();
 
-        const data = {
-            name: this.container.querySelector(".name").value,
-            balance: this.container.querySelector(".balance").value,
-            income: [],
-            bills: [],
-            allowances: []
-        };
-        const iv = encryptionHandler.generateIv();
-        const encryptedData = await encryptionHandler.encrypt(data, iv);
+        let account = await Account.create(
+            this.container.querySelector(".name").value,
+            this.container.querySelector(".balance").value
+        );
 
-        fetch("/api/account", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                data: encryptedData,
-                iv: iv
-            })
-        })
-            .then(r=>r.json())
-            .then((response)=>{
-                if(response.error) throw response;
-
-                const account = new Account(response.id, iv, data);
-                user.addAccount(account);
-                user.changeAccount(account);
-                changePage("home");
-            })
-            .catch((err)=>{
-                console.log(err);
-                if(err.error){
-                    new Notifier("error", err.error.message);
-                }else{
-                    new Notifier("error", "Something went wrong, try refreshing the page");
-                }
-            });
+        user.addAccount(account);
+        user.changeAccount(account);
+        changePage("home");
     }
 
     render(){
