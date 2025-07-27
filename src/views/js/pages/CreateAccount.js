@@ -83,6 +83,7 @@ export default class CreateAccount extends Page{
             .append(new Elem("button")
                 .text("Cancel")
                 .type("button")
+                .addClass("cancel")
                 .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);

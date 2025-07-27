@@ -14,5 +14,11 @@ export default class AddMenu extends Page{
             .addClass("button")
             .onclick(()=>{changePage("createAccount")})
             .appendTo(this.container);
+
+        new Elem("button")
+            .text("New Income")
+            .addClass("button")
+            .onclick(()=>{changePage("createIncome")})
+            .appendTo(this.container);
     }
 }
