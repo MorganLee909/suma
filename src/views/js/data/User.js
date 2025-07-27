@@ -26,9 +26,30 @@ export default class User{
         this._accounts.push(account);
     }
 
+    changeAccount(account){
+        if(typeof account === "number"){
+            this._currentAccount = 0;
+        }else if(typeof account === "string"){
+            for(let i = 0; i < this._accounts.length; i++){
+                if(this._accounts[i].id === account){
+                    this._currentAccount = i;
+                    break;
+                }
+            }
+        }else{
+            for(let i = 0; i < this._accounts.length; i++){
+                if(this.__accounts[i] === account){
+                    this._currentAccount = i;
+                    break;
+                }
+            }
+        }
+    }
+
     async decryptAndAddAccount(account){
         const data = await encryptionHandler.decrypt(account.data, account.iv);
 
-        this._accounts.push(new Account(account.id, data));
+        const newAccount = new Account(account.id, data);
+        this._accounts.push(newAccount);
     }
 }
