@@ -3,6 +3,7 @@ import Notifier from "../Notifier.js";
 import Format from "../Format.js";
 import Transaction from "./Transaction.js";
 import Income from "./Income.js";
+import Bill from "./Bill.js";
 
 export default class Account{
     constructor(id, iv, data){
@@ -71,11 +72,7 @@ export default class Account{
     }
 
     async addBill(name, amount){
-        this._bills.push({
-            id: crypto.randomUUID(),
-            name: name,
-            amount: this.toCents(amount)
-        });
+        this._bills.push(Bill.create(name, this.toCents(amount)));
 
         await this.save();
     }
