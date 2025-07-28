@@ -2,6 +2,7 @@ import EncryptionHandler from "../EncryptionHandler.js";
 import Notifier from "../Notifier.js";
 import Format from "../Format.js";
 import Transaction from "./Transaction.js";
+import Income from "./Income.js";
 
 export default class Account{
     constructor(id, iv, data){
@@ -64,11 +65,7 @@ export default class Account{
     }
 
     async addIncome(name, amount){
-        this._income.push({
-            id: crypto.randomUUID(),
-            name: name,
-            amount: this.toCents(amount)
-        });
+        this._income.push(Income.create(name, this.toCents(amount)));
 
         await this.save();
     }
