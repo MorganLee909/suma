@@ -4,6 +4,7 @@ import Format from "../Format.js";
 import Transaction from "./Transaction.js";
 import Income from "./Income.js";
 import Bill from "./Bill.js";
+import Allowance from "./Allowance.js";
 
 export default class Account{
     constructor(id, iv, data){
@@ -84,12 +85,7 @@ export default class Account{
             amount = this.toCents(amount);
         }
 
-        this._allowances.push({
-            id: crypto.randomUUID(),
-            name: name,
-            amount: amount,
-            isPercent: isPercent
-        });
+        this._allowances.push(Allowance.create(name, amount, isPercent));
 
         await this.save();
     }
