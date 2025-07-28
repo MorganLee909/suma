@@ -12,9 +12,9 @@ export default class Account{
         this._iv = iv;
         this._name = data.name;
         this._balance = data.balance;
-        this._income = data.income;
-        this._bills = data.bills;
-        this._allowances = data.allowances;
+        this._income = data.income.map(Income.fromObject);
+        this._bills = data.bills.map(Bill.fromObject);
+        this._allowances = data.allowances.map(Allowance.fromObject);
         this._transactions = [];
         this._populated = false;
     }
@@ -141,9 +141,9 @@ export default class Account{
         const data = {
             name: this._name,
             balance: this._balance,
-            income: this._income,
-            bills: this._bills,
-            allowances: this._allowances
+            income: this._income.map(i => i.serialize()),
+            bills: this._bills.map(b => b.serialize()),
+            allowances: this._allowances.map(a => a.serialize())
         };
         const encryptedData = await encryptionHandler.encrypt(data, this._iv);
 

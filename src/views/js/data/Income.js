@@ -12,4 +12,20 @@ export default class Income{
             amount
         );
     }
+
+    static fromObject(data){
+        return new Income(
+            data.id,
+            data.name,
+            data.amount
+        );
+    }
+
+    serialize(){
+        return {
+            id: this._id,
+            name: this._name,
+            amount: this._amount
+        };
+    }
 }

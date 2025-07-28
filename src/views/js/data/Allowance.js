@@ -14,4 +14,22 @@ export default class Allowance{
             isPercent
         );
     }
+
+    static fromObject(data){
+        return new Allowance(
+            data.id,
+            data.name,
+            data.amount,
+            data.isPercent
+        );
+    }
+
+    serialize(){
+        return {
+            id: this._id,
+            name: this._name,
+            amount: this._amount,
+            isPercent: this._isPercent
+        };
+    }
 }
