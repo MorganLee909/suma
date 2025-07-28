@@ -10,9 +10,10 @@ export default class AddMenu extends Page{
 
     render(){
         new Elem("button")
-            .text("New Account")
+            .text("New Transaction")
             .addClass("button")
-            .onclick(()=>{changePage("createAccount")})
+            .onclick(()=>{changePage("createTransaction")})
+            .focus()
             .appendTo(this.container);
 
         new Elem("button")
@@ -31,6 +32,12 @@ export default class AddMenu extends Page{
             .text("New Allowance")
             .addClass("button")
             .onclick(()=>{changePage("createAllowance")})
+            .appendTo(this.container);
+
+        new Elem("button")
+            .text("New Account")
+            .addClass("button")
+            .onclick(()=>{changePage("createAccount")})
             .appendTo(this.container);
     }
 }

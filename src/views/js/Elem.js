@@ -27,6 +27,16 @@ export default class Elem {
         return this;
     }
 
+    value(v){
+        this.elem.value = v;
+        return this;
+    }
+
+    label(v){
+        this.elem.label = v;
+        return this;
+    }
+
     placeholder(v){
         this.elem.placeholder = v;
         return this;
@@ -57,16 +67,22 @@ export default class Elem {
         return this;
     }
 
+    valueAsDate(v){
+        this.elem.valueAsDate = v;
+        return this;
+    }
+
+    rows(v){
+        this.elem.rows = v;
+        return this;
+    }
+
     removeChildAt(v){
         this.elem.removeChild(this.elem.children[v]);
         return this;
     }
 
     getChildAt(v){
-        console.log(v);
-        console.log(this.elem);
-        console.log(this.elem.children);
-        console.log(this.elem.children[v]);
         return new Elem(this.elem.children[v]);
     }
 
@@ -81,7 +97,12 @@ export default class Elem {
     }
 
     toVar(v){
-        v(this.elem);
+        v(this);
+        return this;
+    }
+
+    appendMany(v){
+        v(this);
         return this;
     }
 

@@ -65,9 +65,17 @@ body{
     margin: 5px 0;
 }
 
-.standardForm input{
+.standardForm input,
+.standardForm select{
+    outline: none;
     font-size: 22px;
     padding: 5px 0 5px 10px;
+    border: 3px solid rgba(0, 0, 0, 0);
+}
+
+.standardForm input:focus,
+.standardForm select:focus{
+    border: 3px solid var(--secondary);
 }
 
 .standardForm button,

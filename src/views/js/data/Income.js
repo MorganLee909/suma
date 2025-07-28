@@ -5,6 +5,14 @@ export default class Income{
         this._amount = amount;
     }
 
+    get id(){
+        return this._id;
+    }
+
+    get name(){
+        return this._name;
+    }
+
     static create(name, amount){
         return new Income(
             crypto.randomUUID(),

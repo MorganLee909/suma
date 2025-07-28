@@ -5,6 +5,14 @@ export default class Bill{
         this._amount = amount;
     }
 
+    get id(){
+        return this._id;
+    }
+
+    get name(){
+        return this._name;
+    }
+
     static create(name, amount){
         return new Bill(
             crypto.randomUUID(),

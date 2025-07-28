@@ -6,6 +6,14 @@ export default class Allowance{
         this._isPercent = isPercent;
     }
 
+    get id(){
+        return this._id;
+    }
+
+    get name(){
+        return this._name;
+    }
+
     static create(name, amount, isPercent){
         return new Allowance(
             crypto.randomUUID(),

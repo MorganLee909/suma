@@ -90,6 +90,39 @@ export default class Account{
         await this.save();
     }
 
+    listIncome(){
+        const income = [];
+        for(let i = 0; i < this._income.length; i++){
+            income.push({
+                id: this._income[i].id,
+                name: this._income[i].name
+            });
+        }
+        return income;
+    }
+
+    listBills(){
+        const bills = [];
+        for(let i = 0; i < this._bills.length; i++){
+            bills.push({
+                id: this._bills[i].id,
+                name: this._bills[i].name
+            });
+        }
+        return bills;
+    }
+
+    listAllowances(){
+        const allowances = [];
+        for(let i = 0; i < this._allowances.length; i++){
+            allowances.push({
+                id: this._allowances[i].id,
+                name: this._allowances[i].name
+            });
+        }
+        return allowances;
+    }
+
     toCents(num){
         if(typeof num === "string") num = Number(num);
 
