@@ -4,7 +4,8 @@ use serde::Deserialize;
 pub struct CreateInput {
     pub account: String,
     pub date: String,
-    pub data: String
+    pub data: String,
+    pub iv: String
 }
 
 #[derive(Deserialize)]

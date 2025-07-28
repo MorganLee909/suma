@@ -1,5 +1,7 @@
 import EncryptionHandler from "../EncryptionHandler.js";
 import Notifier from "../Notifier.js";
+import Format from "../Format.js";
+import Transaction from "./Transaction.js";
 
 export default class Account{
     constructor(id, iv, data){
@@ -11,6 +13,27 @@ export default class Account{
         this._bills = data.bills;
         this._allowances = data.allowances;
         this._transactions = [];
+        this._populated = false;
+    }
+
+    get balance(){
+        return this.toDollars(this._balance);
+    }
+
+    incomeTotal(){
+        let income = 0;
+        for(let i = 0; i < this._income.length; i++){
+            income += this._income[i].amount;
+        }
+        return this.toDollars(income);
+    }
+
+    billsTotal(){
+        let bills = 0;
+        for(let i = 0; i < this._bills.length; i++){
+            bills += this._bills[i].amount;
+        }
+        return this.toDollars(bills);
     }
 
     static async create(name, balance){
@@ -87,6 +110,41 @@ export default class Account{
         if(typeof num === "string") num = Number(num);
 
         return Math.round(num * 100);
+    }
+
+    toDollars(num){
+        return num / 100;
+    }
+
+    async populateTransactions(){
+        if(this._populated) return;
+
+        let from = new Date();
+        from.setDate(1);
+        const to = new Date();
+        let response;
+        try{
+            response = await fetch("/api/transaction/search", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    account: this._id,
+                    from: Format.transactionDate(from),
+                    to: Format.transactionDate(to)
+                })
+            });
+        }catch(e){
+            new Notifier("error", "Something went wrong, try refreshing the page");
+        }
+
+        if(response.error){
+            new Notifier("error", response.error.message);
+        }else{
+            for(let i = 0; i < response.length; i++){
+                this._transactions = Transaction.decrypt(response[i]);
+            }
+            this._populated = true;
+        }
     }
 
     async save(){

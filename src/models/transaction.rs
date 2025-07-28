@@ -14,7 +14,8 @@ pub struct Transaction {
     pub id: ObjectId,
     pub account: ObjectId,
     pub data: String,
-    pub date: String
+    pub date: String,
+    pub iv: String
 }
 
 #[derive(Serialize, Deserialize)]
@@ -22,7 +23,8 @@ pub struct ResponseTransaction {
     pub id: String,
     pub account: String,
     pub data: String,
-    pub date: String
+    pub date: String,
+    pub iv: String
 }
 
 impl Transaction {
@@ -34,7 +36,8 @@ impl Transaction {
             id: ObjectId::new(),
             account: ObjectId::parse_str(input.account)?,
             data: input.data,
-            date: input.date
+            date: input.date,
+            iv: input.iv
         };
 
         let insert_one_result = collection.insert_one(transaction).await?;
@@ -125,7 +128,8 @@ impl Transaction {
             id: self.id.to_hex(),
             account: self.account.to_hex(),
             data: self.data.clone(),
-            date: self.date.clone()
+            date: self.date.clone(),
+            iv: self.iv.clone()
         }
     }
 }
