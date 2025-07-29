@@ -19,8 +19,12 @@ export default class Account{
         this._populated = false;
     }
 
+    get id(){
+        return this._id;
+    }
+
     get balance(){
-        return this.toDollars(this._balance);
+        return Format.centsToDollars(this._balance);
     }
 
     incomeTotal(){
@@ -28,7 +32,7 @@ export default class Account{
         for(let i = 0; i < this._income.length; i++){
             income += this._income[i].amount;
         }
-        return this.toDollars(income);
+        return Format.centsToDollars(income);
     }
 
     billsTotal(){
@@ -36,13 +40,13 @@ export default class Account{
         for(let i = 0; i < this._bills.length; i++){
             bills += this._bills[i].amount;
         }
-        return this.toDollars(bills);
+        return Format.centsToDollars(bills);
     }
 
     static async create(name, balance){
         const data = {
             name: name,
-            balance: Account.toCents(balance),
+            balance: Format.dollarsToCents(balance),
             income: [],
             bills: [],
             allowances: []
@@ -67,13 +71,13 @@ export default class Account{
     }
 
     async addIncome(name, amount){
-        this._income.push(Income.create(name, this.toCents(amount)));
+        this._income.push(Income.create(name, Format.dollarsToCents(amount)));
 
         await this.save();
     }
 
     async addBill(name, amount){
-        this._bills.push(Bill.create(name, this.toCents(amount)));
+        this._bills.push(Bill.create(name, Format.dollarsToCents(amount)));
 
         await this.save();
     }
@@ -82,12 +86,32 @@ export default class Account{
         if(isPercent){
             amount = Number(amount);
         }else{
-            amount = this.toCents(amount);
+            amount = Format.dollarsToCents(amount);
         }
 
         this._allowances.push(Allowance.create(name, amount, isPercent));
 
         await this.save();
+    }
+
+    addTransaction(transaction){
+        this._transactions.push(transaction);
+        this.sortTransactions();
+    }
+
+    removeTransaction(transaction){
+        if(transaction instanceof Transaction){
+            for(let i = 0; i < this._transactions.length; i++){
+                if(this._transactions[i] === transaction){
+                    this._transactions.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }
+
+    sortTransactions(){
+        this._transactions.sort((a, b)=>{a > b ? 1 : -1});
     }
 
     listIncome(){
@@ -121,22 +145,6 @@ export default class Account{
             });
         }
         return allowances;
-    }
-
-    toCents(num){
-        if(typeof num === "string") num = Number(num);
-
-        return Math.round(num * 100);
-    }
-
-    static toCents(num){
-        if(typeof num === "string") num = Number(num);
-
-        return Math.round(num * 100);
-    }
-
-    toDollars(num){
-        return num / 100;
     }
 
     async populateTransactions(){

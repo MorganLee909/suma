@@ -10,4 +10,14 @@ export default class Format{
 
         return `${year}-${month}-${day}`;
     }
+
+    static dollarsToCents(num){
+        if(typeof num === "string") num = Number(num);
+
+        return Math.round(num * 100);
+    }
+
+    static centsToDollars(num){
+        return num / 100;
+    }
 }

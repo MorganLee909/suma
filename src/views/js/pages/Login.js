@@ -11,7 +11,7 @@ export default class Login extends Page{
         this.render();
     }
 
-    async submit(){
+    submit(){
         event.preventDefault();
 
         const email = this.container.querySelector(".email").value;
@@ -49,13 +49,25 @@ export default class Login extends Page{
                 window.user = new User(
                     response.id,
                     response.name,
-                    response.email,
-                    response.accounts
+                    response.email
                 );
-                return EncryptionHandler.create(password, response.encryption_salt);
+
+                return Promise.all([
+                    EncryptionHandler.create(password, response.encryption_salt),
+                    response.accounts
+                ]);
             })
-            .then((encryptionHandler)=>{
+            .then(([encryptionHandler, accounts])=>{
                 window.encryptionHandler = encryptionHandler;
+
+                let promises = [];
+                for(let i = 0; i < accounts.length; i++){
+                    promises.push(user.decryptAndAddAccount(accounts[i]));
+                }
+
+                return Promise.all(promises);
+            })
+            .then((response)=>{
                 changePage("home");
             })
             .catch((err)=>{

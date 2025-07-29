@@ -39,11 +39,14 @@ pub async fn login_route(
     payload: web::Json<LoginInput>
 ) -> Result<HttpResponse, AppError> {
     let user_collection = db.collection::<User>("users");
+    let account_collection = db.collection::<Account>("accounts");
     let email = payload.email.to_lowercase();
     let user = User::find_by_email(&user_collection, &email).await?;
     validate_password(&user, &payload.password_hash, &payload.password_salt)?;
     let cookie = create_user_cookie(Some(user.id.to_string()));
-    Ok(HttpResponse::Ok().cookie(cookie).json(user.response(None)))
+    let accounts = Account::find_by_user(&account_collection, user.id).await?;
+    let response_accounts = accounts.into_iter().map(Account::response).collect();
+    Ok(HttpResponse::Ok().cookie(cookie).json(user.response(Some(response_accounts))))
 }
 
 #[get("/api/user/logout")]

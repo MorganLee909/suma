@@ -1,5 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Transaction from "../data/Transaction.js";
 
 export default class CreateTransaction extends Page{
     constructor(){
@@ -12,10 +13,22 @@ export default class CreateTransaction extends Page{
         );
     }
 
-    submit(event){
+    async submit(event){
         event.preventDefault();
-        console.log("submitting");
-    }
+
+        const transaction = Transaction.create(
+            user.account,
+            document.querySelector(".date").valueAsDate,
+            document.querySelector(".amount").value,
+            document.querySelector(".tags").value,
+            document.querySelector(".location").value,
+            document.querySelector(".note").value,
+            document.querySelector(".category").value
+        );
+        await transaction.save();
+        user.account.addTransaction(transaction);
+        changePage("home");
+   }
 
     render(income, bills, allowances){
         let select, incomeOpt, billsOpt, allowancesOpt;
@@ -37,7 +50,7 @@ export default class CreateTransaction extends Page{
                 )
             )
             .append(new Elem("select")
-                .addClass("type")
+                .addClass("category")
                 .toVar((a)=>{select = a})
                 .append(new Elem("option")
                     .value("discretionary")
@@ -84,7 +97,7 @@ export default class CreateTransaction extends Page{
             .append(new Elem("label")
                 .text("Notes")
                 .append(new Elem("textarea")
-                    .addClass("notes")
+                    .addClass("note")
                     .rows(3)
                 )
             )
@@ -100,15 +113,15 @@ export default class CreateTransaction extends Page{
             .appendTo(this.container);
 
         for(let i = 0; i < allowances.length; i++){
-            allowancesOpt.append(new Elem("option").text(allowances[i].name).value(allowances[i].id));
+            allowancesOpt.append(new Elem("option").text(allowances[i].name).value(`allowance-${allowances[i].id}`));
         }
 
         for(let i = 0; i < bills.length; i++){
-            billsOpt.append(new Elem("option").text(bills[i].name).value(bills[i].id));
+            billsOpt.append(new Elem("option").text(bills[i].name).value(`bill-${bills[i].id}`));
         }
 
         for(let i = 0; i < income.length; i++){
-            incomeOpt.append(new Elem("option").text(income[i].name).value(income[i].id));
+            incomeOpt.append(new Elem("option").text(income[i].name).value(`income-${income[i].id}`));
         }
     }
 }
