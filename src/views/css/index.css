@@ -93,7 +93,7 @@ body{
 .standardForm button.cancel,
 .button.cancel{
     background: var(--error);
-    color: #fff;
+    color: white;
 }
 
 .button.circle{
@@ -104,6 +104,8 @@ body{
     height: 50px;
     width: 50px;
     font-size: 35px;
+    font-weight: normal;
+    color: var(--accent);
 }
 
 .link,

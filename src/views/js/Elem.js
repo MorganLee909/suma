@@ -22,6 +22,11 @@ export default class Elem {
         return this;
     }
 
+    innerHtml(v){
+        this.elem.innerHTML = v;
+        return this;
+    }
+
     type(v){
         this.elem.type = v;
         return this;
