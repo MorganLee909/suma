@@ -10,6 +10,12 @@ export default class AddMenu extends Page{
 
     render(){
         new Elem("button")
+            .text("X")
+            .addClass("button", "circle")
+            .onclick(()=>{changePage("home")})
+            .appendTo(this.container);
+
+        new Elem("button")
             .text("New Transaction")
             .addClass("button")
             .onclick(()=>{changePage("createTransaction")})
