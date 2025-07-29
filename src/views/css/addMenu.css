@@ -9,9 +9,8 @@
     padding: 15px;
 }
 
-#AddMenu .circle{
+#AddMenu .circleButton{
     position: absolute;
     top: 15px;
     right: 15px;
-    width: initial;
 }
