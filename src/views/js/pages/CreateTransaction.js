@@ -25,7 +25,7 @@ export default class CreateTransaction extends Page{
             document.querySelector(".note").value,
             document.querySelector(".category").value
         );
-        await transaction.save();
+        await transaction.save(true);
         user.account.addTransaction(transaction);
         changePage("home");
    }

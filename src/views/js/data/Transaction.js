@@ -1,4 +1,5 @@
 import Format from "../Format.js";
+import Notifier from "../Notifier.js";
 
 export default class Transaction{
     constructor(parent, id, iv, date, data,){
@@ -14,7 +15,7 @@ export default class Transaction{
         this._note = data.note;
     }
 
-    static create(account, date, amount, tags, location, note, category){j
+    static create(account, date, amount, tags, location, note, category){
         let categoryId = null;
         if(category !== "discretionary"){
             let categorySplit = category.split("-");
@@ -80,10 +81,10 @@ export default class Transaction{
             };
         }
 
-        fetch("/api/transactions", {
+        fetch("/api/transaction", {
             method: method,
             headers: {"Content-Type": "application/json"},
-            body: body
+            body: JSON.stringify(body)
         })
             .then(r=>r.json())
             .then((response)=>{
@@ -95,6 +96,7 @@ export default class Transaction{
                 }
             })
             .catch((err)=>{
+                console.log(err);
                 new Notifier("error", "Something went wrong, try refreshing the page");
                 this._parent.removeTransaction(this);
             });
