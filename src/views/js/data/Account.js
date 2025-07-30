@@ -23,8 +23,16 @@ export default class Account{
         return this._id;
     }
 
+    get name(){
+        return this._name;
+    }
+
     get balance(){
         return Format.centsToDollars(this._balance);
+    }
+
+    get transactions(){
+        return this._transactions;
     }
 
     get isPopulated(){
@@ -33,6 +41,21 @@ export default class Account{
 
     set isPopulated(v){
         if(typeof v === "boolean") this._populated = v;
+    }
+
+    getCategory(category, categoryId){
+        if(category === "discretionary") return {name: "Discretionary"};
+
+        let list;
+        switch(category){
+            case "income": list = this._income; break;
+            case "bill": list = this._bills; break;
+            case "allowance": list = this._allowances; break;
+        }
+
+        for(let i = 0; i < list.length; i++){
+            if(list[i].id === categoryId) return list[i];
+        }
     }
 
     incomeTotal(){

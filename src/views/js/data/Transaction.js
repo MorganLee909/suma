@@ -15,6 +15,22 @@ export default class Transaction{
         this._note = data.note;
     }
 
+    get date(){
+        return this._date;
+    }
+
+    get category(){
+        return this._parent.getCategory(this._category, this._categoryId);
+    }
+
+    get location(){
+        return this._location;
+    }
+
+    get amount(){
+        return Format.centsToDollars(this._amount);
+    }
+
     static create(account, date, amount, tags, location, note, category){
         let categoryId = null;
         if(category !== "discretionary"){
