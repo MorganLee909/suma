@@ -1,15 +1,18 @@
-#AddMenu{
+#AddMenu
+#ViewMenu{
     background: var(--surface);
     border: 5px solid var(--secondary);
 }
 
-#AddMenu .button{
+#AddMenu .button,
+#ViewMenu .button{
     width: 100%;
     max-width: 750px;
     padding: 15px;
 }
 
-#AddMenu .circleButton{
+#AddMenu .circleButton,
+#ViewMenu .circleButton{
     position: absolute;
     top: 15px;
     right: 15px;

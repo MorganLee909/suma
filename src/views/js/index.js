@@ -10,6 +10,7 @@ import CreateIncome from "./pages/CreateIncome.js";
 import CreateBill from "./pages/CreateBill.js";
 import CreateAllowance from "./pages/CreateAllowance.js";
 import CreateTransaction from "./pages/CreateTransaction.js";
+import ViewMenu from "./pages/ViewMenu.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -28,6 +29,7 @@ window.changePage = (page, data)=>{
         case "createBill": currentPage = new CreateBill(); break;
         case "createAllowance": currentPage = new CreateAllowance(); break;
         case "createTransaction": currentPage = new CreateTransaction(); break;
+        case "viewMenu": currentPage = new ViewMenu(); break;
     }
     console.timeEnd("change page");
 }
