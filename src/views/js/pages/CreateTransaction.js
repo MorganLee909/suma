@@ -11,6 +11,7 @@ export default class CreateTransaction extends Page{
             user.account.listBills(),
             user.account.listAllowances()
         );
+
     }
 
     async submit(event){

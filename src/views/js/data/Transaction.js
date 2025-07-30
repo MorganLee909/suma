@@ -2,7 +2,7 @@ import Format from "../Format.js";
 import Notifier from "../Notifier.js";
 
 export default class Transaction{
-    constructor(parent, id, iv, date, data,){
+    constructor(parent, id, iv, date, data){
         this._parent = parent;
         this._id = id;
         this._iv = iv;
@@ -39,20 +39,41 @@ export default class Transaction{
         );
     }
 
-    static decrypt(transaction){
-        let data = encryptionHandler.decrypt(transaction.data, transaction.iv);
+    static async fetch(account, from, to){
+        let response;
+        try{
+            response = await fetch("/api/transaction/search", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({account, from, to})
+            });
+            response = await response.json();
+
+            const promises = [];
+            for(let i = 0; i < response.length; i++){
+                promises.push(Transaction.decrypt(response[i]));
+            }
+
+            return await Promise.all(promises);
+        }catch(e){
+            new Notifier("error", "Something went wrong, try refreshing the page");
+        }
+
+        if(response.error){
+            new Notifier("error", response.error.message);
+            return;
+        }
+    }
+
+    static async decrypt(transaction){
+        let data = await encryptionHandler.decrypt(transaction.data, transaction.iv);
 
         return new Transaction(
+            user.account,
             transaction.id,
-            transaction.account,
-            transaction.date,
-            data.amount,
-            data.tags,
-            data.location,
-            data.note,
             transaction.iv,
-            data.type,
-            data.typeId
+            transaction.date,
+            data
         );
     }
 
@@ -96,7 +117,6 @@ export default class Transaction{
                 }
             })
             .catch((err)=>{
-                console.log(err);
                 new Notifier("error", "Something went wrong, try refreshing the page");
                 this._parent.removeTransaction(this);
             });

@@ -27,6 +27,14 @@ export default class Account{
         return Format.centsToDollars(this._balance);
     }
 
+    get isPopulated(){
+        return this._populated;
+    }
+
+    set isPopulated(v){
+        if(typeof v === "boolean") this._populated = v;
+    }
+
     incomeTotal(){
         let income = 0;
         for(let i = 0; i < this._income.length; i++){
@@ -96,6 +104,11 @@ export default class Account{
 
     addTransaction(transaction){
         this._transactions.push(transaction);
+        this.sortTransactions();
+    }
+
+    addManyTransactions(transactions){
+        this._transactions.push(...transactions);
         this.sortTransactions();
     }
 
