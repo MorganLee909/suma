@@ -67,6 +67,7 @@ body{
 
 .standardForm input,
 .standardForm select{
+    background: white;
     outline: none;
     font-size: 22px;
     padding: 5px 0 5px 10px;
@@ -90,6 +91,16 @@ body{
     cursor: pointer;
 }
 
+.standardForm button:hover,
+.button:hover{
+    filter: brightness(1.25);
+}
+
+.standardForm button:active,
+.button:active{
+    filter: brightness(1.75);
+}
+
 .standardForm button.cancel,
 .button.cancel{
     background: var(--error);
@@ -108,6 +119,14 @@ body{
     background: var(--primary);
     border: none;
     cursor: pointer;
+}
+
+.circleButton:hover{
+    filter: brightness(1.25);
+}
+
+.circleButton:active{
+    filter: brightness(1.75);
 }
 
 .circleButton svg{
