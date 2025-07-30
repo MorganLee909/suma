@@ -13,6 +13,10 @@ export default class Income{
         return this._name;
     }
 
+    get amount(){
+        return this._amount;
+    }
+
     static create(name, amount){
         return new Income(
             crypto.randomUUID(),
