@@ -116,6 +116,10 @@ export default class Transaction{
         };
     }
 
+    delete(){
+       console.log("deleting");
+    }
+
     async save(isNew = false){
         const data = await encryptionHandler.encrypt(this.serialize(), this._iv);
 

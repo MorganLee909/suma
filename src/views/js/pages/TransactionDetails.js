@@ -30,6 +30,30 @@ export default class TransactionDetails extends Page{
         }
     }
 
+    closeModal(){
+        const modal = this.container.querySelector(".deleteModal");
+        modal.parentElement.removeChild(modal);
+    }
+
+    confirmDelete(transaction){
+        new Elem("div")
+            .addClass("deleteModal")
+            .append(new Elem("p")
+                .text("Deleting is permanent and cannot be undone, are you sure you want to delete this transaction?")
+            )
+            .append(new Elem("button")
+                .text("Delete")
+                .addClass("button")
+                .onclick(()=>{console.log("deleting")})
+            )
+            .append(new Elem("button")
+                .text("Cancel")
+                .addClass("button")
+                .onclick(this.closeModal.bind(this))
+            )
+            .appendTo(this.container);
+    }
+
     render(transaction){
         new Elem("div")
             .addClass("dataContainer")
@@ -92,6 +116,7 @@ export default class TransactionDetails extends Page{
             .append(new Elem("button")
                 .text("Delete")
                 .addClass("button")
+                .onclick(()=>{this.confirmDelete(transaction)})
             )
             .appendTo(this.container);
     }

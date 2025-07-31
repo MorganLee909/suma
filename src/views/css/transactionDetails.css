@@ -30,3 +30,24 @@
 #TransactionDetails .red{
     color: var(--error);
 }
+
+#TransactionDetails .deleteModal{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    position: absolute;
+    top: calc(50% - 150px);
+    right: calc(50% - 150px);
+    background: var(--surface);
+    box-shadow: 0 0 10px var(--secondary);
+    border: 1px solid var(--secondary);
+    height: 300px;
+    width: 300px;
+    max-width: 500px;
+    padding: 15px;
+}
+
+#TransactionDetails .deleteModal p{
+    font-size: 22px;
+    text-align: center;
+}
