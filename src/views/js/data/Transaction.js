@@ -23,6 +23,10 @@ export default class Transaction{
         return this._parent.getCategory(this._category, this._categoryId);
     }
 
+    get rawCategory(){
+        return this._category;
+    }
+
     get location(){
         return this._location;
     }

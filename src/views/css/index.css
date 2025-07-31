@@ -108,6 +108,27 @@ body{
     color: white;
 }
 
+.homeButton{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary);
+    color: var(--accent);
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.homeButton:hover{
+    filter: brightness(1.25);
+}
+
+.homeButton:active{
+    filter: brightness(1.75);
+}
+
 .circleButton{
     display: flex;
     justify-content: center;

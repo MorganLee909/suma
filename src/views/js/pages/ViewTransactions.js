@@ -1,6 +1,7 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 import Format from "../Format.js";
+import HomeButton from "../HomeButton.js";
 
 export default class ViewTransactions extends Page{
     constructor(){
@@ -10,7 +11,7 @@ export default class ViewTransactions extends Page{
     }
 
     transactionColor(transaction){
-        if(transaction.category === "income"){
+        if(transaction.rawCategory === "income"){
             if(transaction.amount < 0){
                 return "red";
             }else{
@@ -26,6 +27,8 @@ export default class ViewTransactions extends Page{
     }
 
     render(){
+        new HomeButton(this.container);
+
         new Elem("h1")
             .text(`${user.account.name} transactions`)
             .appendTo(this.container);
