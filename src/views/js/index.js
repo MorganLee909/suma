@@ -17,7 +17,6 @@ const pages = document.querySelector(".page");
 let currentPage;
 
 window.changePage = (page, data)=>{
-    console.log(page);
     console.time("change page");
     currentPage.close();
 

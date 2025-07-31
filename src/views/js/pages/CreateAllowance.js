@@ -3,7 +3,7 @@ import Elem from "../Elem.js";
 
 export default class CreateAllowance extends Page{
     constructor(){
-        super("CreateAllowance");
+        super("CreateAllowance", ["home", "back-addMenu", "logout"]);
 
         this.render();
     }
@@ -91,12 +91,6 @@ export default class CreateAllowance extends Page{
             )
             .append(new Elem("button")
                 .text("Create")
-            )
-            .append(new Elem("button")
-                .text("Cancel")
-                .addClass("cancel")
-                .type("button")
-                .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);
     }

@@ -5,7 +5,7 @@ import Account from "../data/Account.js";
 
 export default class CreateAccount extends Page{
     constructor(){
-        super("CreateAccount");
+        super("CreateAccount", ["home", "back-addMenu", "logout"]);
 
         this.render();
     }
@@ -53,12 +53,6 @@ export default class CreateAccount extends Page{
             )
             .append(new Elem("button")
                 .text("Create")
-            )
-            .append(new Elem("button")
-                .text("Cancel")
-                .type("button")
-                .addClass("cancel")
-                .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);
     }

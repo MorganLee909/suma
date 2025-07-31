@@ -5,7 +5,7 @@ import Notifier from "../Notifier.js";
 
 export default class Register extends Page{
     constructor(){
-        super("Register");
+        super("Register", []);
 
         this.render();
     }

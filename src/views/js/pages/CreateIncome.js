@@ -3,7 +3,7 @@ import Elem from "../Elem.js";
 
 export default class CreateIncome extends Page{
     constructor(){
-        super("CreateIncome");
+        super("CreateIncome", ["home", "back-addMenu", "logout"]);
 
         this.render();
     }
@@ -48,12 +48,6 @@ export default class CreateIncome extends Page{
             )
             .append(new Elem("button")
                 .text("Create")
-            )
-            .append(new Elem("button")
-                .text("Cancel")
-                .addClass("cancel")
-                .type("button")
-                .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);
     }

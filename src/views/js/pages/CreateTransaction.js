@@ -4,7 +4,7 @@ import Transaction from "../data/Transaction.js";
 
 export default class CreateTransaction extends Page{
     constructor(){
-        super("CreateTransaction");
+        super("CreateTransaction", ["home", "back-addMenu", "logout"]);
 
         this.render(
             user.account.listIncome(),
@@ -103,12 +103,6 @@ export default class CreateTransaction extends Page{
             )
             .append(new Elem("button")
                 .text("Create")
-            )
-            .append(new Elem("button")
-                .text("Cancel")
-                .type("button")
-                .addClass("cancel")
-                .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);
 

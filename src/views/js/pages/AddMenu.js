@@ -3,7 +3,7 @@ import Elem from "../Elem.js";
 
 export default class AddMenu extends Page{
     constructor(){
-        super("AddMenu", ["back-home"]);
+        super("AddMenu", ["back-home", "logout"]);
 
         this.render();
     }

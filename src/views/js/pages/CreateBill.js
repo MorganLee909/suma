@@ -3,7 +3,7 @@ import Elem from "../Elem.js";
 
 export default class CreateBill extends Page{
     constructor(){
-        super("CreateBill");
+        super("CreateBill", ["home", "back-addMenu", "logout"]);
 
         this.render();
     }
@@ -49,12 +49,6 @@ export default class CreateBill extends Page{
             )
             .append(new Elem("button")
                 .text("Create")
-            )
-            .append(new Elem("button")
-                .text("Cancel")
-                .addClass("cancel")
-                .type("button")
-                .onclick(()=>{changePage("home")})
             )
             .appendTo(this.container);
     }

@@ -4,7 +4,7 @@ import Format from "../Format.js";
 
 export default class ViewTransactions extends Page{
     constructor(){
-        super("ViewTransactions");
+        super("ViewTransactions", ["home", "back-viewMenu", "logout"]);
 
         this.render();
     }
@@ -26,8 +26,6 @@ export default class ViewTransactions extends Page{
     }
 
     render(){
-        new HomeButton(this.container);
-
         new Elem("h1")
             .text(`${user.account.name} transactions`)
             .appendTo(this.container);
