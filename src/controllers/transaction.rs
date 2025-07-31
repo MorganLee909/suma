@@ -1,4 +1,4 @@
-use actix_web::{web, post, put, HttpResponse, HttpRequest};
+use actix_web::{web, post, put, delete, HttpResponse, HttpRequest};
 use mongodb::Database;
 use bson::oid::ObjectId;
 
@@ -7,6 +7,7 @@ use crate::models::account::Account;
 use crate::app_error::AppError;
 use crate::auth::user_auth;
 use crate::dto::transaction::{CreateInput, SearchInput, UpdateInput};
+use serde_json::json;
 
 #[post("/api/transaction")]
 pub async fn create_route(
@@ -77,4 +78,26 @@ pub async fn update_route(
     ).await?;
 
     Ok(HttpResponse::Ok().json(transaction.response()))
+}
+
+#[delete("/api/transaction/{transaction_id}")]
+pub async fn delete_route(
+    db: web::Data<Database>,
+    request: HttpRequest,
+    transaction_id: web::Path<String>
+) -> Result<HttpResponse, AppError> {
+    let user = user_auth(&db, &request).await?;
+    let transaction_collection = db.collection::<Transaction>("transactions");
+
+    let object_id = ObjectId::parse_str(&transaction_id.into_inner())?;
+    Transaction::user_owns(
+        &transaction_collection,
+        &db.collection::<Account>("accounts"),
+        object_id,
+        user
+    ).await?;
+
+    Transaction::delete(&transaction_collection, object_id).await?;
+
+    Ok(HttpResponse::Ok().json(json!({"success": true})))
 }

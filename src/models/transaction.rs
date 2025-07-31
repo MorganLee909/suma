@@ -122,6 +122,10 @@ impl Transaction {
         }
     }
 
+    pub async fn delete(collection: &Collection<Transaction>, id: ObjectId) -> Result<(), AppError> {
+        collection.delete_one(doc!{"_id": id}).await?;
+        Ok(())
+    }
 
     pub fn response(self) -> ResponseTransaction {
         ResponseTransaction {
