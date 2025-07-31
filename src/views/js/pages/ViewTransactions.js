@@ -1,7 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 import Format from "../Format.js";
-import HomeButton from "../HomeButton.js";
 
 export default class ViewTransactions extends Page{
     constructor(){

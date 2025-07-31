@@ -108,28 +108,13 @@ body{
     color: white;
 }
 
-.homeButton{
+.navigator{
     position: absolute;
-    top: 15px;
-    right: 15px;
-    background: var(--primary);
-    color: var(--accent);
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
+    top: 5px;
+    right: 5px;
 }
 
-.homeButton:hover{
-    filter: brightness(1.25);
-}
-
-.homeButton:active{
-    filter: brightness(1.75);
-}
-
-.circleButton{
+.navButton{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,17 +126,18 @@ body{
     background: var(--primary);
     border: none;
     cursor: pointer;
+    margin: 10px 0;
 }
 
-.circleButton:hover{
+.navButton:hover{
     filter: brightness(1.25);
 }
 
-.circleButton:active{
+.navButton:active{
     filter: brightness(1.75);
 }
 
-.circleButton svg{
+.navButton svg{
     height: 35px;
     width: 35px;
 }

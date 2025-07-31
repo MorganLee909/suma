@@ -6,6 +6,7 @@ import Notifier from "../Notifier.js";
 
 export default class Login extends Page{
     constructor(){
+        console.log("wtf mate");
         super("Login");
 
         this.render();

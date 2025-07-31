@@ -17,6 +17,7 @@ const pages = document.querySelector(".page");
 let currentPage;
 
 window.changePage = (page, data)=>{
+    console.log(page);
     console.time("change page");
     currentPage.close();
 
@@ -66,5 +67,6 @@ fetch("/api/user", {
         currentPage = new Home();
     })
     .catch((err)=>{
+        console.log(err);
         currentPage = new Login();
     });
