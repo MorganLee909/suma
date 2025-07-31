@@ -11,6 +11,18 @@ export default class Format{
         return `${year}-${month}-${day}`;
     }
 
+    static dateFromTransaction(d){
+        const date = new Date(d);
+
+        let options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        };
+
+        return date.toLocaleDateString("en-US", options);
+    }
+
     static dollarsToCents(num){
         if(typeof num === "string") num = Number(num);
 

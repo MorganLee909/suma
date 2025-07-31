@@ -11,7 +11,6 @@ export default class CreateTransaction extends Page{
             user.account.listBills(),
             user.account.listAllowances()
         );
-
     }
 
     async submit(event){
@@ -114,15 +113,15 @@ export default class CreateTransaction extends Page{
             .appendTo(this.container);
 
         for(let i = 0; i < allowances.length; i++){
-            allowancesOpt.append(new Elem("option").text(allowances[i].name).value(`allowance-${allowances[i].id}`));
+            allowancesOpt.append(new Elem("option").text(allowances[i].name).value(`allowance:${allowances[i].id}`));
         }
 
         for(let i = 0; i < bills.length; i++){
-            billsOpt.append(new Elem("option").text(bills[i].name).value(`bill-${bills[i].id}`));
+            billsOpt.append(new Elem("option").text(bills[i].name).value(`bill:${bills[i].id}`));
         }
 
         for(let i = 0; i < income.length; i++){
-            incomeOpt.append(new Elem("option").text(income[i].name).value(`income-${income[i].id}`));
+            incomeOpt.append(new Elem("option").text(income[i].name).value(`income:${income[i].id}`));
         }
     }
 }

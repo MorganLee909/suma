@@ -34,7 +34,7 @@ export default class Transaction{
     static create(account, date, amount, tags, location, note, category){
         let categoryId = null;
         if(category !== "discretionary"){
-            let categorySplit = category.split("-");
+            let categorySplit = category.split(":");
             category = categorySplit[0];
             categoryId = categorySplit[1];
         }

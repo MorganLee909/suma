@@ -9,6 +9,22 @@ export default class ViewTransactions extends Page{
         this.render();
     }
 
+    transactionColor(transaction){
+        if(transaction.category === "income"){
+            if(transaction.amount < 0){
+                return "red";
+            }else{
+                return "green";
+            }
+        }else{
+            if(transaction.amount < 0){
+                return "green";
+            }else{
+                return "red";
+            }
+        }
+    }
+
     render(){
         new Elem("h1")
             .text(`${user.account.name} transactions`)
@@ -22,21 +38,26 @@ export default class ViewTransactions extends Page{
         for(let i = 0; i < transactions.length; i++){
             new Elem("div")
                 .addClass("transaction")
-                .append(new Elem("p")
-                    .addClass("date")
-                    .text(transactions[i].date)
+                .append(new Elem("div")
+                    .append(new Elem("p")
+                        .addClass("date")
+                        .text(Format.dateFromTransaction(transactions[i].date))
+                    )
+                    .append(new Elem("p")
+                        .addClass("amount", this.transactionColor(transactions[i]))
+                        .text(Format.currency(transactions[i].amount))
+                    )
                 )
-                .append(new Elem("p")
-                    .addClass("category")
-                    .text(transactions[i].category.name)
-                )
-                .append(new Elem("p")
-                    .addClass("location")
-                    .text(transactions[i].location)
-                )
-                .append(new Elem("p")
-                    .addClass("amount")
-                    .text(Format.currency(transactions[i].amount))
+                .append(new Elem("div")
+                    .addClass("right")
+                    .append(new Elem("p")
+                        .addClass("category")
+                        .text(transactions[i].category.name)
+                    )
+                    .append(new Elem("p")
+                        .addClass("location")
+                        .text(transactions[i].location)
+                    )
                 )
                 .appendTo(this.transactions);
         }

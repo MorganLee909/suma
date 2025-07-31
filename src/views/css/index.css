@@ -1,6 +1,7 @@
 @import "./home.css";
 @import "./addMenu.css";
 @import "./createAllowance.css";
+@import "./viewTransactions.css";
 
 :root {
     --primary: #6E4B3A;
