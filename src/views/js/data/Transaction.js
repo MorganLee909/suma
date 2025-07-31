@@ -35,6 +35,14 @@ export default class Transaction{
         return Format.centsToDollars(this._amount);
     }
 
+    get tags(){
+        return this._tags;
+    }
+
+    get note(){
+        return this._note;
+    }
+
     static create(account, date, amount, tags, location, note, category){
         let categoryId = null;
         if(category !== "discretionary"){

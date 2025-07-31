@@ -1,0 +1,32 @@
+#TransactionDetails h1{
+    text-align: center;
+}
+
+#TransactionDetails .dataContainer{
+    width: 100%;
+    max-width: 750px;
+}
+
+#TransactionDetails dl{
+    padding: 5px 15px;
+    font-size: 22px;
+    margin: 5px 0;
+    background: var(--surface);
+}
+
+#TransactionDetails dt{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#TransactionDetails .button{
+    width: 100%;
+}
+
+#TransactionDetails .green{
+    color: var(--success);
+}
+
+#TransactionDetails .red{
+    color: var(--error);
+}

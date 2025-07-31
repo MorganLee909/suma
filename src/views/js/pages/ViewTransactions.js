@@ -38,6 +38,7 @@ export default class ViewTransactions extends Page{
         for(let i = 0; i < transactions.length; i++){
             new Elem("div")
                 .addClass("transaction")
+                .onclick(()=>{changePage("transactionDetails", transactions[i])})
                 .append(new Elem("div")
                     .append(new Elem("p")
                         .addClass("date")

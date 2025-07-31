@@ -11,13 +11,14 @@ export default class Format{
         return `${year}-${month}-${day}`;
     }
 
-    static dateFromTransaction(d){
+    static dateFromTransaction(d, dayOfWeek = false){
         const date = new Date(d);
 
         let options = {
             year: "numeric",
             month: "long",
-            day: "numeric"
+            day: "numeric",
+            weekday: dayOfWeek ? "long" : undefined
         };
 
         return date.toLocaleDateString("en-US", options);

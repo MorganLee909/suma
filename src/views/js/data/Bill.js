@@ -17,6 +17,10 @@ export default class Bill{
         return this._amount;
     }
 
+    get type(){
+        return "Bill";
+    }
+
     static create(name, amount){
         return new Bill(
             crypto.randomUUID(),

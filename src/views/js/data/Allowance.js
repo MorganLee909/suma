@@ -14,6 +14,10 @@ export default class Allowance{
         return this._name;
     }
 
+    get type(){
+        return "Allowance";
+    }
+
     static create(name, amount, isPercent){
         return new Allowance(
             crypto.randomUUID(),
