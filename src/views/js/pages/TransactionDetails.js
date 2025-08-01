@@ -1,6 +1,7 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 import Format from "../Format.js";
+import Notifier from "../Notifier.js";
 
 export default class TransactionDetails extends Page{
     constructor(transaction){
@@ -37,8 +38,7 @@ export default class TransactionDetails extends Page{
 
     async delete(transaction){
         try{
-            const response = await transaction.delete();
-            if(response.error) throw response.error;
+            await transaction.delete();
         }catch(e){
             if(e.error){
                 new Notifier("error", e.error.message);

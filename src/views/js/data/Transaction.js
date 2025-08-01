@@ -68,9 +68,6 @@ export default class Transaction{
     }
 
     static async fetch(account, from, to){
-        console.log(account);
-        console.log(from);
-        console.log(to);
         let response;
         try{
             response = await fetch("/api/transaction/search", {
@@ -79,7 +76,6 @@ export default class Transaction{
                 body: JSON.stringify({account, from, to})
             });
             response = await response.json();
-            console.log(response);
 
             const promises = [];
             for(let i = 0; i < response.length; i++){
@@ -121,13 +117,15 @@ export default class Transaction{
     }
 
     async delete(){
-        let response = await fetch(`/api/transactions/${this._id}`, {
+        let response = await fetch(`/api/transaction/${this._id}`, {
             method: "DELETE",
             headers: {"Content-Type": "application/json"}
         });
         response = await response.json(); 
 
         if(response.error) throw response.error;
+
+        this._parent.removeTransaction(this);
     }
 
     async save(isNew = false){
