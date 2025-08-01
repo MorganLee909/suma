@@ -55,7 +55,7 @@ export default class Transaction{
             account,
             null,
             encryptionHandler.generateIv(),
-            Format.transactionDate(date),
+            date,
             {
                 category: category,
                 categoryId: categoryId,
@@ -68,6 +68,9 @@ export default class Transaction{
     }
 
     static async fetch(account, from, to){
+        console.log(account);
+        console.log(from);
+        console.log(to);
         let response;
         try{
             response = await fetch("/api/transaction/search", {
@@ -76,6 +79,7 @@ export default class Transaction{
                 body: JSON.stringify({account, from, to})
             });
             response = await response.json();
+            console.log(response);
 
             const promises = [];
             for(let i = 0; i < response.length; i++){

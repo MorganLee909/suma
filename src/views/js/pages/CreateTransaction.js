@@ -15,10 +15,10 @@ export default class CreateTransaction extends Page{
 
     async submit(event){
         event.preventDefault();
-
+        
         const transaction = Transaction.create(
             user.account,
-            document.querySelector(".date").valueAsDate,
+            document.querySelector(".date").value,
             document.querySelector(".amount").value,
             document.querySelector(".tags").value,
             document.querySelector(".location").value,
