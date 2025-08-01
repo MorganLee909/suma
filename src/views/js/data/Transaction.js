@@ -116,8 +116,14 @@ export default class Transaction{
         };
     }
 
-    delete(){
-       console.log("deleting");
+    async delete(){
+        let response = await fetch(`/api/transactions/${this._id}`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"}
+        });
+        response = await response.json(); 
+
+        if(response.error) throw response.error;
     }
 
     async save(isNew = false){

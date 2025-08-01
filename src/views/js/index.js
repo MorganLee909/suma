@@ -68,6 +68,5 @@ fetch("/api/user", {
         currentPage = new Home();
     })
     .catch((err)=>{
-        console.log(err);
         currentPage = new Login();
     });

@@ -35,6 +35,21 @@ export default class TransactionDetails extends Page{
         modal.parentElement.removeChild(modal);
     }
 
+    async delete(transaction){
+        try{
+            const response = await transaction.delete();
+            if(response.error) throw response.error;
+        }catch(e){
+            if(e.error){
+                new Notifier("error", e.error.message);
+            }else{
+                new Notifier("error", "Something went wrong, try refreshing the page");
+            }
+        }
+
+        changePage("viewTransactions");
+    }
+
     confirmDelete(transaction){
         new Elem("div")
             .addClass("deleteModal")
@@ -44,7 +59,7 @@ export default class TransactionDetails extends Page{
             .append(new Elem("button")
                 .text("Delete")
                 .addClass("button")
-                .onclick(()=>{console.log("deleting")})
+                .onclick(()=>{this.delete(transaction)})
             )
             .append(new Elem("button")
                 .text("Cancel")
