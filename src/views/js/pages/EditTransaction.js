@@ -1,5 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Notifier from "../Notifier.js";
 
 export default class EditTransaction extends Page{
     constructor(transaction){
@@ -13,17 +14,30 @@ export default class EditTransaction extends Page{
         );
     }
 
-    submit(event){
+    async submit(transaction){
         event.preventDefault();
 
-        console.log("submit");
+        try{
+            const select = this.container.querySelector.bind(this.container);
+            transaction.amount = select(".amount").value;
+            transaction.category = select(".category").value;
+            transaction.tags = select(".tags").value;
+            transaction.location = select(".location").value;
+            transaction.date = select(".date").value;
+            transaction.note = select(".note").value;
+        }catch(e){
+            return new Notifier("error", e);
+        }
+        
+        await transaction.save();
+        changePage("transactionDetails", transaction);
     }
 
     render(transaction, income, bills, allowances){
         let select, incomeOpt, billsOpt, allowancesOpt;
         new Elem("form")
             .addClass("standardForm")
-            .onsubmit(this.submit.bind(this))
+            .onsubmit(()=>{this.submit(transaction)})
             .append(new Elem("h1")
                 .text("Edit Transaction")
             )

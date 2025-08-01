@@ -19,8 +19,27 @@ export default class Transaction{
         return this._date;
     }
 
+    set date(v){
+        if(v instanceof Date){
+            this._date = Format.transactionDate(v);
+        }else{
+            this._date = v;
+        }
+    }
+
     get category(){
         return this._parent.getCategory(this._category, this._categoryId);
+    }
+
+    set category(v){
+        if(v === "discretionary"){
+            this._category = v;
+            this._categoryId = null;
+        }else{
+            v = v.split(":");
+            this._category = v[0];
+            this._categoryId = v[1];
+        }
     }
 
     get rawCategory(){
@@ -31,16 +50,37 @@ export default class Transaction{
         return this._location;
     }
 
+    set location(v){
+        this._location = v;
+    }
+
     get amount(){
         return Format.centsToDollars(this._amount);
+    }
+
+    set amount(v){
+        if(typeof v !== "number") v = Number(v);
+        this._amount = Format.dollarsToCents(v);
     }
 
     get tags(){
         return this._tags;
     }
 
+    set tags(v){
+        this._tags = [];
+        let tags = v.split(",");
+        for(let i = 0; i < tags.length; i++){
+            this._tags.push(tags[i].trim());
+        }
+    }
+
     get note(){
         return this._note;
+    }
+
+    set note(v){
+        this._note = v;
     }
 
     selectValue(){
@@ -145,6 +185,13 @@ export default class Transaction{
                 data: data,
                 iv: this._iv
             };
+        }else{
+            method = "PUT";
+            body = {
+                id: this._id,
+                date: this._date,
+                data: data
+            }
         }
 
         fetch("/api/transaction", {
