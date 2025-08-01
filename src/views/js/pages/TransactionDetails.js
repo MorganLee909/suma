@@ -127,6 +127,7 @@ export default class TransactionDetails extends Page{
             .append(new Elem("button")
                 .text("Edit")
                 .addClass("button")
+                .onclick(()=>{changePage("editTransaction", transaction)})
             )
             .append(new Elem("button")
                 .text("Delete")

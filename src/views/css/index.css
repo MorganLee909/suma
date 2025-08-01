@@ -113,6 +113,10 @@ body{
     color: white;
 }
 
+.standardForm textarea{
+    font-size: 20px;
+}
+
 .navigator{
     display: flex;
     position: absolute;

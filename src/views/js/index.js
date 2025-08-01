@@ -13,6 +13,7 @@ import CreateTransaction from "./pages/CreateTransaction.js";
 import ViewMenu from "./pages/ViewMenu.js";
 import ViewTransactions from "./pages/ViewTransactions.js";
 import TransactionDetails from "./pages/TransactionDetails.js";
+import EditTransaction from "./pages/EditTransaction.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -34,6 +35,7 @@ window.changePage = (page, data)=>{
         case "viewMenu": currentPage = new ViewMenu(); break;
         case "viewTransactions": currentPage = new ViewTransactions(); break;
         case "transactionDetails": currentPage = new TransactionDetails(data); break;
+        case "editTransaction": currentPage = new EditTransaction(data); break;
     }
     console.timeEnd("change page");
 }

@@ -43,6 +43,11 @@ export default class Transaction{
         return this._note;
     }
 
+    selectValue(){
+        if(this._category === "discretionary") return this._category;
+        return `${this._category}:${this._categoryId}`;
+    }
+
     static create(account, date, amount, tags, location, note, category){
         let categoryId = null;
         if(category !== "discretionary"){
