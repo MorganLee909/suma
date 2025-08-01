@@ -17,6 +17,11 @@ export default class Elem {
         return this;
     }
 
+    addStyle(k, v){
+        this.elem.style[k] = v;
+        return this;
+    }
+
     text(v){
         this.elem.textContent = v;
         return this;

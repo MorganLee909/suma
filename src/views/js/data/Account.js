@@ -35,6 +35,10 @@ export default class Account{
         return this._transactions;
     }
 
+    get income(){
+        return this._income;
+    }
+
     get isPopulated(){
         return this._populated;
     }
@@ -56,6 +60,16 @@ export default class Account{
         for(let i = 0; i < list.length; i++){
             if(list[i].id === categoryId) return list[i];
         }
+    }
+
+    categorySpent(category){
+        let total = 0;
+        for(let i = 0; i < this._transactions.length; i++){
+            if(this._transactions[i].categoryId === category.id){
+                total += this._transactions[i].rawAmount;
+            }
+        }
+        return Format.centsToDollars(total);
     }
 
     incomeTotal(){

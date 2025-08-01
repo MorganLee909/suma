@@ -3,6 +3,7 @@
 @import "./createAllowance.css";
 @import "./viewTransactions.css";
 @import "./transactionDetails.css";
+@import "./viewCategory.css";
 
 :root {
     --primary: #6E4B3A;
@@ -48,7 +49,7 @@ body{
     width: 100%;
     position: relative;
     padding: 10px;
-    padding: 75px 10px 10px 10px;
+    padding: 100px 10px 10px 10px;
 }
 
 .standardForm{

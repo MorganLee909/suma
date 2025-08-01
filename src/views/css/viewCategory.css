@@ -1,0 +1,35 @@
+#ViewIncome,
+#ViewBills,
+#ViewAllowances{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100%;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 750px;
+}
+
+.viewCategoryItem{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    margin: 5px 0;
+    background: var(--surface);
+    width: 100%;
+    cursor: pointer;
+    min-height: 55px;
+}
+
+.viewCategoryItem:hover{
+    box-shadow: 0 0 3px var(--secondary);
+}
+
+.categoryItemSpent{
+    font-weight: bold;
+}

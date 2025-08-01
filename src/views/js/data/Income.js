@@ -1,3 +1,5 @@
+import Format from "../Format.js";
+
 export default class Income{
     constructor(id, name, amount){
         this._id = id;
@@ -14,7 +16,7 @@ export default class Income{
     }
 
     get amount(){
-        return this._amount;
+        return Format.centsToDollars(this._amount);
     }
 
     get type(){

@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: flex-start;
     min-height: 100%;
-    padding-top: 75px;
 }
 
 #ViewTransactions h1{

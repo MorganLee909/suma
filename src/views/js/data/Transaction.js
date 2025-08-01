@@ -42,6 +42,10 @@ export default class Transaction{
         }
     }
 
+    get categoryId(){
+        return this._categoryId;
+    }
+
     get rawCategory(){
         return this._category;
     }
@@ -56,6 +60,10 @@ export default class Transaction{
 
     get amount(){
         return Format.centsToDollars(this._amount);
+    }
+
+    get rawAmount(){
+        return this._amount;
     }
 
     set amount(v){

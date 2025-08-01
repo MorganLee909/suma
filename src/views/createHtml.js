@@ -10,7 +10,6 @@ const esbuildProm = esbuild.build({
     entryPoints: [`${import.meta.dirname}/js/index.js`, `${import.meta.dirname}/css/index.css`],
     bundle: true,
     minify: isProduction,
-    sourcemap: isProduction ? false : "inline",
     write: false,
     outdir: import.meta.dirname
 });
