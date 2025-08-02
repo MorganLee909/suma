@@ -6,7 +6,7 @@ export default class ViewIncome extends Page{
     constructor(){
         super("ViewIncome", ["home", "back-viewMenu", "logout"]);
 
-        this.render();
+        this.render(false);
     }
 
     generateColor(spent, amount){
@@ -26,17 +26,20 @@ export default class ViewIncome extends Page{
         return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
 
-    render(){
-        new Elem("h1")
-            .text(`${user.account.name} income`)
-            .appendTo(this.container);
+    toggleActive(){
+        const showArchived = this.container.querySelector(".archiveCheckbox").checked;
+        this.renderItems(showArchived);
+    }
 
-        const incomeContainer = new Elem("div")
-            .addClass("categoryContainer")
-            .appendTo(this.container);
+    renderItems(showArchived){
+        const container = this.container.querySelector(".categoryContainer");
+        while(container.children.length > 0){
+            container.removeChild(container.lastChild);
+        }
 
         const income = user.account.income;
         for(let i = 0; i < income.length; i++){
+            if(!showArchived && !income[i].active) continue;
             const spent = user.account.categorySpent(income[i]);
             const spentAsCurrency = Format.currency(user.account.categorySpent(income[i]));
             const amount = income[i].amount;
@@ -47,6 +50,7 @@ export default class ViewIncome extends Page{
                 .onclick(()=>{changePage("editIncome", income[i])})
                 .append(new Elem("p")
                     .text(income[i].name)
+                    .addClass(income[i].active ? "none" : "strike")
                 )
                 .append(new Elem("p")
                     .addClass("categoryItemSpent")
@@ -62,7 +66,35 @@ export default class ViewIncome extends Page{
                         .addStyle("color", "hsl(120, 50%, 28%)")
                     )
                 )
-                .appendTo(incomeContainer);
+                .appendTo(container);
         }
+    }
+
+    render(showArchived){
+        new Elem("h1")
+            .text(`${user.account.name} income`)
+            .appendTo(this.container);
+
+        new Elem("label")
+            .addClass("switch")
+            .append(new Elem("p")
+                .text("Show Archived")
+            )
+            .append(new Elem("input")
+                .type("checkbox")
+                .addClass("archiveCheckbox")
+                .checked(false)
+                .onchange(this.toggleActive.bind(this))
+            )
+            .append(new Elem("span")
+                .addClass("slider")
+            )
+            .appendTo(this.container);
+
+        new Elem("div")
+            .addClass("categoryContainer")
+            .appendTo(this.container);
+
+        this.renderItems(showArchived);
     }
 }

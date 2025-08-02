@@ -7,6 +7,20 @@
     min-height: 100%;
 }
 
+#ViewIncome .switch{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 35px;
+    margin: 35px 0 15px 0;
+}
+
+#ViewIncome .switch p{
+    position: absolute;
+    width: 100px;
+    top: -20px;
+}
+
 .categoryContainer{
     display: flex;
     flex-direction: column;
@@ -33,4 +47,8 @@
 
 .categoryItemSpent{
     font-weight: bold;
+}
+
+#ViewIncome .strike{
+    text-decoration: line-through;
 }

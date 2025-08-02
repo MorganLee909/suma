@@ -32,6 +32,11 @@ export default class Elem {
         return this;
     }
 
+    checked(v){
+        this.elem.checked = v;
+        return this;
+    }
+
     type(v){
         this.elem.type = v;
         return this;
