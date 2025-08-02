@@ -42,8 +42,9 @@ export default class ViewIncome extends Page{
             const amount = income[i].amount;
             const amountAsCurrency = Format.currency(income[i].amount);
 
-            new Elem("div")
+            new Elem("button")
                 .addClass("viewCategoryItem")
+                .onclick(()=>{changePage("editIncome", income[i])})
                 .append(new Elem("p")
                     .text(income[i].name)
                 )

@@ -24,6 +24,7 @@
     width: 100%;
     cursor: pointer;
     min-height: 55px;
+    border: none;
 }
 
 .viewCategoryItem:hover{

@@ -15,6 +15,7 @@ import ViewTransactions from "./pages/ViewTransactions.js";
 import TransactionDetails from "./pages/TransactionDetails.js";
 import EditTransaction from "./pages/EditTransaction.js";
 import ViewIncome from "./pages/ViewIncome.js";
+import EditIncome from "./pages/EditIncome.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -38,6 +39,7 @@ window.changePage = (page, data)=>{
         case "transactionDetails": currentPage = new TransactionDetails(data); break;
         case "editTransaction": currentPage = new EditTransaction(data); break;
         case "viewIncome": currentPage = new ViewIncome(); break;
+        case "editIncome": currentPage = new EditIncome(data); break;
     }
     console.timeEnd("change page");
 }
