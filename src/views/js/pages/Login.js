@@ -60,6 +60,11 @@ export default class Login extends Page{
             .then(([encryptionHandler, accounts])=>{
                 window.encryptionHandler = encryptionHandler;
 
+                if(accounts.length === 0){
+                    changePage("createAccount");
+                    return null;
+                }
+
                 let promises = [];
                 for(let i = 0; i < accounts.length; i++){
                     promises.push(user.decryptAndAddAccount(accounts[i]));
@@ -68,7 +73,7 @@ export default class Login extends Page{
                 return Promise.all(promises);
             })
             .then((response)=>{
-                changePage("home");
+                if(response) changePage("home");
             })
             .catch((err)=>{
                 if(err.error){

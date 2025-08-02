@@ -11,9 +11,8 @@ export default class EditIncome extends Page{
     submit(income){
         event.preventDefault();
 
-        const select = this.container.querySelector.bind(this.container);
-        income.name = select(".name").value;
-        income.amount = select(".amount").value;
+        income.name = this.container.querySelector(".name").value;
+        income.amount = this.container.querySelector(".amount").value;
 
         user.account.save();
         changePage("viewIncome");

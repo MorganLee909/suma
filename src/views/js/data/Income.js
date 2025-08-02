@@ -16,8 +16,17 @@ export default class Income{
         return this._name;
     }
 
+    set name(v){
+        this._name = v;
+    }
+
     get amount(){
         return Format.centsToDollars(this._amount);
+    }
+
+    set amount(v){
+        if(typeof v === String) v = Number(v);
+        this._amount = Format.dollarsToCents(v);
     }
 
     get type(){
