@@ -1,8 +1,9 @@
 export default class Bill{
-    constructor(id, name, amount){
+    constructor(id, name, amount, active){
         this._id = id;
         this._name = name;
         this._amount = amount;
+        this._active = active;
     }
 
     get id(){
@@ -21,11 +22,16 @@ export default class Bill{
         return "Bill";
     }
 
+    get active(){
+        return this._active;
+    }
+
     static create(name, amount){
         return new Bill(
             crypto.randomUUID(),
             name,
-            amount
+            amount,
+            true
         );
     }
 
@@ -33,7 +39,8 @@ export default class Bill{
         return new Bill(
             data.id,
             data.name,
-            data.amount
+            data.amount,
+            data.active
         );
     }
 
@@ -41,7 +48,8 @@ export default class Bill{
         return {
             id: this._id,
             name: this._name,
-            amount: this._amount
+            amount: this._amount,
+            active: this._active
         };
     }
 }

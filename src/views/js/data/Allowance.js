@@ -1,9 +1,10 @@
 export default class Allowance{
-    constructor(id, name, amount, isPercent){
+    constructor(id, name, amount, isPercent, active){
         this._id = id;
         this._name = name;
         this._amount = amount;
         this._isPercent = isPercent;
+        this._active = active;
     }
 
     get id(){
@@ -18,12 +19,17 @@ export default class Allowance{
         return "Allowance";
     }
 
+    get active(){
+        return this._active;
+    }
+
     static create(name, amount, isPercent){
         return new Allowance(
             crypto.randomUUID(),
             name,
             amount,
-            isPercent
+            isPercent,
+            true
         );
     }
 
@@ -32,7 +38,8 @@ export default class Allowance{
             data.id,
             data.name,
             data.amount,
-            data.isPercent
+            data.isPercent,
+            data.active
         );
     }
 
@@ -41,7 +48,8 @@ export default class Allowance{
             id: this._id,
             name: this._name,
             amount: this._amount,
-            isPercent: this._isPercent
+            isPercent: this._isPercent,
+            active: this._active
         };
     }
 }
