@@ -106,6 +106,7 @@ export default class Account{
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({data: encryptedData, iv})
             });
+            response = await response.json();
         }catch(e){
             new Notifier("error", "Something went wrong, try refreshing the page");
         }

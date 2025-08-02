@@ -71,7 +71,6 @@ export default class Login extends Page{
                 changePage("home");
             })
             .catch((err)=>{
-                console.log(err);
                 if(err.error){
                     new Notifier("error", err.error.message);
                 }else{

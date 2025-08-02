@@ -134,7 +134,8 @@ export default class Transaction{
             for(let i = 0; i < response.length; i++){
                 promises.push(Transaction.decrypt(response[i]));
             }
-
+            
+            if(promises.length === 0) return [];
             return await Promise.all(promises);
         }catch(e){
             new Notifier("error", "Something went wrong, try refreshing the page");

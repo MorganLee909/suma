@@ -20,7 +20,7 @@ export default class Home extends Page{
             
             Transaction.fetch(user.account.id, from, to)
                 .then((transactions)=>{
-                    user.account.addManyTransactions(transactions);
+                    if(transactions.length > 0) user.account.addManyTransactions(transactions);
                     user.account.isPopulated = true;
                 })
                 .catch((err)=>{
