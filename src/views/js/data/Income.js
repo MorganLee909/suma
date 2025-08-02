@@ -37,6 +37,11 @@ export default class Income{
         return this._active;
     }
 
+    set active(v){
+        if(typeof v !== "boolean") throw new TypeError("'active' must be a boolean");
+        this._active = v;
+    }
+
     static create(name, amount){
         return new Income(
             crypto.randomUUID(),

@@ -18,6 +18,13 @@ export default class EditIncome extends Page{
         changePage("viewIncome");
     }
 
+    archive(income){
+        income.active = !income.active;
+        new Elem(this.container.querySelector(".archive"))
+            .text(income.active ? "Archive" : "Restore");
+        changePage("viewIncome");
+    }
+
     render(income){
         new Elem("form")
             .addClass("standardForm")
@@ -56,6 +63,7 @@ export default class EditIncome extends Page{
                 .text(income.active ? "Archive" : "Restore")
                 .addClass("archive")
                 .type("button")
+                .onclick(()=>{this.archive(income)})
             )
             .appendTo(this.container);
     }
