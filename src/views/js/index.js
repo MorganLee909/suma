@@ -62,16 +62,20 @@ fetch("/api/user", {
     })
     .then(([key, accounts])=>{
         window.encryptionHandler = new EncryptionHandler(key);
+        if(accounts.length === 0){
+            currentPage = new CreateAccount();
+            return false;
+        }else{
+            let promises = [];
+            for(let i = 0; i < accounts.length; i++){
+                promises.push(user.decryptAndAddAccount(accounts[i]));
+            }
 
-        let promises = [];
-        for(let i = 0; i < accounts.length; i++){
-            promises.push(user.decryptAndAddAccount(accounts[i]));
+            return Promise.all(promises);
         }
-
-        return Promise.all(promises);
     })
     .then((response)=>{
-        currentPage = new Home();
+        if(response) currentPage = new Home();
     })
     .catch((err)=>{
         currentPage = new Login();
