@@ -24,6 +24,10 @@ export default class Income{
         return Format.centsToDollars(this._amount);
     }
 
+    get amountRaw(){
+        return this._amount;
+    }
+
     set amount(v){
         if(typeof v === String) v = Number(v);
         this._amount = Format.dollarsToCents(v);

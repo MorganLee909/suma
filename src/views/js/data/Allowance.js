@@ -1,3 +1,5 @@
+import Format from "../Format.js";
+
 export default class Allowance{
     constructor(id, name, amount, isPercent, active){
         this._id = id;
@@ -21,6 +23,16 @@ export default class Allowance{
 
     get active(){
         return this._active;
+    }
+
+    amountInDollars(income){
+        if(this._isPercent) return Format.centsToDollars(income * (this._amount / 100));
+        return Format.centsToDollars(this._amount);
+    }
+
+    rawAmount(){
+        if(this._isPercent) return this._amount;
+        return Format.centsToDollars(this._amount);
     }
 
     static create(name, amount, isPercent){

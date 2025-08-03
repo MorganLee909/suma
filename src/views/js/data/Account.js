@@ -43,12 +43,25 @@ export default class Account{
         return this._bills;
     }
 
+    get allowances(){
+        return this._allowances;
+    }
+
     get isPopulated(){
         return this._populated;
     }
 
     set isPopulated(v){
         if(typeof v === "boolean") this._populated = v;
+    }
+
+    getIncomeSum(raw = false){
+        let total = 0;
+        for(let i = 0; i < this._income.length; i++){
+            if(this._income[i].active) total += this._income[i].amountRaw;
+        }
+        if(raw) return total;
+        return Format.centsToDollars(total);
     }
 
     getCategory(category, categoryId){

@@ -18,6 +18,7 @@ import ViewIncome from "./pages/ViewIncome.js";
 import EditIncome from "./pages/EditIncome.js";
 import ViewBills from "./pages/ViewBills.js";
 import EditBill from "./pages/EditBill.js";
+import ViewAllowances from "./pages/ViewAllowances.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -26,7 +27,6 @@ window.changePage = (page, data)=>{
     console.time("change page");
     currentPage.close();
 
-    console.log(page);
     switch(page){
         case "login": currentPage = new Login(); break;
         case "register": currentPage = new Register(); break;
@@ -45,6 +45,7 @@ window.changePage = (page, data)=>{
         case "editIncome": currentPage = new EditIncome(data); break;
         case "viewBills": currentPage = new ViewBills(); break;
         case "editBill": currentPage = new EditBill(data); break;
+        case "viewAllowances": currentPage = new ViewAllowances(data); break;
     }
     console.timeEnd("change page");
 }
