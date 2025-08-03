@@ -11,7 +11,14 @@ export default class EditAllowance extends Page{
 
     submit(allowance){
         event.preventDefault();
-        console.log("submitting");
+
+        const select = this.container.querySelector.bind(this.container);
+        allowance.name = select(".name").value;
+        allowance.isPercent = select(".isPercent").checked;
+        allowance.amount = select(".amount").value;
+
+        user.account.save();
+        changePage("viewAllowances");
     }
 
     updateAmount(allowance){

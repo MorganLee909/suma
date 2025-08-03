@@ -17,6 +17,18 @@ export default class Allowance{
         return this._name;
     }
 
+    set name(v){
+        this._name = v;
+    }
+
+    set amount(v){
+        if(this._isPercent){
+            this._amount = v;
+        }else{
+            this._amount = Format.dollarsToCents(v);
+        }
+    }
+
     get isPercent(){
         return this._isPercent;
     }
