@@ -53,6 +53,8 @@
     font-weight: bold;
 }
 
-#ViewIncome .strike{
+#ViewIncome .strike,
+#ViewBills .strike,
+#ViewAllowances .strike{
     text-decoration: line-through;
 }

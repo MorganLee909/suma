@@ -16,8 +16,17 @@ export default class Bill{
         return this._name;
     }
 
+    set name(v){
+        this._name = v;
+    }
+
     get amount(){
         return Format.centsToDollars(this._amount);
+    }
+
+    set amount(v){
+        if(typeof v !== "string") v = Number(v);
+        this._amount = Format.dollarsToCents(v);
     }
 
     get type(){
@@ -26,6 +35,11 @@ export default class Bill{
 
     get active(){
         return this._active;
+    }
+
+    set active(v){
+        if(typeof v !== "boolean") throw new TypeError("'value' requires a boolean");
+        this._active = v;
     }
 
     static create(name, amount){
