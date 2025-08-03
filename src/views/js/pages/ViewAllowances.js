@@ -43,7 +43,7 @@ export default class ViewAllowances extends Page{
             if(!showArchived && !allowances[i].active) continue;
             const spent = user.account.categorySpent(allowances[i]);
             const spentAsCurrency = Format.currency(spent);
-            const amount = allowances[i].amountInDollars(income);
+            const amount = allowances[i].currencyAmount(income);
             const amountAsCurrency = Format.currency(amount);
 
             new Elem("button")

@@ -59,7 +59,7 @@ export default class Transaction{
     }
 
     get amount(){
-        return Format.centsToDollars(this._amount);
+        return this._amount;
     }
 
     get rawAmount(){

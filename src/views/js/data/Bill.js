@@ -21,7 +21,7 @@ export default class Bill{
     }
 
     get amount(){
-        return Format.centsToDollars(this._amount);
+        return this._amount;
     }
 
     set amount(v){

@@ -28,7 +28,7 @@ export default class Account{
     }
 
     get balance(){
-        return Format.centsToDollars(this._balance);
+        return this._balance;
     }
 
     get transactions(){
@@ -86,15 +86,17 @@ export default class Account{
                 total += this._transactions[i].rawAmount;
             }
         }
-        return Format.centsToDollars(total);
+        return total;
     }
 
     incomeTotal(){
         let income = 0;
         for(let i = 0; i < this._income.length; i++){
-            if(this._income.active) income += this._income[i].amountRaw;
+            if(this._income[i].active){
+                income += this._income[i].amountRaw;
+            }
         }
-        return Format.centsToDollars(income);
+        return income;
     }
 
     billsTotal(){
@@ -102,7 +104,7 @@ export default class Account{
         for(let i = 0; i < this._bills.length; i++){
             bills += this._bills[i].amount;
         }
-        return Format.centsToDollars(bills);
+        return bills;
     }
 
     static async create(name, balance){

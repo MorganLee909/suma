@@ -1,5 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Format from "../Format.js";
 
 export default class EditIncome extends Page{
     constructor(income){
@@ -49,7 +50,7 @@ export default class EditIncome extends Page{
                 .append(new Elem("input")
                     .type("number")
                     .addClass("amount")
-                    .value(income.amount)
+                    .value(Format.centsToDollars(income.amount))
                     .step("0.01")
                     .min("0")
                     .required()

@@ -22,11 +22,7 @@ export default class Allowance{
     }
 
     set amount(v){
-        if(this._isPercent){
-            this._amount = v;
-        }else{
-            this._amount = Format.dollarsToCents(v);
-        }
+        return this._amount;
     }
 
     get isPercent(){
@@ -51,19 +47,14 @@ export default class Allowance{
         this._active = v;
     }
 
-    amountInDollars(income){
-        if(this._isPercent) return Format.centsToDollars(income * (this._amount / 100));
-        return Format.centsToDollars(this._amount);
+    currencyAmount(income){
+        if(this._isPercent) return income * (this._amount / 100);
+        return this._amount;
     }
 
     rawAmount(){
         if(this._isPercent) return this._amount;
         return Format.centsToDollars(this._amount);
-    }
-
-    displayAmount(income){
-        if(this._isPercent) return this._amount;
-        return Format.centsToDollars(income * (this._amount / 100));
     }
 
     static create(name, amount, isPercent){

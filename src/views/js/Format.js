@@ -1,5 +1,6 @@
 export default class Format{
     static currency(num){
+        num /= 100;
         return "$" + num.toFixed(2);
     }
 

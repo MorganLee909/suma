@@ -21,10 +21,6 @@ export default class Income{
     }
 
     get amount(){
-        return Format.centsToDollars(this._amount);
-    }
-
-    get amountRaw(){
         return this._amount;
     }
 

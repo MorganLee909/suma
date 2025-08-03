@@ -1,10 +1,12 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Format from "../Format.js";
 
 export default class EditAllowance extends Page{
     constructor(allowance){
         super("EditAllowance", ["home", "back-viewAllowances", "logout"]);
         this.incomeTotal = user.account.incomeTotal();
+        this.isPercent = allowance.isPercent;
 
         this.render(allowance);
     }
@@ -22,15 +24,17 @@ export default class EditAllowance extends Page{
     }
 
     updateAmount(allowance){
-        let text, titleText, step;
+        let text, titleText, step, value;
         if(event.target.checked){
             text = "Amount (%)";
             titleText = "(Percent of Income)";
             step = "1";
+            value = allowance.rawAmount();
         }else{
             text = "Amount ($)";
             titleText = "(Fixed Amount)";
             step = "0.01";
+            value = Format.centsToDollars(allowance.currencyAmount(this.incomeTotal));
         }
 
         new Elem(this.container.querySelector("h2"))
@@ -44,7 +48,7 @@ export default class EditAllowance extends Page{
             .append(new Elem("input")
                 .type("number")
                 .addClass("amount")
-                .value(allowance.displayAmount(this.incomeTotal))
+                .value(value)
                 .min("0")
                 .step(step)
                 .required()
@@ -58,6 +62,7 @@ export default class EditAllowance extends Page{
     }
 
     render(allowance){
+        let value = allowance.isPercent ? allowance.rawAmount() : Format.currency(allowance.currencyAmount(this.incomeTotal));
         new Elem("form")
             .addClass("standardForm")
             .onsubmit(()=>{this.submit(allowance)})
@@ -98,7 +103,7 @@ export default class EditAllowance extends Page{
                 .append(new Elem("input")
                     .type("number")
                     .addClass("amount")
-                    .value(allowance.displayAmount(this.incomeTotal))
+                    .value(value)
                     .min("0")
                     .step(allowance.isPercent ? "1" : "0.01")
                     .required()
