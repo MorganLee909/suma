@@ -1,25 +1,20 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 
-export default class CreateAllowance extends Page{
-    constructor(){
-        super("CreateAllowance", ["home", "back-addMenu", "logout"]);
+export default class EditAllowance extends Page{
+    constructor(allowance){
+        super("EditAllowance", ["home", "back-viewAllowances", "logout"]);
+        this.incomeTotal = user.account.incomeTotal();
 
-        this.render();
+        this.render(allowance);
     }
 
-    async submit(event){
+    submit(allowance){
         event.preventDefault();
-
-        await user.account.addAllowance(
-            this.container.querySelector(".name").value,
-            this.container.querySelector(".amount").value,
-            this.container.querySelector(".isPercent").checked
-        );
-        changePage("home");
+        console.log("submitting");
     }
 
-    updateAmount(){
+    updateAmount(allowance){
         let text, titleText, step;
         if(event.target.checked){
             text = "Amount (%)";
@@ -35,35 +30,43 @@ export default class CreateAllowance extends Page{
             .text(titleText);
 
         new Elem(this.container.querySelector(".amountLabel"))
-            .text(text)
+            .clear()
+            .append(new Elem("p")
+                .text(text)
+            )
             .append(new Elem("input")
                 .type("number")
                 .addClass("amount")
+                .value(allowance.displayAmount(this.incomeTotal))
                 .min("0")
                 .step(step)
-                .placeholder(text)
                 .required()
             );
     }
 
-    render(){
+    archive(allowance){
+        console.log("archiving");
+    }
+
+    render(allowance){
         new Elem("form")
             .addClass("standardForm")
-            .onsubmit(this.submit.bind(this))
+            .onsubmit(()=>{this.submit(allowance)})
             .append(new Elem("h1")
-                .text("Create Allowance")
+                .text("Edit Allowance")
             )
             .append(new Elem("h2")
-                .text("(Fixed Amount)")
+                .text(allowance.isPercent ? "(Percent of Income)" : "(Fixed Amount)")
             )
             .append(new Elem("label")
-                .text("Name")
+                .append(new Elem("p")
+                    .text("Name")
+                )
                 .append(new Elem("input")
                     .type("text")
                     .addClass("name")
-                    .placeholder("Name")
+                    .value(allowance.name)
                     .required()
-                    .focus()
                 )
             )
             .append(new Elem("label")
@@ -71,26 +74,34 @@ export default class CreateAllowance extends Page{
                 .append(new Elem("input")
                     .type("checkbox")
                     .addClass("isPercent")
-                    .onchange(()=>{this.updateAmount()})
+                    .checked(allowance.isPercent)
+                    .onchange(()=>{this.updateAmount(allowance)})
                 )
                 .append(new Elem("span")
                     .addClass("slider")
                 )
             )
             .append(new Elem("label")
-                .text("Amount ($)")
                 .addClass("amountLabel")
+                .append(new Elem("p")
+                    .text(allowance.isPercent ? "Amount (%)" : "Amount ($)")
+                )
                 .append(new Elem("input")
                     .type("number")
                     .addClass("amount")
-                    .placeholder("Amount")
+                    .value(allowance.displayAmount(this.incomeTotal))
                     .min("0")
-                    .step("0.01")
+                    .step(allowance.isPercent ? "1" : "0.01")
                     .required()
                 )
             )
             .append(new Elem("button")
-                .text("Create")
+                .text("Update")
+            )
+            .append(new Elem("button")
+                .text(allowance.active ? "Archive" : "Restore")
+                .type("button")
+                .onclick(()=>{this.archive(allowance)})
             )
             .appendTo(this.container);
     }

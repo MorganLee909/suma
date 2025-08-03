@@ -4,6 +4,7 @@
 @import "./viewTransactions.css";
 @import "./transactionDetails.css";
 @import "./viewCategory.css";
+@import "./editAllowance.css";
 
 :root {
     --primary: #6E4B3A;

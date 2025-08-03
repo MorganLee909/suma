@@ -48,7 +48,7 @@ export default class ViewAllowances extends Page{
 
             new Elem("button")
                 .addClass("viewCategoryItem")
-                .onclick(()=>{changePage("editAllowance")})
+                .onclick(()=>{changePage("editAllowance", allowances[i])})
                 .append(new Elem("p")
                     .text(allowances[i].name)
                     .addClass(allowances[i].active ? "none" : "strike")

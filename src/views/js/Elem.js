@@ -72,6 +72,13 @@ export default class Elem {
         return this;
     }
 
+    clear(){
+        while(this.elem.children.length > 0){
+            this.elem.removeChild(this.elem.lastChild);
+        }
+        return this;
+    }
+
     min(v){
         this.elem.min = v;
         return this;

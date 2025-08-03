@@ -17,6 +17,15 @@ export default class Allowance{
         return this._name;
     }
 
+    get isPercent(){
+        return this._isPercent;
+    }
+
+    set isPercent(v){
+        if(typeof v !== "boolean") throw new TypeError("'isPercent' must be of type boolean");
+        this._isPercent = v;
+    }
+
     get type(){
         return "Allowance";
     }
@@ -33,6 +42,15 @@ export default class Allowance{
     rawAmount(){
         if(this._isPercent) return this._amount;
         return Format.centsToDollars(this._amount);
+    }
+
+    displayAmount(income){
+        console.log(this._isPercent);
+        console.log(this._amount);
+        console.log(this._amount / 100);
+        console.log(income * (this._amount / 100));
+        if(this._isPercent) return this._amount;
+        return Format.centsToDollars(income * (this._amount / 100));
     }
 
     static create(name, amount, isPercent){

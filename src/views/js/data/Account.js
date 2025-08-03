@@ -92,7 +92,7 @@ export default class Account{
     incomeTotal(){
         let income = 0;
         for(let i = 0; i < this._income.length; i++){
-            income += this._income[i].amount;
+            if(this._income.active) income += this._income[i].amountRaw;
         }
         return Format.centsToDollars(income);
     }
