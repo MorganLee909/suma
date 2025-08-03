@@ -21,8 +21,6 @@ export default class EditIncome extends Page{
     archive(income){
         income.active = !income.active;
         user.account.save();
-        new Elem(this.container.querySelector(".archive"))
-            .text(income.active ? "Archive" : "Restore");
         changePage("viewIncome");
     }
 

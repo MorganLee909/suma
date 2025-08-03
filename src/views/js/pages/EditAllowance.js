@@ -45,7 +45,9 @@ export default class EditAllowance extends Page{
     }
 
     archive(allowance){
-        console.log("archiving");
+        allowance.active = !allowance.active;
+        user.account.save();
+        changePage("viewAllowances");
     }
 
     render(allowance){

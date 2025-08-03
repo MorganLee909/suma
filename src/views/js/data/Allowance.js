@@ -34,6 +34,11 @@ export default class Allowance{
         return this._active;
     }
 
+    set active(v){
+        if(typeof v !== "boolean") throw new TypeError("'active' must be of type boolean");
+        this._active = v;
+    }
+
     amountInDollars(income){
         if(this._isPercent) return Format.centsToDollars(income * (this._amount / 100));
         return Format.centsToDollars(this._amount);
@@ -45,10 +50,6 @@ export default class Allowance{
     }
 
     displayAmount(income){
-        console.log(this._isPercent);
-        console.log(this._amount);
-        console.log(this._amount / 100);
-        console.log(income * (this._amount / 100));
         if(this._isPercent) return this._amount;
         return Format.centsToDollars(income * (this._amount / 100));
     }

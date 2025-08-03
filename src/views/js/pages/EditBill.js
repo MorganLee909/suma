@@ -22,8 +22,6 @@ export default class EditBill extends Page{
     archive(bill){
         bill.active = !bill.active;
         user.account.save();
-        new Elem(this.container.querySelector(".archive"))
-            .text(bill.active ? "Archive" : "Restore");
         changePage("viewBills");
     }
 
