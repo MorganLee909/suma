@@ -39,6 +39,10 @@ export default class Account{
         return this._income;
     }
 
+    get bills(){
+        return this._bills;
+    }
+
     get isPopulated(){
         return this._populated;
     }

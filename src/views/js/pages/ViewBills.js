@@ -2,9 +2,9 @@ import Page from "./Page.js";
 import Elem from "../Elem.js";
 import Format from "../Format.js";
 
-export default class ViewIncome extends Page{
+export default class ViewBills extends Page{
     constructor(){
-        super("ViewIncome", ["home", "back-viewMenu", "logout"]);
+        super("ViewBills", ["home", "back-viewMenu", "logout"]);
 
         this.render(false);
     }
@@ -37,20 +37,20 @@ export default class ViewIncome extends Page{
             container.removeChild(container.lastChild);
         }
 
-        const income = user.account.income;
-        for(let i = 0; i < income.length; i++){
-            if(!showArchived && !income[i].active) continue;
-            const spent = user.account.categorySpent(income[i]);
+        const bills = user.account.bills;
+        for(let i = 0; i < bills.length; i++){
+            if(!showArchived && !bills[i].active) continue;
+            const spent = user.account.categorySpent(bills[i]);
             const spentAsCurrency = Format.currency(spent);
-            const amount = income[i].amount;
+            const amount = bills[i].amount;
             const amountAsCurrency = Format.currency(amount);
 
             new Elem("button")
                 .addClass("viewCategoryItem")
-                .onclick(()=>{changePage("editIncome", income[i])})
+                .onclick(()=>{changePage("editBill", bills[i])})
                 .append(new Elem("p")
-                    .text(income[i].name)
-                    .addClass(income[i].active ? "none" : "strike")
+                    .text(bills[i].name)
+                    .addClass(bills[i].active ? "none" : "strike")
                 )
                 .append(new Elem("p")
                     .addClass("categoryItemSpent")
@@ -72,7 +72,7 @@ export default class ViewIncome extends Page{
 
     render(showArchived){
         new Elem("h1")
-            .text(`${user.account.name} income`)
+            .text(`${user.account.name} Bills`)
             .appendTo(this.container);
 
         new Elem("label")

@@ -7,7 +7,9 @@
     min-height: 100%;
 }
 
-#ViewIncome .switch{
+#ViewIncome .switch,
+#ViewBills .switch,
+#ViewAllowances .switch{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +17,9 @@
     margin: 35px 0 15px 0;
 }
 
-#ViewIncome .switch p{
+#ViewIncome .switch p,
+#ViewBills .switch p,
+#ViewAllowances .switch p{
     position: absolute;
     width: 100px;
     top: -20px;

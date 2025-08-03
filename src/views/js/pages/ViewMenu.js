@@ -17,6 +17,12 @@ export default class ViewMenu extends Page{
             .appendTo(this.container);
 
         new Elem("button")
+            .text("Bills")
+            .addClass("button")
+            .onclick(()=>{changePage("viewBills")})
+            .appendTo(this.container);
+
+        new Elem("button")
             .text("Income")
             .addClass("button")
             .onclick(()=>{changePage("viewIncome")})
