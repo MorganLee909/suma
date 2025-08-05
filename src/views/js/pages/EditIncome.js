@@ -13,7 +13,7 @@ export default class EditIncome extends Page{
         event.preventDefault();
 
         income.name = this.container.querySelector(".name").value;
-        income.amount = this.container.querySelector(".amount").value;
+        income.amount = Format.dollarsToCents(this.container.querySelector(".amount").value);
 
         user.account.save();
         changePage("viewIncome");

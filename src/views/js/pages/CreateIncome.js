@@ -1,5 +1,6 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
+import Format from "../Format.js";
 
 export default class CreateIncome extends Page{
     constructor(){
@@ -13,7 +14,7 @@ export default class CreateIncome extends Page{
 
         await user.account.addIncome(
             this.container.querySelector(".name").value,
-            this.container.querySelector(".amount").value
+            Format.dollarsToCents(this.container.querySelector(".amount").value)
         );
         changePage("home");
     }

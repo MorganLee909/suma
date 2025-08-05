@@ -1,5 +1,3 @@
-import Format from "../Format.js";
-
 export default class Income{
     constructor(id, name, amount, active){
         this._id = id;
@@ -26,7 +24,7 @@ export default class Income{
 
     set amount(v){
         if(typeof v === String) v = Number(v);
-        this._amount = Format.dollarsToCents(v);
+        this._amount = v;
     }
 
     get type(){

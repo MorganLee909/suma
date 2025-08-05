@@ -136,7 +136,7 @@ export default class Account{
     }
 
     async addIncome(name, amount){
-        this._income.push(Income.create(name, Format.dollarsToCents(amount)));
+        this._income.push(Income.create(name, amount));
 
         await this.save();
     }
