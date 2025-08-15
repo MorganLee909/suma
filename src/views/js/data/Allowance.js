@@ -21,7 +21,7 @@ export default class Allowance{
         this._name = v;
     }
 
-    set amount(v){
+    get amount(){
         return this._amount;
     }
 

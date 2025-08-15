@@ -58,10 +58,9 @@ export default class Account{
     getIncomeSum(raw = false){
         let total = 0;
         for(let i = 0; i < this._income.length; i++){
-            if(this._income[i].active) total += this._income[i].amountRaw;
+            if(this._income[i].active) total += this._income[i].amount;
         }
-        if(raw) return total;
-        return Format.centsToDollars(total);
+        return total;
     }
 
     getCategory(category, categoryId){
@@ -93,7 +92,7 @@ export default class Account{
         let income = 0;
         for(let i = 0; i < this._income.length; i++){
             if(this._income[i].active){
-                income += this._income[i].amountRaw;
+                income += this._income[i].amount;
             }
         }
         return income;

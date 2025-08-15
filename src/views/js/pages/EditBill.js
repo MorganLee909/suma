@@ -5,7 +5,6 @@ import Format from "../Format.js";
 export default class EditBill extends Page{
     constructor(bill){
         super("EditBill", ["home", "back-viewBills", "logout"]);
-        console.log("billing");
 
         this.render(bill);
     }

@@ -23,18 +23,32 @@ export default class EditAllowance extends Page{
         changePage("viewAllowances");
     }
 
+    amountDisplay(displayPercent, allowance){
+        if(displayPercent && allowance.isPercent){
+            return allowance.amount;
+        }
+        if(displayPercent && !allowance.isPercent){
+            return Format.amountToPercent(allowance.amount, this.incomeTotal).toFixed(2);
+        }
+        if(!displayPercent && allowance.isPercent){
+            return Format.centsToDollars(Format.percentToAmount(allowance.amount, this.incomeTotal));
+        }
+        if(!displayPercent && !allowance.isPercent){
+            return Format.centsToDollars(allowance.amount);
+        }
+    }
+
     updateAmount(allowance){
-        let text, titleText, step, value;
+        let value = this.amountDisplay(event.target.checked, allowance);
+        let text, titleText, step;
         if(event.target.checked){
             text = "Amount (%)";
             titleText = "(Percent of Income)";
             step = "1";
-            value = allowance.rawAmount();
         }else{
             text = "Amount ($)";
             titleText = "(Fixed Amount)";
             step = "0.01";
-            value = Format.centsToDollars(allowance.currencyAmount(this.incomeTotal));
         }
 
         new Elem(this.container.querySelector("h2"))
@@ -62,7 +76,7 @@ export default class EditAllowance extends Page{
     }
 
     render(allowance){
-        let value = allowance.isPercent ? allowance.rawAmount() : Format.currency(allowance.currencyAmount(this.incomeTotal));
+        const value = this.amountDisplay(allowance.isPercent, allowance);
         new Elem("form")
             .addClass("standardForm")
             .onsubmit(()=>{this.submit(allowance)})

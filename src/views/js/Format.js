@@ -30,4 +30,12 @@ export default class Format{
     static centsToDollars(num){
         return num / 100;
     }
+
+    static percentToAmount(percent, income){
+        return (percent / 100) * income;
+    }
+
+    static amountToPercent(amount, income){
+        return (amount / income) * 100;
+    }
 }
