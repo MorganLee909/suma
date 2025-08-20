@@ -137,6 +137,10 @@ export default class Elem {
         return this;
     }
 
+    appendNew(v){
+        return new Elem("span");
+    }
+
     appendTo(v){
         if(v instanceof this.constructor){
             v.elem.appendChild(this.elem);
@@ -144,6 +148,10 @@ export default class Elem {
             v.appendChild(this.elem);
         }
         return this;
+    }
+
+    getParent(){
+        return new Elem(this.elem.parentElement);
     }
 
     get(){

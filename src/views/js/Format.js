@@ -1,7 +1,10 @@
 export default class Format{
     static currency(num){
         num /= 100;
-        return "$" + num.toFixed(2);
+        return "$" + num.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
 
     static transactionDate(d){

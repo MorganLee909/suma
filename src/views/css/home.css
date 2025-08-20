@@ -7,3 +7,22 @@
 #Home .buttonBox > *{
     margin-bottom: 5px;
 }
+
+#Home dl{
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    padding: 5px 15px;
+    width: 100%;
+    max-width: 350px;
+    margin: 5px 0;
+    font-size: 22px;
+}
+
+#Home dt{
+    font-weight: bold
+}
+
+#Home dd{
+    padding-left: 15px;
+}

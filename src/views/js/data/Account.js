@@ -51,11 +51,25 @@ export default class Account{
         return this._populated;
     }
 
+    getDiscretionary(){
+        const income = this.incomeTotal();
+        return income - this.billsTotal() - this.allowancesTotal(income);
+    }
+
     set isPopulated(v){
         if(typeof v === "boolean") this._populated = v;
     }
 
-    getIncomeSum(raw = false){
+    getDiscretionarySpent(){
+        let total = 0;
+        for(let i = 0; i < this._transactions.length; i++){
+            if(this._transactions[i].category.name === "Discretionary") total += this._transactions[i].amount;
+        }
+        console.log(total);
+        return total;
+    }
+
+    getIncomeSum(){
         let total = 0;
         for(let i = 0; i < this._income.length; i++){
             if(this._income[i].active) total += this._income[i].amount;
@@ -104,6 +118,20 @@ export default class Account{
             bills += this._bills[i].amount;
         }
         return bills;
+    }
+
+    allowancesTotal(income){
+        let allowances = 0;
+        for(let i = 0; i < this._allowances.length; i++){
+            if(!this._allowances[i].active) continue;
+
+            if(this._allowances[i].isPercent){
+                allowances += (this._allowances[i].amount / 100) * income;
+            }else{
+                allowances += this._allowances[i].amount;
+            }
+        }
+        return allowances;
     }
 
     static async create(name, balance){
