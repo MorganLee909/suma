@@ -26,3 +26,7 @@
 #Home dd{
     padding-left: 15px;
 }
+
+#Home .amountFull{
+    color: hsl(120, 50%, 28%);
+}

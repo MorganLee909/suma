@@ -65,7 +65,6 @@ export default class Account{
         for(let i = 0; i < this._transactions.length; i++){
             if(this._transactions[i].category.name === "Discretionary") total += this._transactions[i].amount;
         }
-        console.log(total);
         return total;
     }
 

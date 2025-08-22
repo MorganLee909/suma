@@ -34,23 +34,61 @@ export default class Home extends Page{
         this.render(month);
     }
 
+    generateColor(spent, amount){
+        if(amount <= 0) return "hsl(0, 100%, 50%)";
+
+        const percent = Math.min(spent / amount, 1); 
+        let hue;
+        if(percent < 0.5){
+            hue = percent / 0.5 * 45;
+        }else{
+            hue = 45 + (percent - 0.5) / 0.5 * (120 -45);
+        }
+
+        const saturation = 65 - percent * 15;
+        const lightness = 28 + (1 - Math.abs(percent - 0.5) * 2) * 10;
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+
     renderData(){
         for(let i = 0; i < user.account.allowances.length; i++){
             const a = user.account.allowances[i];
-            const spent = Format.currency(user.account.categorySpent(a));
+            const spent = user.account.categorySpent(a);
+            const total = a.currencyAmount(this.incomeTotal);
             new Elem(this.container.querySelector(`[class="${a.id}"] dd`))
-                .text(`${spent} / ${Format.currency(a.currencyAmount(this.incomeTotal))}`);
+                .text("")
+                .clear()
+                .append(new Elem("span")
+                    .text(Format.currency(spent))
+                    .addStyle("color", this.generateColor(spent, total))
+                )
+                .append(new Elem("span")
+                    .text(` / ${Format.currency(total)}`)
+                    .addClass("amountFull")
+                );
         }
 
+        this.container.querySelector(".discretionary").replaceWith(this.createDiscretionary().get());
+    }
+
+    createDiscretionary(){
         const discretionary = user.account.getDiscretionary();
         const remaining = discretionary - user.account.getDiscretionarySpent();
-        new Elem(this.container.querySelector(".discretionary dd"))
-            .text("")
-            .append(new Elem("span")
-                .text(Format.currency(remaining))
+        return new Elem("dl")
+            .addClass("discretionary")
+            .append(new Elem("dt")
+                .text("Remaining Discretionary:")
             )
-            .append(new Elem("span")
-                .text(` / ${Format.currency(discretionary)}`)
+            .append(new Elem("dd")
+                .append(new Elem("span")
+                    .text(Format.currency(remaining))
+                    .addStyle("color", this.generateColor(remaining, discretionary))
+                )
+                .append(new Elem("span")
+                    .addClass("amountFull")
+                    .text(` / ${Format.currency(discretionary)}`)
+                )
             );
     }
 
@@ -86,16 +124,7 @@ export default class Home extends Page{
             )
             .appendTo(this.container);
 
-        const discretionary = Format.currency(user.account.getDiscretionary());
-        new Elem("dl")
-            .addClass("discretionary")
-            .append(new Elem("dt")
-                .text("Remaining Discretionary:")
-            )
-            .append(new Elem("dd")
-                .text(`${discretionary} / ${discretionary}`)
-            )
-            .appendTo(this.container);
+        this.createDiscretionary().appendTo(this.container);
 
         let allowances;
         new Elem("h3").text("Allowances:").appendTo(this.container);
