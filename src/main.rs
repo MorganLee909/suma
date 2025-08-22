@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
             .configure(routes::account::config)
             .configure(routes::transaction::config)
     })
-        .bind(("0.0.0.0", 8000))?
+        .bind(("0.0.0.0", 5001))?
         .run()
         .await
 }
