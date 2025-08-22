@@ -1,0 +1,36 @@
+#Printable{
+    height: 100%;
+    justify-content: flex-start;
+    margin-top: -100px;
+}
+
+#Printable h1{
+    margin-bottom: 35px;
+}
+
+#Printable table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#Printable th,
+#Printable td{
+    padding: 5px 10px;
+    border-bottom: 2px solid black;
+    border-right: 1px dotted black;
+}
+
+#Printable .date,
+#Printable .category,
+#Printable .location,
+#Printable .amount,
+#Printable .tags{
+    white-space: nowrap;
+    width: 1%;
+}
+
+@media print{
+    .logo{
+        display: none;
+    }
+}

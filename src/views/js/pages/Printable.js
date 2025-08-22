@@ -18,6 +18,38 @@ export default class Printable extends Page{
         window.print();
     }
 
+    formatAmount(transaction){
+        if(transaction.rawCategory === "income"){
+            if(transaction.amount < 0){
+                return Format.currency(-transaction.amount);
+            }else{
+                return Format.currency(transaction.amount);
+            }
+        }else{
+            if(transaction.amount < 0){
+                return Format.currency(transaction.amount);
+            }else{
+                return Format.currency(-transaction.amount);
+            }
+        }
+    }
+
+    transactionColor(transaction){
+        if(transaction.rawCategory === "income"){
+            if(transaction.amount < 0){
+                return "red";
+            }else{
+                return "green";
+            }
+        }else{
+            if(transaction.amount < 0){
+                return "green";
+            }else{
+                return "red";
+            }
+        }
+    }
+
     render(from, to, transactions){
         new Elem("h1")
             .text(`${Format.dateFromTransaction(from)} - ${Format.dateFromTransaction(to)}`)
@@ -41,26 +73,39 @@ export default class Printable extends Page{
             .appendTo(this.container);
 
         for(let i = 0; i < transactions.length; i++){
+            let tags;
             new Elem("tr")
                 .append(new Elem("td")
                     .text(Format.dateFromTransaction(transactions[i].date))
+                    .addClass("date")
                 )
                 .append(new Elem("td")
-                    .text(Format.currency(transactions[i].amount))
+                    .text(this.formatAmount(transactions[i]))
+                    .addClass("amount")
+                    .addStyle("color", this.transactionColor(transactions[i]))
                 )
                 .append(new Elem("td")
                     .text(transactions[i].category.name)
+                    .addClass("category")
                 )
                 .append(new Elem("td")
-                    .text(transactions[i].tags)
+                    .toVar((e)=>{tags = e})
+                    .addClass("tags")
                 )
                 .append(new Elem("td")
                     .text(transactions[i].location)
+                    .addClass("location")
                 )
                 .append(new Elem("td")
                     .text(transactions[i].note)
                 )
                 .appendTo(tbody);
+
+            for(let j = 0; j < transactions[i].tags.length; j++){
+                new Elem("p")
+                    .text(transactions[i].tags[j])
+                    .appendTo(tags);
+            }
         }
     }
 }
