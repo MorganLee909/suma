@@ -30,6 +30,20 @@ export default class ViewTransactions extends Page{
             .text(`${user.account.name} transactions`)
             .appendTo(this.container);
 
+        let from = new Date();
+        from.setDate(1);
+        const to = new Date();
+        const printData = {
+            from: from,
+            to: to,
+            transactions: user.account.transactions
+        };
+        new Elem("button")
+            .text("Print")
+            .addClass("button")
+            .onclick(()=>{changePage("print", printData)})
+            .appendTo(this.container);
+
         this.transactions = new Elem("div")
             .addClass("transactions")
             .appendTo(this.container);

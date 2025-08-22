@@ -20,6 +20,7 @@ import ViewBills from "./pages/ViewBills.js";
 import EditBill from "./pages/EditBill.js";
 import ViewAllowances from "./pages/ViewAllowances.js";
 import EditAllowance from "./pages/EditAllowance.js";
+import Printable from "./pages/Printable.js";
 
 const pages = document.querySelector(".page");
 let currentPage;
@@ -48,6 +49,10 @@ window.changePage = (page, data)=>{
         case "editBill": currentPage = new EditBill(data); break;
         case "viewAllowances": currentPage = new ViewAllowances(data); break;
         case "editAllowance": currentPage = new EditAllowance(data); break;
+        case "print": 
+            currentPage = new Printable(data);
+            currentPage.mount();
+            break;
     }
     console.timeEnd("change page");
 }
