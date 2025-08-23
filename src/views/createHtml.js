@@ -4,7 +4,7 @@ import htmlMinifier from "html-minifier-terser";
 import fsSync from "fs";
 
 const fs = fsSync.promises;
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = false;
 
 const esbuildProm = esbuild.build({
     entryPoints: [`${import.meta.dirname}/js/index.js`, `${import.meta.dirname}/css/index.css`],
