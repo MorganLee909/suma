@@ -187,6 +187,15 @@ export default class Account{
 
     addTransaction(transaction){
         this._transactions.push(transaction);
+
+        console.log(transaction.category.type);
+        if(transaction.category.type === "Income"){
+            this._balance += transaction.amount;
+        }else{
+            this._balance -= transaction.amount;
+        }
+
+        this.save();
         this.sortTransactions();
     }
 
