@@ -1,6 +1,7 @@
 import Page from "./Page.js";
 import Elem from "../Elem.js";
 import Notifier from "../Notifier.js";
+import Format from "../Format.js";
 
 export default class EditTransaction extends Page{
     constructor(transaction){
@@ -19,16 +20,26 @@ export default class EditTransaction extends Page{
 
         try{
             const select = this.container.querySelector.bind(this.container);
+            const amount = select(".amount").value;
+            const diff = transaction.amount - (amount * 100);
+
             transaction.amount = select(".amount").value;
             transaction.category = select(".category").value;
             transaction.tags = select(".tags").value;
             transaction.location = select(".location").value;
             transaction.date = select(".date").value;
             transaction.note = select(".note").value;
+
+            if(transaction.category.type === "Income"){
+                user.account.balance -= diff;
+            }else{
+                user.account.balance += diff;
+            }
         }catch(e){
             return new Notifier("error", e);
         }
         
+        user.account.save();
         await transaction.save();
         changePage("transactionDetails", transaction);
     }
@@ -45,7 +56,7 @@ export default class EditTransaction extends Page{
                 .text("Amount")
                 .append(new Elem("input")
                     .type("number")
-                    .value(transaction.amount)
+                    .value(Format.centsToDollars(transaction.amount))
                     .addClass("amount")
                     .step("0.01")
                     .required()
@@ -57,6 +68,7 @@ export default class EditTransaction extends Page{
                 .toVar((a)=>{select = a})
                 .append(new Elem("option")
                     .text("Discretionary")
+                    .value("discretionary")
                 )
                 .append(new Elem("optgroup")
                     .label("Allowances")
