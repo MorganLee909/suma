@@ -31,6 +31,10 @@ export default class Account{
         return this._balance;
     }
 
+    set balance(v){
+        this._balance = v;
+    }
+
     get transactions(){
         return this._transactions;
     }
@@ -188,7 +192,6 @@ export default class Account{
     addTransaction(transaction){
         this._transactions.push(transaction);
 
-        console.log(transaction.category.type);
         if(transaction.category.type === "Income"){
             this._balance += transaction.amount;
         }else{

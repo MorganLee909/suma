@@ -38,7 +38,13 @@ export default class TransactionDetails extends Page{
 
     async delete(transaction){
         try{
-            await transaction.delete();
+            if(transaction.category.type === "Income"){
+                user.account.balance -= transaction.amount;
+            }else{
+                user.account.balance += transaction.amount;
+            }
+            transaction.delete();
+            user.account.save();
         }catch(e){
             if(e.error){
                 new Notifier("error", e.error.message);
