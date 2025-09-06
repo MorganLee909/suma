@@ -26,7 +26,6 @@ const pages = document.querySelector(".page");
 let currentPage;
 
 window.changePage = (page, data)=>{
-    console.time("change page");
     currentPage.close();
 
     switch(page){
@@ -54,7 +53,6 @@ window.changePage = (page, data)=>{
             currentPage.mount();
             break;
     }
-    console.timeEnd("change page");
 }
 
 fetch("/api/user", {
