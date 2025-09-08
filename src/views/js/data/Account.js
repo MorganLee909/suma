@@ -225,6 +225,7 @@ export default class Account{
     listIncome(){
         const income = [];
         for(let i = 0; i < this._income.length; i++){
+            if(!this._income[i].active) continue;
             income.push({
                 id: this._income[i].id,
                 name: this._income[i].name
@@ -236,6 +237,7 @@ export default class Account{
     listBills(){
         const bills = [];
         for(let i = 0; i < this._bills.length; i++){
+            if(!this._bills[i].active) continue;
             bills.push({
                 id: this._bills[i].id,
                 name: this._bills[i].name
@@ -247,6 +249,7 @@ export default class Account{
     listAllowances(){
         const allowances = [];
         for(let i = 0; i < this._allowances.length; i++){
+            if(!this._allowances[i].active) continue;
             allowances.push({
                 id: this._allowances[i].id,
                 name: this._allowances[i].name
