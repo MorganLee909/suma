@@ -28,7 +28,20 @@ export default class CreateTransaction extends Page{
         await transaction.save(true);
         user.account.addTransaction(transaction);
         changePage("home");
-   }
+    }
+
+    fillAmount(select){
+        const catValues = select.getValue().split(":");
+
+        let newValue = 0;
+        if(catValues[0] === "bill" || catValues[0] === "income"){
+            const category = user.account.getCategory(catValues[0], catValues[1]);
+            newValue = category.amount / 100;
+        }
+
+        new Elem(this.container.querySelector(".amount"))
+            .value(newValue);
+    }
 
     render(income, bills, allowances){
         let select, incomeOpt, billsOpt, allowancesOpt;
@@ -39,6 +52,30 @@ export default class CreateTransaction extends Page{
                 .text("Create Transaction")
             )
             .append(new Elem("label")
+                .text("Category")
+                .append(new Elem("select")
+                    .addClass("category")
+                    .toVar((a)=>{select = a})
+                    .append(new Elem("option")
+                        .value("discretionary")
+                        .text("Discretionary")
+                    )
+                    .append(new Elem("optgroup")
+                        .label("Allowances")
+                        .toVar((e)=>{allowancesOpt = e})
+                    )
+                    .append(new Elem("optgroup")
+                        .label("Bills")
+                        .toVar((e)=>{billsOpt = e})
+                    )
+                    .append(new Elem("optgroup")
+                        .label("Income")
+                        .toVar((e)=>{incomeOpt = e})
+                    )
+                    .onchange(()=>{this.fillAmount(select)})
+                )
+            )
+            .append(new Elem("label")
                 .text("Amount")
                 .append(new Elem("input")
                     .type("number")
@@ -47,26 +84,6 @@ export default class CreateTransaction extends Page{
                     .placeholder("$0.00")
                     .required()
                     .focus()
-                )
-            )
-            .append(new Elem("select")
-                .addClass("category")
-                .toVar((a)=>{select = a})
-                .append(new Elem("option")
-                    .value("discretionary")
-                    .text("Discretionary")
-                )
-                .append(new Elem("optgroup")
-                    .label("Allowances")
-                    .toVar((e)=>{allowancesOpt = e})
-                )
-                .append(new Elem("optgroup")
-                    .label("Bills")
-                    .toVar((e)=>{billsOpt = e})
-                )
-                .append(new Elem("optgroup")
-                    .label("Income")
-                    .toVar((e)=>{incomeOpt = e})
                 )
             )
             .append(new Elem("label")

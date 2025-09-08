@@ -35,7 +35,6 @@ export default class Home extends Page{
     }
 
     submitOnEnter(event){
-        console.log(event);
         if(event.key === "Enter"){
             user.account.balance = Format.dollarsToCents(this.container.querySelector(".balance input").value);
             user.account.save();

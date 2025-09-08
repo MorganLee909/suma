@@ -47,6 +47,10 @@ export default class Elem {
         return this;
     }
 
+    getValue(){
+        return this.elem.value;
+    }
+
     label(v){
         this.elem.label = v;
         return this;
@@ -89,7 +93,15 @@ export default class Elem {
     }
 
     onchange(v){
-        this.elem.onchange = v;
+        if(this.change) this.elem.removeEventListener("change", this.change);
+        this.change = v;
+        this.elem.addEventListener("change", v);
+        return this;
+    }
+
+    removeOnchange(){
+        if(this.change) this.elem.removeEventListener("change", this.change);
+        this.change = undefined;
         return this;
     }
 
