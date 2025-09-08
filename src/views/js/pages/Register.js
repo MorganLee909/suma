@@ -2,6 +2,7 @@ import Page from "./Page.js";
 import Elem from "../Elem.js";
 import User from "../data/User.js";
 import Notifier from "../Notifier.js";
+import EncryptionHandler from "../EncryptionHandler.js";
 
 export default class Register extends Page{
     constructor(){
@@ -53,9 +54,10 @@ export default class Register extends Page{
             })
             .then((encryptionHandler)=>{
                 window.encryptionHandler = encryptionHandler;
-                changePage("home");
+                changePage("createAccount");
             })
             .catch((err)=>{
+                console.log(err);
                 if(err.error){
                     new Notifier("error", err.error.message);
                 }else{
