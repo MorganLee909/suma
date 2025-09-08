@@ -34,6 +34,32 @@ export default class Home extends Page{
         this.render(month);
     }
 
+    submitOnEnter(event){
+        console.log(event);
+        if(event.key === "Enter"){
+            user.account.balance = Format.dollarsToCents(this.container.querySelector(".balance input").value);
+            user.account.save();
+
+            new Elem(this.container.querySelector(".balance dd"))
+                .clear()
+                .text(Format.currency(user.account.balance));
+        }
+    }
+
+    editBalance(){
+        this.balanceContainer.removeOnclick();
+
+        new Elem(this.container.querySelector(".balance dd"))
+            .text("")
+            .append(new Elem("input")
+                .type("number")
+                .step("0.01")
+                .value(user.account.balance / 100)
+                .onkeydown(this.submitOnEnter.bind(this))
+                .focus()
+            );
+    }
+
     generateColor(spent, amount){
         if(amount <= 0) return "hsl(0, 100%, 50%)";
 
@@ -97,13 +123,15 @@ export default class Home extends Page{
             .text(month)
             .appendTo(this.container);
 
-        new Elem("dl")
+        this.balanceContainer = new Elem("dl")
+            .addClass("balance")
             .append(new Elem("dt")
                 .text("Balance: ")
             )
             .append(new Elem("dd")
                 .text(Format.currency(user.account.balance))
             )
+            .onclick(this.editBalance.bind(this))
             .appendTo(this.container);
 
         new Elem("dl")

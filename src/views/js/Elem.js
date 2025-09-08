@@ -63,7 +63,28 @@ export default class Elem {
     }
 
     onclick(v){
-        this.elem.onclick = v;
+        if(this.click) this.elem.removeEventListener("click", this.click);
+        this.click = v;
+        this.elem.addEventListener("click", v);
+        return this;
+    }
+
+    removeOnclick(){
+        if(this.click) this.elem.removeEventListener("click", this.click);
+        this.click = undefined;
+        return this;
+    }
+
+    onkeydown(v){
+        if(this.keydown) this.elem.removeEventListener("keydown", this.keydown);
+        this.keydown = v;
+        this.elem.addEventListener("keydown", v);
+        return this;
+    }
+
+    removeOnkeydown(v){
+        if(this.keydown) this.elem.removeEventListener("keydown", this.keydown);
+        this.keydown = undefined;
         return this;
     }
 

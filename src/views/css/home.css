@@ -30,3 +30,7 @@
 #Home .amountFull{
     color: hsl(120, 50%, 28%);
 }
+
+#Home .balance input{
+    font-size: 22px;
+}
