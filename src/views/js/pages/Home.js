@@ -77,6 +77,8 @@ export default class Home extends Page{
     }
 
     renderData(){
+        this.incomeTotal = user.account.incomeTotal();
+
         for(let i = 0; i < user.account.allowances.length; i++){
             const a = user.account.allowances[i];
             const spent = user.account.categorySpent(a);
@@ -95,6 +97,8 @@ export default class Home extends Page{
         }
 
         this.container.querySelector(".discretionary").replaceWith(this.createDiscretionary().get());
+        this.container.querySelector(".incomeDisplay").textContent = Format.currency(this.incomeTotal);
+        this.container.querySelector(".billsDisplay").textContent = Format.currency(user.account.billsTotal())
     }
 
     createDiscretionary(){
@@ -138,6 +142,7 @@ export default class Home extends Page{
                 .text("Income: ")
             )
             .append(new Elem("dd")
+                .addClass("incomeDisplay")
                 .text(Format.currency(this.incomeTotal))
             )
             .appendTo(this.container);
@@ -147,6 +152,7 @@ export default class Home extends Page{
                 .text("Bills: ")
             )
             .append(new Elem("dd")
+                .addClass("billsDisplay")
                 .text(Format.currency(user.account.billsTotal()))
             )
             .appendTo(this.container);

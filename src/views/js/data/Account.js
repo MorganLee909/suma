@@ -108,7 +108,14 @@ export default class Account{
     incomeTotal(){
         let income = 0;
         for(let i = 0; i < this._income.length; i++){
-            if(this._income[i].active){
+            if(!this._income[i].active) continue;
+            const transactions = this._transactions.filter(t => t.categoryId === this._income[i].id);
+
+            if(transactions.length > 0){
+                for(let j = 0; j < transactions.length; j++){
+                    income += transactions[j].amount;
+                }
+            }else{
                 income += this._income[i].amount;
             }
         }
@@ -118,7 +125,16 @@ export default class Account{
     billsTotal(){
         let bills = 0;
         for(let i = 0; i < this._bills.length; i++){
-            bills += this._bills[i].amount;
+            if(!this._bills[i].active) continue;
+            const transactions = this._transactions.filter(b => b.categoryId === this._bills[i].id);
+
+            if(transactions.length > 0){
+                for(let j = 0; j < transactions.length; j++){
+                    bills += transactions[j].amount;
+                }
+            }else{
+                bills += this._bills[i].amount;
+            }
         }
         return bills;
     }
