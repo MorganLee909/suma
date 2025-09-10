@@ -79,26 +79,10 @@ export default class Home extends Page{
     renderData(){
         this.incomeTotal = user.account.incomeTotal();
 
-        for(let i = 0; i < user.account.allowances.length; i++){
-            const a = user.account.allowances[i];
-            const spent = user.account.categorySpent(a);
-            const total = a.currencyAmount(this.incomeTotal);
-            new Elem(this.container.querySelector(`[class="${a.id}"] dd`))
-                .text("")
-                .clear()
-                .append(new Elem("span")
-                    .text(Format.currency(spent))
-                    .addStyle("color", this.generateColor(spent, total))
-                )
-                .append(new Elem("span")
-                    .text(` / ${Format.currency(total)}`)
-                    .addClass("amountFull")
-                );
-        }
-
         this.container.querySelector(".discretionary").replaceWith(this.createDiscretionary().get());
         this.container.querySelector(".incomeDisplay").textContent = Format.currency(this.incomeTotal);
         this.container.querySelector(".billsDisplay").textContent = Format.currency(user.account.billsTotal())
+        this.renderAllowances();
     }
 
     createDiscretionary(){
@@ -119,6 +103,40 @@ export default class Home extends Page{
                     .text(` / ${Format.currency(discretionary)}`)
                 )
             );
+    }
+
+    renderAllowances(){
+        const allowances = new Elem("div")
+            .addClass("allowances");
+
+        for(let i = 0; i < user.account.allowances.length; i++){
+            const a = user.account.allowances[i];
+            const spent = user.account.categorySpent(a);
+            const total = a.currencyAmount(this.incomeTotal);
+            new Elem("dl")
+                .addClass(a.id)
+                .append(new Elem("dt")
+                    .text(`${a.name}: `)
+                )
+                .append(new Elem("dd")
+                    .append(new Elem("span")
+                        .text(Format.currency(spent))
+                        .addStyle("color", this.generateColor(spent, total))
+                    )
+                    .append(new Elem("span")
+                        .text(` / ${Format.currency(total)}`)
+                        .addClass("amountFull")
+                    )
+                )
+                .appendTo(allowances);
+
+            const existingContainer = this.container.querySelector(".allowances");
+            if(existingContainer){
+                existingContainer.replaceWith(allowances.get());
+            }else{
+                this.container.appendChild(allowances.get());
+            }
+        }
     }
 
     render(month){
@@ -159,24 +177,7 @@ export default class Home extends Page{
 
         this.createDiscretionary().appendTo(this.container);
 
-        let allowances;
         new Elem("h3").text("Allowances:").appendTo(this.container);
-        new Elem("div")
-            .addClass("allowances")
-            .toVar((e)=>{allowances = e})
-            .appendTo(this.container);
-
-        for(let i = 0; i < user.account.allowances.length; i++){
-            const a = user.account.allowances[i];
-            new Elem("dl")
-                .addClass(a.id)
-                .append(new Elem("dt")
-                    .text(`${a.name}: `)
-                )
-                .append(new Elem("dd")
-                    .text(`$0.00 / ${Format.currency(a.currencyAmount(this.incomeTotal))}`)
-                )
-                .appendTo(this.container);
-        }
+        this.renderAllowances();
     }
 }

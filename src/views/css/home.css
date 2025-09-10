@@ -34,3 +34,8 @@
 #Home .balance input{
     font-size: 22px;
 }
+
+#Home .allowances{
+    width: 100%;
+    max-width: 350px;
+}
