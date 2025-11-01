@@ -110,6 +110,7 @@ export default class Home extends Page{
             .addClass("allowances");
 
         for(let i = 0; i < user.account.allowances.length; i++){
+            if(!user.account.allowances[i].active) continue;
             const a = user.account.allowances[i];
             const spent = user.account.categorySpent(a);
             const total = a.currencyAmount(this.incomeTotal);
