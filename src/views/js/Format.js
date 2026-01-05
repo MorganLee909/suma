@@ -12,7 +12,8 @@ export default class Format{
     }
 
     static dateFromTransaction(d, dayOfWeek = false){
-        const date = new Date(d);
+        const [y, m, da] = d.split("-").map(Number);
+        const date = new Date(y, m-1, da);
 
         let options = {
             year: "numeric",
