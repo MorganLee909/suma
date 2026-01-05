@@ -47,6 +47,11 @@ export default class Allowance{
         this._active = v;
     }
 
+    updateAmount(amount, isPercent){
+        this._amount = amount;
+        this._isPercent = isPercent;
+    }
+
     currencyAmount(income){
         if(this._isPercent) return income * (this._amount / 100);
         return this._amount;

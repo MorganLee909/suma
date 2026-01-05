@@ -24,7 +24,7 @@ export default class CreateAllowance extends Page{
         if(event.target.checked){
             text = "Amount (%)";
             titleText = "(Percent of Income)";
-            step = "1";
+            step = "0.01";
         }else{
             text = "Amount ($)";
             titleText = "(Fixed Amount)";

@@ -16,8 +16,9 @@ export default class EditAllowance extends Page{
 
         const select = this.container.querySelector.bind(this.container);
         allowance.name = select(".name").value;
-        allowance.isPercent = select(".isPercent").checked;
-        allowance.amount = select(".amount").value;
+        const isPercent = select(".isPercent").checked;
+        const amount = select(".amount").value;
+        allowance.updateAmount(amount, isPercent);
 
         user.account.save();
         changePage("viewAllowances");
@@ -40,15 +41,13 @@ export default class EditAllowance extends Page{
 
     updateAmount(allowance){
         let value = this.amountDisplay(event.target.checked, allowance);
-        let text, titleText, step;
+        let text, titleText;
         if(event.target.checked){
             text = "Amount (%)";
             titleText = "(Percent of Income)";
-            step = "1";
         }else{
             text = "Amount ($)";
             titleText = "(Fixed Amount)";
-            step = "0.01";
         }
 
         new Elem(this.container.querySelector("h2"))
@@ -64,7 +63,6 @@ export default class EditAllowance extends Page{
                 .addClass("amount")
                 .value(value)
                 .min("0")
-                .step(step)
                 .required()
             );
     }
@@ -119,7 +117,7 @@ export default class EditAllowance extends Page{
                     .addClass("amount")
                     .value(value)
                     .min("0")
-                    .step(allowance.isPercent ? "1" : "0.01")
+                    .step("0.01")
                     .required()
                 )
             )
