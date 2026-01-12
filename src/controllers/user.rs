@@ -1,13 +1,20 @@
-use actix_web::{get, post, web, HttpResponse, HttpRequest, cookie::Cookie};
+use actix_web::{get, post, web, HttpResponse, HttpRequest, cookie::{Cookie, time::Duration}};
 use mongodb::{bson::doc, Database, Collection};
 use regex::Regex;
 use serde_json::json;
-
-use crate::models::user::User;
-use crate::models::account::{Account};
-use crate::dto::user::{CreateInput, LoginInput, GetPasswordSaltInput};
-use crate::app_error::AppError;
-use crate::auth::user_auth;
+use crate::{
+    models::{
+        user::User,
+        account::{Account}
+    },
+    dto::user::{
+        CreateInput,
+        LoginInput,
+        GetPasswordSaltInput
+    },
+    app_error::AppError,
+    auth::user_auth
+};
 
 #[post("/api/user/salt")]
 pub async fn get_password_salt_route(
@@ -98,5 +105,7 @@ fn create_user_cookie(id: Option<String>) -> Cookie<'static> {
     Cookie::build("user", id_string)
         .path("/")
         .http_only(true)
+        .secure(true)
+        .max_age(Duration::days(365))
         .finish()
 }
