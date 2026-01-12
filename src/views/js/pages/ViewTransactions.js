@@ -49,6 +49,7 @@ export default class ViewTransactions extends Page{
             .appendTo(this.container);
 
         const transactions = user.account.transactions;
+        transactions.sort((a, b)=> a.date > b.date ? -1 : 1);
         for(let i = 0; i < transactions.length; i++){
             new Elem("div")
                 .addClass("transaction")
